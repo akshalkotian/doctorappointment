@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}{{ doctor.name }} - HealthCare Plus{% endblock %}
+
+{% block content %}
+<!-- Doctor Profile Header -->
+<section class="doctor-profile-header py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-start">
+                    <div class="doctor-profile-image-wrapper me-4">
+                        <img src="{{ doctor.image }}" alt="{{ doctor.name }}" class="doctor-profile-image">
+                        <div class="verified-badge-large">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h1 class="doctor-profile-name mb-2">{{ doctor.name }}</h1>
+                        <p class="doctor-profile-specialization mb-3">
+                            <i class="fas fa-stethoscope me-2"></i>{{ doctor.specialization }}
+                        </p>
+                        <div class="doctor-profile-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-graduation-cap me-1"></i>{{ doctor.qualification }}
+                            </span>
+                            <span class="meta-divider">•</span>
+                            <span class="meta-item">
+                                <i class="fas fa-briefcase me-1"></i>{{ doctor.experience }} Experience
+                            </span>
+                        </div>
+                        <div class="doctor-profile-stats mt-3">
+                            <div class="stat-badge">
+                                <i class="fas fa-star text-warning me-1"></i>
+                                <span>4.8 Rating</span>
+                            </div>
+                            <div class="stat-badge">
+                                <i class="fas fa-users me-1"></i>
+                                <span>500+ Patients</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" 
+                       class="btn btn-primary btn-lg rounded-pill">
+                        <i class="fas fa-calendar-plus me-2"></i>Book Appointment
+                    </a>
+                    <a href="{{ url_for('doctors_list') }}" 
+                       class="btn btn-outline-secondary rounded-pill">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Doctors
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Doctor Details -->
+<section class="doctor-details-section py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- About Section -->
+                <div class="detail-card mb-4">
+                    <div class="detail-card-header">
+                        <h4 class="detail-card-title">
+                            <i class="fas fa-user-md me-2"></i>About Doctor
+                        </h4>
+                    </div>
+                    <div class="detail-card-body">
+                        <p class="lead text-muted mb-0">{{ doctor.about }}</p>
+                    </div>
+                </div>
+
+                <!-- Professional Information -->
+                <div class="detail-card mb-4">
+                    <div class="detail-card-header">
+                        <h4 class="detail-card-title">
+                            <i class="fas fa-info-circle me-2"></i>Professional Information
+                        </h4>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="info-box">
+                                    <p class="info-label">Specialization</p>
+                                    <p class="info-value">{{ doctor.specialization }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-box">
+                                    <p class="info-label">Qualification</p>
+                                    <p class="info-value">{{ doctor.qualification }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-box">
+                                    <p class="info-label">Experience</p>
+                                    <p class="info-value">{{ doctor.experience }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-box">
+                                    <p class="info-label">Location</p>
+                                    <p class="info-value">{{ doctor.location }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Contact Card -->
+                <div class="detail-card mb-4">
+                    <div class="detail-card-header">
+                        <h5 class="detail-card-title mb-0">
+                            <i class="fas fa-address-card me-2"></i>Contact Information
+                        </h5>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-info">
+                                <p class="contact-label">Email</p>
+                                <p class="contact-value">{{ doctor.email }}</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-info">
+                                <p class="contact-label">Phone</p>
+                                <p class="contact-value">{{ doctor.phone }}</p>
+                            </div>
+                        </div>
+                        <div class="contact-item mb-0">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-info">
+                                <p class="contact-label">Location</p>
+                                <p class="contact-value">{{ doctor.location }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Availability Card -->
+                <div class="detail-card">
+                    <div class="detail-card-header">
+                        <h5 class="detail-card-title mb-0">
+                            <i class="fas fa-clock me-2"></i>Availability
+                        </h5>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="availability-info">
+                            <div class="availability-item">
+                                <span class="day">Monday - Friday</span>
+                                <span class="time">9:00 AM - 5:00 PM</span>
+                            </div>
+                            <div class="availability-item">
+                                <span class="day">Saturday</span>
+                                <span class="time">9:00 AM - 12:00 PM</span>
+                            </div>
+                            <div class="availability-item mb-0">
+                                <span class="day">Sunday</span>
+                                <span class="time text-danger">Closed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

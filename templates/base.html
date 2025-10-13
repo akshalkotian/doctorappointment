@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Doctor Appointment Booking{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Modern Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+                <div class="brand-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <span class="brand-text">HealthCare<span class="text-primary">Plus</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                    {% if session.user_id %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{{ url_for('find_doctor') }}">
+                            <i class="fas fa-stethoscope me-1"></i>Find My Doctor
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{{ url_for('doctors_list') }}">
+                            <i class="fas fa-search me-1"></i>Browse Doctors
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{{ url_for('my_appointments') }}">
+                            <i class="fas fa-calendar-check me-1"></i>My Appointments
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center px-3" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <div class="user-avatar me-2">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            {{ session.user_name }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('logout') }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-primary rounded-pill px-4" href="{{ url_for('register') }}">
+                            Get Started
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages-container">
+            <div class="container mt-4">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show custom-alert shadow-sm" role="alert">
+                        <div class="d-flex align-items-center">
+                            {% if category == 'success' %}
+                            <i class="fas fa-check-circle me-3 fs-5"></i>
+                            {% elif category == 'danger' %}
+                            <i class="fas fa-exclamation-circle me-3 fs-5"></i>
+                            {% elif category == 'warning' %}
+                            <i class="fas fa-exclamation-triangle me-3 fs-5"></i>
+                            {% else %}
+                            <i class="fas fa-info-circle me-3 fs-5"></i>
+                            {% endif %}
+                            <div class="flex-grow-1">{{ message }}</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Modern Footer -->
+    <footer class="footer mt-auto">
+        <div class="footer-top">
+            <div class="container py-5">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-brand mb-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="brand-icon me-2">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <span class="brand-text">HealthCare<span class="text-primary">Plus</span></span>
+                            </div>
+                            <p class="text-muted">Your trusted partner for quality healthcare services. Book appointments with top doctors instantly.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <h6 class="footer-title">Quick Links</h6>
+                        <ul class="footer-links">
+                            <li><a href="{{ url_for('home') }}">Home</a></li>
+                            {% if session.user_id %}
+                            <li><a href="{{ url_for('find_doctor') }}">Find My Doctor</a></li>
+                            <li><a href="{{ url_for('doctors_list') }}">Browse Doctors</a></li>
+                            <li><a href="{{ url_for('my_appointments') }}">My Appointments</a></li>
+                            {% else %}
+                            <li><a href="{{ url_for('login') }}">Login</a></li>
+                            <li><a href="{{ url_for('register') }}">Register</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h6 class="footer-title">Specializations</h6>
+                        <ul class="footer-links">
+                            <li><a href="{{ url_for('doctors_list') }}">Cardiology</a></li>
+                            <li><a href="{{ url_for('doctors_list') }}">Dermatology</a></li>
+                            <li><a href="{{ url_for('doctors_list') }}">Pediatrics</a></li>
+                            <li><a href="{{ url_for('doctors_list') }}">Neurology</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h6 class="footer-title">Contact Us</h6>
+                        <ul class="footer-contact">
+                            <li><i class="fas fa-phone me-2"></i>+1-555-HEALTH</li>
+                            <li><i class="fas fa-envelope me-2"></i>info@healthcareplus.com</li>
+                            <li><i class="fas fa-map-marker-alt me-2"></i>123 Medical Center, NY</li>
+                        </ul>
+                        <div class="social-links mt-3">
+                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container py-3">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start">
+                        <p class="mb-0 text-muted small">&copy; 2025 HealthCare Plus. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <p class="mb-0 text-muted small">Privacy Policy | Terms of Service</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+

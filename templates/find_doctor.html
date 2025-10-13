@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}Find My Doctor - HealthCare Plus{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="symptom-checker-icon mb-3">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <h1 class="display-5 fw-bold mb-3">Find Your Doctor</h1>
+                <p class="lead text-muted mb-0">Tell us your symptoms and we'll recommend the right specialist for you</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Symptom Input Section -->
+<section class="symptom-input-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="symptom-input-card">
+                    <form method="POST" action="{{ url_for('find_doctor') }}">
+                        <div class="mb-4">
+                            <label for="symptom" class="form-label fw-bold">What are you experiencing?</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="fas fa-search text-primary"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0 ps-0" 
+                                       id="symptom" name="symptom" 
+                                       placeholder="e.g., fever, chest pain, headache..." 
+                                       value="{{ symptom_input }}"
+                                       required>
+                                <button class="btn btn-primary px-5" type="submit">
+                                    <i class="fas fa-search me-2"></i>Find Doctors
+                                </button>
+                            </div>
+                            <div class="form-text">Describe your symptoms in simple words</div>
+                        </div>
+
+                        <!-- Common Symptoms Quick Select -->
+                        <div class="common-symptoms">
+                            <p class="fw-medium mb-3">
+                                <i class="fas fa-lightning-bolt text-warning me-2"></i>Common Symptoms:
+                            </p>
+                            <div class="symptoms-grid">
+                                {% for symptom in predefined_symptoms[:12] %}
+                                <button type="button" class="symptom-badge" onclick="document.getElementById('symptom').value='{{ symptom }}'; this.form.submit();">
+                                    {{ symptom | title }}
+                                </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if symptom_input %}
+<!-- Results Section -->
+<section class="results-section py-5 bg-light">
+    <div class="container">
+        <!-- Diagnosis Info -->
+        {% if recommended_specializations or possible_causes %}
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto">
+                <div class="diagnosis-card">
+                    <div class="diagnosis-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-clipboard-list text-primary me-2"></i>Based on Your Symptoms
+                        </h4>
+                    </div>
+                    <div class="diagnosis-body">
+                        <div class="row g-4">
+                            {% if recommended_specializations %}
+                            <div class="col-md-6">
+                                <div class="info-section">
+                                    <h6 class="info-section-title">
+                                        <i class="fas fa-user-md me-2"></i>Recommended Specialists
+                                    </h6>
+                                    <div class="specialization-tags">
+                                        {% for spec in recommended_specializations %}
+                                        <span class="spec-tag">{{ spec }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if possible_causes %}
+                            <div class="col-md-6">
+                                <div class="info-section">
+                                    <h6 class="info-section-title">
+                                        <i class="fas fa-exclamation-circle me-2"></i>Possible Causes
+                                    </h6>
+                                    <ul class="causes-list">
+                                        {% for cause in possible_causes %}
+                                        <li>{{ cause }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="alert alert-info mt-4 mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Note:</strong> This is an AI-assisted recommendation. Please consult with a doctor for accurate diagnosis and treatment.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recommended Doctors -->
+        {% if recommended_doctors %}
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3 class="text-center mb-4">
+                    <i class="fas fa-user-md text-primary me-2"></i>Recommended Doctors 
+                    <span class="badge bg-primary-subtle text-primary ms-2">{{ recommended_doctors|length }}</span>
+                </h3>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% for doctor in recommended_doctors %}
+            <div class="col-md-6 col-lg-4">
+                <div class="doctor-card-modern">
+                    <div class="doctor-card-header">
+                        <div class="doctor-image-wrapper">
+                            <img src="{{ doctor.image }}" class="doctor-image" alt="{{ doctor.name }}">
+                            <div class="verified-badge">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="match-badge">
+                                <i class="fas fa-star"></i> Best Match
+                            </div>
+                        </div>
+                    </div>
+                    <div class="doctor-card-body">
+                        <h5 class="doctor-name mb-2">{{ doctor.name }}</h5>
+                        <p class="doctor-specialization mb-3">
+                            <i class="fas fa-stethoscope me-1"></i>{{ doctor.specialization }}
+                        </p>
+                        
+                        <div class="doctor-info-grid mb-3">
+                            <div class="info-item">
+                                <i class="fas fa-graduation-cap text-muted me-2"></i>
+                                <span class="text-muted small">{{ doctor.qualification }}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-briefcase text-muted me-2"></i>
+                                <span class="text-muted small">{{ doctor.experience }}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt text-muted me-2"></i>
+                                <span class="text-muted small">{{ doctor.location }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="doctor-card-actions">
+                            <a href="{{ url_for('doctor_detail', doctor_id=doctor.id) }}" 
+                               class="btn btn-outline-primary btn-sm flex-grow-1">
+                                <i class="fas fa-info-circle me-1"></i>View Profile
+                            </a>
+                            <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" 
+                               class="btn btn-primary btn-sm flex-grow-1">
+                                <i class="fas fa-calendar-plus me-1"></i>Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <div class="empty-state-icon mb-4">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <h4 class="mb-3">No Matching Doctors Found</h4>
+            <p class="text-muted mb-4">Try entering different symptoms or <a href="{{ url_for('doctors_list') }}">browse all doctors</a></p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% else %}
+<!-- How It Works Section -->
+<section class="how-it-works-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-3">How It Works</h2>
+            <p class="text-muted">Find the right doctor in three simple steps</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h5 class="step-title">Enter Your Symptoms</h5>
+                    <p class="step-description">Describe what you're experiencing in simple words or select from common symptoms</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h5 class="step-title">Get Smart Recommendations</h5>
+                    <p class="step-description">Our system analyzes your symptoms and recommends the most suitable specialists</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h5 class="step-title">Book Appointment</h5>
+                    <p class="step-description">Choose your preferred doctor and book an appointment at your convenience</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Disclaimer -->
+<section class="disclaimer-section py-4 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="disclaimer-card">
+                    <i class="fas fa-shield-alt text-primary me-2"></i>
+                    <strong>Medical Disclaimer:</strong> This symptom checker is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Book Appointment - {{ doctor.name }}{% endblock %}
+
+{% block content %}
+<!-- Booking Header -->
+<section class="booking-header py-4 bg-light">
+    <div class="container">
+        <div class="d-flex align-items-center">
+            <a href="{{ url_for('doctor_detail', doctor_id=doctor.id) }}" 
+               class="btn btn-light btn-sm rounded-circle me-3">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div>
+                <h5 class="mb-0">Book Appointment</h5>
+                <p class="text-muted small mb-0">Select your preferred date and time</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Content -->
+<section class="booking-section py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Doctor Info Sidebar -->
+            <div class="col-lg-4">
+                <div class="booking-doctor-card sticky-top" style="top: 100px;">
+                    <div class="doctor-card-header-booking">
+                        <img src="{{ doctor.image }}" alt="{{ doctor.name }}" class="doctor-image-booking">
+                    </div>
+                    <div class="doctor-card-body-booking">
+                        <h5 class="doctor-name-booking mb-2">{{ doctor.name }}</h5>
+                        <p class="doctor-spec-booking mb-3">
+                            <i class="fas fa-stethoscope me-1"></i>{{ doctor.specialization }}
+                        </p>
+                        <div class="doctor-meta-booking">
+                            <div class="meta-item-booking">
+                                <i class="fas fa-graduation-cap text-primary me-2"></i>
+                                <span>{{ doctor.qualification }}</span>
+                            </div>
+                            <div class="meta-item-booking">
+                                <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                <span>{{ doctor.location }}</span>
+                            </div>
+                            <div class="meta-item-booking">
+                                <i class="fas fa-star text-warning me-2"></i>
+                                <span>4.8 Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Form -->
+            <div class="col-lg-8">
+                <div class="booking-form-card">
+                    <form method="POST" action="{{ url_for('book_appointment', doctor_id=doctor.id) }}" id="bookingForm">
+                        <!-- Step 1: Select Date -->
+                        <div class="booking-step mb-4">
+                            <div class="step-header mb-3">
+                                <div class="step-number">1</div>
+                                <div class="step-info">
+                                    <h5 class="step-title mb-1">Select Date</h5>
+                                    <p class="step-subtitle text-muted mb-0">Choose your preferred appointment date</p>
+                                </div>
+                            </div>
+                            <select class="form-select form-select-lg" id="date" name="date" required>
+                                <option value="">Choose a date...</option>
+                                {% for date in available_dates %}
+                                <option value="{{ date }}">{{ date }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Step 2: Select Time -->
+                        <div class="booking-step mb-4">
+                            <div class="step-header mb-3">
+                                <div class="step-number">2</div>
+                                <div class="step-info">
+                                    <h5 class="step-title mb-1">Select Time Slot</h5>
+                                    <p class="step-subtitle text-muted mb-0">Pick an available time slot</p>
+                                </div>
+                            </div>
+                            <div id="timeSlotContainer">
+                                <div class="empty-slot-message">
+                                    <i class="fas fa-calendar-alt mb-2"></i>
+                                    <p class="mb-0">Please select a date first to see available time slots</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Reason -->
+                        <div class="booking-step mb-4">
+                            <div class="step-header mb-3">
+                                <div class="step-number">3</div>
+                                <div class="step-info">
+                                    <h5 class="step-title mb-1">Reason for Visit</h5>
+                                    <p class="step-subtitle text-muted mb-0">Describe your symptoms or concerns</p>
+                                </div>
+                            </div>
+                            <textarea class="form-control form-control-lg" id="reason" name="reason" rows="4" 
+                                      placeholder="e.g., Chest pain, regular checkup, follow-up consultation..." required></textarea>
+                            <div class="form-text">This helps the doctor prepare for your consultation</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="booking-actions">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5" id="submitBtn" disabled>
+                                <i class="fas fa-check me-2"></i>Confirm Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Booked slots data
+const bookedSlots = {{ booked_slots | tojson }};
+const timeSlots = {{ time_slots | tojson }};
+
+document.getElementById('date').addEventListener('change', function() {
+    const selectedDate = this.value;
+    const timeSlotContainer = document.getElementById('timeSlotContainer');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    if (selectedDate) {
+        // Create time slot buttons
+        let html = '<div class="time-slots-grid">';
+        timeSlots.forEach(slot => {
+            const slotKey = selectedDate + '_' + slot;
+            const isBooked = bookedSlots[slotKey];
+            const buttonClass = isBooked ? 'time-slot-btn disabled' : 'time-slot-btn';
+            const disabledAttr = isBooked ? 'disabled' : '';
+            
+            html += `
+                <button type="button" class="${buttonClass}" 
+                        data-time="${slot}" ${disabledAttr}>
+                    <div class="time-slot-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="time-slot-time">${slot}</div>
+                    ${isBooked ? '<span class="badge bg-danger">Booked</span>' : '<span class="badge bg-success">Available</span>'}
+                </button>
+            `;
+        });
+        html += '</div>';
+        html += '<input type="hidden" name="time" id="selectedTime" required>';
+        
+        timeSlotContainer.innerHTML = html;
+        
+        // Add click handlers to time slot buttons
+        document.querySelectorAll('.time-slot-btn:not(.disabled)').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.time-slot-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Set hidden input value
+                document.getElementById('selectedTime').value = this.dataset.time;
+                
+                // Enable submit button
+                submitBtn.disabled = false;
+            });
+        });
+    } else {
+        timeSlotContainer.innerHTML = '<div class="empty-slot-message"><i class="fas fa-calendar-alt mb-2"></i><p class="mb-0">Please select a date first to see available time slots</p></div>';
+        submitBtn.disabled = true;
+    }
+});
+
+// Form validation
+document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    const selectedTime = document.getElementById('selectedTime');
+    if (!selectedTime || !selectedTime.value) {
+        e.preventDefault();
+        alert('Please select a time slot!');
+    }
+});
+</script>
+{% endblock %}

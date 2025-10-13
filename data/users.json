@@ -1,0 +1,10 @@
+[
+    {
+        "id": "89edd03f-3d04-4920-a23c-d485e21619c7",
+        "name": "123",
+        "email": "123@gmail.com",
+        "password": "scrypt:32768:8:1$C2VcTf7SmpRd3j8v$8bb9450e4127e8feeaf0aa6723d21e476a672bc137e705adf912bc8df602ea510c7e37b91895ed4e1d0ffbcb33dd7983452e6552ddf0d6561ab7141b5a309063",
+        "phone": "57689078",
+        "created_at": "2025-10-12 22:37:33"
+    }
+]

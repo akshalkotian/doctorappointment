@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}Home - HealthCare Plus{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section-modern">
+    <div class="container">
+        <div class="row align-items-center py-5">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="hero-content">
+                    <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-3">
+                        <i class="fas fa-sparkles me-1"></i>Trusted Healthcare Platform
+                    </span>
+                    <h1 class="hero-title display-4 fw-bold mb-4">
+                        Find & Book <span class="text-primary">Top Doctors</span> Near You
+                    </h1>
+                    <p class="hero-subtitle lead text-muted mb-4">
+                        Connect with verified healthcare professionals in seconds. Quality healthcare is just a click away.
+                    </p>
+                    <div class="hero-stats mb-4">
+                        <div class="row g-3">
+                            <div class="col-4">
+                                <div class="stat-card">
+                                    <h3 class="stat-number text-primary mb-0">200+</h3>
+                                    <p class="stat-label text-muted small mb-0">Doctors</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-card">
+                                    <h3 class="stat-number text-primary mb-0">50K+</h3>
+                                    <p class="stat-label text-muted small mb-0">Patients</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-card">
+                                    <h3 class="stat-number text-primary mb-0">4.9★</h3>
+                                    <p class="stat-label text-muted small mb-0">Rating</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-actions">
+                        {% if session.user_id %}
+                        <a href="{{ url_for('find_doctor') }}" class="btn btn-primary btn-lg rounded-pill px-5 me-3 mb-2">
+                            <i class="fas fa-stethoscope me-2"></i>Find My Doctor
+                        </a>
+                        <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-primary btn-lg rounded-pill px-5 mb-2">
+                            <i class="fas fa-search me-2"></i>Browse All
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg rounded-pill px-5 me-3 mb-2">
+                            <i class="fas fa-user-plus me-2"></i>Get Started
+                        </a>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg rounded-pill px-5 mb-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <img src="https://illustrations.popsy.co/amber/doctor.svg" alt="Doctor Illustration" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Specializations Section -->
+<section class="specializations-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title fw-bold mb-3">Popular Specializations</h2>
+            <p class="text-muted">Choose from our wide range of medical specialties</p>
+        </div>
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
+                    <div class="spec-icon-wrapper bg-danger-subtle">
+                        <i class="fas fa-heartbeat text-danger"></i>
+                    </div>
+                    <h6 class="spec-title mb-0">Cardiology</h6>
+                    <p class="spec-subtitle text-muted small mb-0">Heart Specialist</p>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
+                    <div class="spec-icon-wrapper bg-info-subtle">
+                        <i class="fas fa-bone text-info"></i>
+                    </div>
+                    <h6 class="spec-title mb-0">Orthopedics</h6>
+                    <p class="spec-subtitle text-muted small mb-0">Bone & Joints</p>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
+                    <div class="spec-icon-wrapper bg-success-subtle">
+                        <i class="fas fa-child text-success"></i>
+                    </div>
+                    <h6 class="spec-title mb-0">Pediatrics</h6>
+                    <p class="spec-subtitle text-muted small mb-0">Child Care</p>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
+                    <div class="spec-icon-wrapper bg-warning-subtle">
+                        <i class="fas fa-brain text-warning"></i>
+                    </div>
+                    <h6 class="spec-title mb-0">Neurology</h6>
+                    <p class="spec-subtitle text-muted small mb-0">Brain & Nerves</p>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
+                    <div class="spec-icon-wrapper bg-primary-subtle">
+                        <i class="fas fa-stethoscope text-primary"></i>
+                    </div>
+                    <h6 class="spec-title mb-0">General</h6>
+                    <p class="spec-subtitle text-muted small mb-0">Primary Care</p>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
+                    <div class="spec-icon-wrapper bg-secondary-subtle">
+                        <i class="fas fa-user-md text-secondary"></i>
+                    </div>
+                    <h6 class="spec-title mb-0">Dermatology</h6>
+                    <p class="spec-subtitle text-muted small mb-0">Skin Care</p>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
+                    <div class="spec-icon-wrapper bg-pink-subtle">
+                        <i class="fas fa-venus text-pink"></i>
+                    </div>
+                    <h6 class="spec-title mb-0">Gynecology</h6>
+                    <p class="spec-subtitle text-muted small mb-0">Women's Health</p>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
+                    <div class="spec-icon-wrapper bg-purple-subtle">
+                        <i class="fas fa-brain text-purple"></i>
+                    </div>
+                    <h6 class="spec-title mb-0">Psychiatry</h6>
+                    <p class="spec-subtitle text-muted small mb-0">Mental Health</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title fw-bold mb-3">Why Choose Us</h2>
+            <p class="text-muted">Experience the best in healthcare booking</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card-modern text-center">
+                    <div class="feature-icon-wrapper mx-auto mb-3">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h5 class="feature-title mb-3">Verified Doctors</h5>
+                    <p class="feature-desc text-muted">All our doctors are verified professionals with proven credentials</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card-modern text-center">
+                    <div class="feature-icon-wrapper mx-auto mb-3">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h5 class="feature-title mb-3">Instant Booking</h5>
+                    <p class="feature-desc text-muted">Book appointments 24/7 with just a few clicks</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card-modern text-center">
+                    <div class="feature-icon-wrapper mx-auto mb-3">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h5 class="feature-title mb-3">Secure & Private</h5>
+                    <p class="feature-desc text-muted">Your data is protected with industry-standard security</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card-modern text-center">
+                    <div class="feature-icon-wrapper mx-auto mb-3">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h5 class="feature-title mb-3">24/7 Support</h5>
+                    <p class="feature-desc text-muted">Our support team is always here to help you</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section py-5">
+    <div class="container">
+        <div class="cta-card text-center">
+            <h2 class="cta-title display-5 fw-bold mb-4">Ready to Get Started?</h2>
+            <p class="cta-subtitle lead text-muted mb-4">Join thousands of satisfied patients who trust us with their healthcare needs</p>
+            {% if not session.user_id %}
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg rounded-pill px-5">
+                <i class="fas fa-rocket me-2"></i>Create Free Account
+            </a>
+            {% else %}
+            <a href="{{ url_for('doctors_list') }}" class="btn btn-primary btn-lg rounded-pill px-5">
+                <i class="fas fa-search me-2"></i>Browse Doctors
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

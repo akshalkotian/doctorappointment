@@ -1,0 +1,98 @@
+[
+    {
+        "id": "doc1",
+        "name": "Dr. Rajesh Kumar Sharma",
+        "specialization": "Cardiologist",
+        "qualification": "MBBS, MD (Medicine), DM (Cardiology), FESC",
+        "experience": "15 years",
+        "email": "dr.rajesh.sharma@apollohospital.com",
+        "phone": "+91-98765-43210",
+        "location": "Apollo Hospital, New Delhi",
+        "about": "Dr. Rajesh Kumar Sharma is a renowned cardiologist with over 15 years of experience in treating heart diseases. He specializes in interventional cardiology, angioplasty, and preventive heart care. He has performed over 5000 cardiac procedures.",
+        "image": "https://via.placeholder.com/300x300?text=Dr.+Rajesh+Sharma"
+    },
+    {
+        "id": "doc2",
+        "name": "Dr. Amit Singh Rathore",
+        "specialization": "Orthopedic Surgeon",
+        "qualification": "MBBS, MS (Orthopaedics), DNB (Orthopaedics)",
+        "experience": "12 years",
+        "email": "dr.amit.rathore@maxhealthcare.com",
+        "phone": "+91-98765-43211",
+        "location": "Max Super Speciality Hospital, Mumbai",
+        "about": "Dr. Amit Singh Rathore is an expert orthopedic surgeon specializing in joint replacement, arthroscopy, and sports medicine. He has successfully performed over 2000 complex orthopedic surgeries and is trained in minimally invasive techniques.",
+        "image": "https://via.placeholder.com/300x300?text=Dr.+Amit+Rathore"
+    },
+    {
+        "id": "doc3",
+        "name": "Dr. Meera Kulkarni",
+        "specialization": "Dermatologist",
+        "qualification": "MBBS, MD (Dermatology, Venereology & Leprosy), DDV",
+        "experience": "10 years",
+        "email": "dr.meera.kulkarni@fortishospital.com",
+        "phone": "+91-98765-43212",
+        "location": "Fortis Hospital, Bangalore",
+        "about": "Dr. Meera Kulkarni is a board-certified dermatologist with expertise in cosmetic dermatology, laser treatments, and skin disease management. She is passionate about helping patients achieve healthy, beautiful skin through evidence-based treatments.",
+        "image": "https://via.placeholder.com/300x300?text=Dr.+Meera+Kulkarni"
+    },
+    {
+        "id": "doc4",
+        "name": "Dr. Suresh Reddy",
+        "specialization": "Pediatrician",
+        "qualification": "MBBS, MD (Pediatrics), IAP Fellowship",
+        "experience": "18 years",
+        "email": "dr.suresh.reddy@manipalhospital.com",
+        "phone": "+91-98765-43213",
+        "location": "Manipal Hospital, Hyderabad",
+        "about": "Dr. Suresh Reddy is a caring pediatrician dedicated to providing comprehensive care for children from infancy through adolescence. He has special interest in childhood nutrition, growth disorders, and preventive pediatrics with over 18 years of experience.",
+        "image": "https://via.placeholder.com/300x300?text=Dr.+Suresh+Reddy"
+    },
+    {
+        "id": "doc5",
+        "name": "Dr. Priya Menon",
+        "specialization": "Neurologist",
+        "qualification": "MBBS, MD (Medicine), DM (Neurology), FINR",
+        "experience": "14 years",
+        "email": "dr.priya.menon@aimshospital.com",
+        "phone": "+91-98765-43214",
+        "location": "AIIMS Hospital, New Delhi",
+        "about": "Dr. Priya Menon is a distinguished neurologist specializing in stroke management, epilepsy, movement disorders, and neurodegenerative diseases. She is committed to providing evidence-based neurological care and has published numerous research papers.",
+        "image": "https://via.placeholder.com/300x300?text=Dr.+Priya+Menon"
+    },
+    {
+        "id": "doc6",
+        "name": "Dr. Vikram Singh",
+        "specialization": "General Physician",
+        "qualification": "MBBS, MD (General Medicine), MRCP",
+        "experience": "20 years",
+        "email": "dr.vikram.singh@medantahospital.com",
+        "phone": "+91-98765-43215",
+        "location": "Medanta Hospital, Gurugram",
+        "about": "Dr. Vikram Singh is an experienced general physician providing comprehensive primary care services. He focuses on preventive medicine, management of chronic diseases like diabetes and hypertension, and lifestyle counseling with 20 years of clinical expertise.",
+        "image": "https://via.placeholder.com/300x300?text=Dr.+Vikram+Singh"
+    },
+    {
+        "id": "doc7",
+        "name": "Dr. Anjali Deshmukh",
+        "specialization": "Gynecologist",
+        "qualification": "MBBS, MS (Obstetrics & Gynaecology), DNB (OBG)",
+        "experience": "16 years",
+        "email": "dr.anjali.deshmukh@cloudninehospital.com",
+        "phone": "+91-98765-43216",
+        "location": "Cloudnine Hospital, Pune",
+        "about": "Dr. Anjali Deshmukh is a compassionate gynecologist specializing in women's reproductive health, high-risk pregnancy management, prenatal care, and minimally invasive gynecological surgeries. She has delivered over 3000 babies successfully.",
+        "image": "https://via.placeholder.com/300x300?text=Dr.+Anjali+Deshmukh"
+    },
+    {
+        "id": "doc8",
+        "name": "Dr. Arun Kapoor",
+        "specialization": "Psychiatrist",
+        "qualification": "MBBS, MD (Psychiatry), MRCPsych (UK)",
+        "experience": "11 years",
+        "email": "dr.arun.kapoor@nimbahshospital.com",
+        "phone": "+91-98765-43217",
+        "location": "Nimhans Hospital, Bangalore",
+        "about": "Dr. Arun Kapoor is a dedicated psychiatrist specializing in mood disorders, anxiety, depression, schizophrenia, and cognitive behavioral therapy. He provides a safe and supportive environment for mental health care with a holistic approach.",
+        "image": "https://via.placeholder.com/300x300?text=Dr.+Arun+Kapoor"
+    }
+]

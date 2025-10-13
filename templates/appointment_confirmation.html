@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Appointment Confirmed - HealthCare Plus{% endblock %}
+
+{% block content %}
+<section class="confirmation-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <!-- Success Animation -->
+                <div class="text-center mb-5">
+                    <div class="success-checkmark">
+                        <div class="check-icon">
+                            <span class="icon-line line-tip"></span>
+                            <span class="icon-line line-long"></span>
+                            <div class="icon-circle"></div>
+                            <div class="icon-fix"></div>
+                        </div>
+                    </div>
+                    <h2 class="success-title mt-4 mb-3">Appointment Confirmed!</h2>
+                    <p class="success-subtitle text-muted">Your appointment has been successfully booked</p>
+                </div>
+
+                <!-- Appointment Details Card -->
+                <div class="confirmation-card mb-4">
+                    <div class="confirmation-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calendar-check me-2"></i>Appointment Details
+                        </h5>
+                    </div>
+                    <div class="confirmation-body">
+                        <div class="appointment-details-grid">
+                            <div class="detail-row">
+                                <div class="detail-icon">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <p class="detail-label">Doctor</p>
+                                    <p class="detail-value">{{ appointment.doctor_name }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <div class="detail-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <p class="detail-label">Patient Name</p>
+                                    <p class="detail-value">{{ appointment.user_name }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row-split">
+                                <div class="detail-half">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <p class="detail-label">Date</p>
+                                        <p class="detail-value">{{ appointment.date }}</p>
+                                    </div>
+                                </div>
+                                <div class="detail-half">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <p class="detail-label">Time</p>
+                                        <p class="detail-value">{{ appointment.time }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <div class="detail-icon">
+                                    <i class="fas fa-notes-medical"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <p class="detail-label">Reason for Visit</p>
+                                    <p class="detail-value">{{ appointment.reason }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <div class="detail-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <p class="detail-label">Status</p>
+                                    <span class="status-badge status-confirmed">
+                                        <i class="fas fa-check-circle me-1"></i>{{ appointment.status | upper }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Important Info -->
+                <div class="info-alert mb-4">
+                    <div class="info-alert-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="info-alert-content">
+                        <h6 class="mb-2">Important Information</h6>
+                        <ul class="mb-0">
+                            <li>Please arrive 10 minutes before your appointment time</li>
+                            <li>Bring your ID and any relevant medical documents</li>
+                            <li>A confirmation email has been sent to your registered email</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="confirmation-actions">
+                    <a href="{{ url_for('my_appointments') }}" class="btn btn-primary btn-lg rounded-pill px-5 mb-2">
+                        <i class="fas fa-list me-2"></i>View My Appointments
+                    </a>
+                    <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-primary btn-lg rounded-pill px-5 mb-2">
+                        <i class="fas fa-search me-2"></i>Book Another Appointment
+                    </a>
+                    <a href="{{ url_for('home') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-5 mb-2">
+                        <i class="fas fa-home me-2"></i>Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
