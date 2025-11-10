@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}{{ hospital.name }} - Doctors{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="page-header py-4 bg-light">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+                <li class="breadcrumb-item">{{ city.name }}</li>
+                <li class="breadcrumb-item active">{{ hospital.name }}</li>
+            </ol>
+        </nav>
+        <h1 class="h3 fw-bold mb-2">
+            <i class="fas fa-hospital me-2 text-primary"></i>{{ hospital.name }}
+        </h1>
+        <p class="text-muted mb-0">
+            <i class="fas fa-map-marker-alt me-1"></i>{{ hospital.address }} | 
+            <i class="fas fa-phone ms-2 me-1"></i>{{ hospital.phone }}
+        </p>
+    </div>
+</section>
+
+<!-- Doctors List -->
+<section class="doctors-section py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0">
+                Our Doctors 
+                <span class="badge bg-primary ms-2">{{ doctors|length }}</span>
+            </h4>
+            <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-th-large me-1"></i>Browse All Doctors
+            </a>
+        </div>
+
+        {% if doctors %}
+        <div class="row g-4">
+            {% for doctor in doctors %}
+            <div class="col-md-6 col-lg-4">
+                <div class="doctor-card-compact">
+                    <div class="doctor-image-wrapper">
+                        <img src="https://via.placeholder.com/300x300/667eea/ffffff?text={{ doctor.name.split()[1][0] }}" 
+                             alt="{{ doctor.name }}" class="doctor-image">
+                    </div>
+                    <div class="doctor-info">
+                        <h5 class="doctor-name mb-1">{{ doctor.name }}</h5>
+                        <p class="doctor-specialization text-primary mb-2">
+                            <i class="fas fa-stethoscope me-1"></i>{{ doctor.specialization }}
+                        </p>
+                        <div class="doctor-details small text-muted mb-3">
+                            <div><i class="fas fa-building me-1"></i>{{ doctor.department }}</div>
+                            <div><i class="fas fa-briefcase me-1"></i>{{ doctor.experience }}</div>
+                            <div><i class="fas fa-rupee-sign me-1"></i>Consultation: ₹{{ doctor.fees }}</div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" 
+                               class="btn btn-primary rounded-pill">
+                                <i class="fas fa-calendar-plus me-1"></i>Book Now
+                            </a>
+                            <a href="{{ url_for('doctor_detail', doctor_id=doctor.id) }}" 
+                               class="btn btn-outline-secondary btn-sm">
+                                View Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-user-md fa-4x text-muted mb-3"></i>
+            <h5 class="text-muted">No doctors available at this hospital</h5>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+.doctor-card-compact {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+    height: 100%;
+}
+.doctor-card-compact:hover {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    transform: translateY(-4px);
+}
+.doctor-image-wrapper {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.doctor-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.doctor-info {
+    padding: 20px;
+}
+.doctor-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.doctor-specialization {
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}
+

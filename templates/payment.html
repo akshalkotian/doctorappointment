@@ -75,76 +75,103 @@
                     <h5 class="mb-0 fw-semibold"><i class="fas fa-credit-card me-2"></i>Select Payment Method</h5>
                 </div>
                 <div class="card-body p-4">
-                    <form method="POST" action="{{ url_for('process_payment', appointment_id=appointment.id) }}">
+                    <form method="POST" action="{{ url_for('process_payment', appointment_id=appointment.id) }}" id="paymentForm">
                         <div class="row g-3">
                             <!-- UPI Payment -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <input type="radio" name="payment_method" value="upi" id="upi" class="d-none" required>
                                 <label for="upi" class="payment-method w-100 text-center">
                                     <div class="payment-icon text-primary">
                                         <i class="fas fa-mobile-alt"></i>
                                     </div>
-                                    <h6 class="fw-semibold mb-1">UPI Payment</h6>
-                                    <p class="text-muted small mb-0">PhonePe, GPay, Paytm</p>
+                                    <h6 class="fw-semibold mb-1">UPI</h6>
+                                    <p class="text-muted small mb-0">GPay, PhonePe</p>
                                 </label>
                             </div>
 
                             <!-- Card Payment -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <input type="radio" name="payment_method" value="card" id="card" class="d-none">
                                 <label for="card" class="payment-method w-100 text-center">
                                     <div class="payment-icon text-success">
                                         <i class="fas fa-credit-card"></i>
                                     </div>
-                                    <h6 class="fw-semibold mb-1">Card Payment</h6>
-                                    <p class="text-muted small mb-0">Credit / Debit Card</p>
+                                    <h6 class="fw-semibold mb-1">Card</h6>
+                                    <p class="text-muted small mb-0">Debit / Credit</p>
                                 </label>
                             </div>
 
                             <!-- Net Banking -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <input type="radio" name="payment_method" value="netbanking" id="netbanking" class="d-none">
                                 <label for="netbanking" class="payment-method w-100 text-center">
                                     <div class="payment-icon text-info">
                                         <i class="fas fa-university"></i>
                                     </div>
                                     <h6 class="fw-semibold mb-1">Net Banking</h6>
-                                    <p class="text-muted small mb-0">All major banks</p>
-                                </label>
-                            </div>
-
-                            <!-- Wallet -->
-                            <div class="col-md-6">
-                                <input type="radio" name="payment_method" value="wallet" id="wallet" class="d-none">
-                                <label for="wallet" class="payment-method w-100 text-center">
-                                    <div class="payment-icon text-warning">
-                                        <i class="fas fa-wallet"></i>
-                                    </div>
-                                    <h6 class="fw-semibold mb-1">Wallet</h6>
-                                    <p class="text-muted small mb-0">Paytm, PhonePe Wallet</p>
-                                </label>
-                            </div>
-
-                            <!-- Pay at Clinic -->
-                            <div class="col-12">
-                                <input type="radio" name="payment_method" value="pay_at_clinic" id="pay_at_clinic" class="d-none">
-                                <label for="pay_at_clinic" class="payment-method w-100 text-center">
-                                    <div class="payment-icon text-secondary">
-                                        <i class="fas fa-hospital"></i>
-                                    </div>
-                                    <h6 class="fw-semibold mb-1">Pay at Clinic</h6>
-                                    <p class="text-muted small mb-0">Pay cash at the clinic during your visit</p>
-                                    <div class="alert alert-info mt-3 mb-0 small">
-                                        <i class="fas fa-info-circle me-2"></i>
-                                        Your appointment will be confirmed, but payment will be marked as pending until you pay at the clinic.
-                                    </div>
+                                    <p class="text-muted small mb-0">All banks</p>
                                 </label>
                             </div>
                         </div>
 
+                        <!-- Dynamic Payment Input Fields -->
+                        <div id="paymentInputs" class="mt-4" style="display:none;">
+                            <!-- UPI Input -->
+                            <div id="upiInputs" class="payment-inputs" style="display:none;">
+                                <h6 class="fw-semibold mb-3">Enter UPI ID</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">UPI ID</label>
+                                    <input type="text" class="form-control form-control-lg" name="upi_id" 
+                                           placeholder="yourname@upi" pattern="[a-zA-Z0-9._-]+@[a-zA-Z]+" id="upiIdInput">
+                                    <small class="text-muted">Example: 9876543210@paytm</small>
+                                </div>
+                            </div>
+
+                            <!-- Card Inputs -->
+                            <div id="cardInputs" class="payment-inputs" style="display:none;">
+                                <h6 class="fw-semibold mb-3">Enter Card Details</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">Card Number</label>
+                                    <input type="text" class="form-control form-control-lg" name="card_number" 
+                                           placeholder="1234 5678 9012 3456" maxlength="19" id="cardNumberInput">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-control form-control-lg" name="card_expiry" 
+                                               placeholder="MM/YY" maxlength="5" id="cardExpiryInput">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">CVV</label>
+                                        <input type="text" class="form-control form-control-lg" name="card_cvv" 
+                                               placeholder="123" maxlength="3" id="cardCvvInput">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Net Banking Inputs -->
+                            <div id="netbankingInputs" class="payment-inputs" style="display:none;">
+                                <h6 class="fw-semibold mb-3">Select Your Bank</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">Bank Name</label>
+                                    <select class="form-select form-select-lg" name="bank_name" id="bankNameInput">
+                                        <option value="">Choose Bank...</option>
+                                        <option value="SBI">State Bank of India</option>
+                                        <option value="HDFC">HDFC Bank</option>
+                                        <option value="ICICI">ICICI Bank</option>
+                                        <option value="Axis">Axis Bank</option>
+                                        <option value="Kotak">Kotak Mahindra Bank</option>
+                                        <option value="PNB">Punjab National Bank</option>
+                                        <option value="BOB">Bank of Baroda</option>
+                                        <option value="Canara">Canara Bank</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mt-4 d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow">
-                                <i class="fas fa-lock me-2"></i>Proceed to Pay ₹500
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow" id="payButton" disabled>
+                                <i class="fas fa-lock me-2"></i>Pay ₹{{ doctor.fees }}
                             </button>
                             <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-secondary rounded-pill">
                                 Cancel
@@ -165,16 +192,84 @@
 </div>
 
 <script>
-    // Add click handler for better UX
+    // Payment method selection and dynamic input fields
+    const paymentInputsDiv = document.getElementById('paymentInputs');
+    const upiInputsDiv = document.getElementById('upiInputs');
+    const cardInputsDiv = document.getElementById('cardInputs');
+    const netbankingInputsDiv = document.getElementById('netbankingInputs');
+    const payButton = document.getElementById('payButton');
+
+    // Add click handler for payment method selection
     document.querySelectorAll('.payment-method').forEach(label => {
         label.addEventListener('click', function() {
+            // Update UI
             document.querySelectorAll('.payment-method').forEach(l => {
                 l.style.borderColor = '#e5e7eb';
                 l.style.backgroundColor = 'white';
             });
             this.style.borderColor = '#4f46e5';
             this.style.backgroundColor = '#eef2ff';
+
+            // Get selected payment method
+            const selectedMethod = document.querySelector('input[name="payment_method"]:checked').value;
+
+            // Hide all input divs
+            paymentInputsDiv.style.display = 'none';
+            upiInputsDiv.style.display = 'none';
+            cardInputsDiv.style.display = 'none';
+            netbankingInputsDiv.style.display = 'none';
+
+            // Clear all inputs
+            document.getElementById('upiIdInput').value = '';
+            document.getElementById('upiIdInput').required = false;
+            document.getElementById('cardNumberInput').value = '';
+            document.getElementById('cardNumberInput').required = false;
+            document.getElementById('cardExpiryInput').value = '';
+            document.getElementById('cardExpiryInput').required = false;
+            document.getElementById('cardCvvInput').value = '';
+            document.getElementById('cardCvvInput').required = false;
+            document.getElementById('bankNameInput').value = '';
+            document.getElementById('bankNameInput').required = false;
+
+            // Show appropriate input fields
+            paymentInputsDiv.style.display = 'block';
+            if (selectedMethod === 'upi') {
+                upiInputsDiv.style.display = 'block';
+                document.getElementById('upiIdInput').required = true;
+                payButton.disabled = false;
+            } else if (selectedMethod === 'card') {
+                cardInputsDiv.style.display = 'block';
+                document.getElementById('cardNumberInput').required = true;
+                document.getElementById('cardExpiryInput').required = true;
+                document.getElementById('cardCvvInput').required = true;
+                payButton.disabled = false;
+            } else if (selectedMethod === 'netbanking') {
+                netbankingInputsDiv.style.display = 'block';
+                document.getElementById('bankNameInput').required = true;
+                payButton.disabled = false;
+            }
         });
+    });
+
+    // Format card number input
+    document.getElementById('cardNumberInput').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\s/g, '');
+        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+        e.target.value = formattedValue;
+    });
+
+    // Format expiry date input
+    document.getElementById('cardExpiryInput').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        }
+        e.target.value = value;
+    });
+
+    // Only allow numbers for CVV
+    document.getElementById('cardCvvInput').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/\D/g, '');
     });
 </script>
 {% endblock %}

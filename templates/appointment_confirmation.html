@@ -81,6 +81,41 @@
                                 </div>
                             </div>
                             
+                            {% if appointment.hospital_name %}
+                            <div class="detail-row-split">
+                                <div class="detail-half">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-hospital"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <p class="detail-label">Hospital</p>
+                                        <p class="detail-value">{{ appointment.hospital_name }}</p>
+                                    </div>
+                                </div>
+                                <div class="detail-half">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="detail-content">
+                                        <p class="detail-label">City</p>
+                                        <p class="detail-value">{{ appointment.city_name }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if appointment.payment_input %}
+                            <div class="detail-row">
+                                <div class="detail-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <p class="detail-label">Payment Details</p>
+                                    <p class="detail-value">{{ appointment.payment_method }} - {{ appointment.payment_input }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
                             <div class="detail-row">
                                 <div class="detail-icon">
                                     <i class="fas fa-info-circle"></i>

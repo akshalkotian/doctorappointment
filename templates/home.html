@@ -2,6 +2,47 @@
 
 {% block title %}Home - HealthCare Plus{% endblock %}
 
+{% block extra_css %}
+<style>
+    .selection-card {
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 25px;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .step-indicator {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .doctor-card-mini {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .doctor-card-mini:hover {
+        border-color: #667eea;
+        background: #f9fafb;
+        transform: translateY(-2px);
+    }
+    .doctor-card-mini.selected {
+        border-color: #667eea;
+        background: #eef2ff;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <section class="hero-section-modern">
@@ -18,45 +59,28 @@
                     <p class="hero-subtitle lead text-muted mb-4">
                         Connect with verified healthcare professionals in seconds. Quality healthcare is just a click away.
                     </p>
-                    <div class="hero-stats mb-4">
-                        <div class="row g-3">
-                            <div class="col-4">
-                                <div class="stat-card">
-                                    <h3 class="stat-number text-primary mb-0">200+</h3>
-                                    <p class="stat-label text-muted small mb-0">Doctors</p>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="stat-card">
-                                    <h3 class="stat-number text-primary mb-0">50K+</h3>
-                                    <p class="stat-label text-muted small mb-0">Patients</p>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="stat-card">
-                                    <h3 class="stat-number text-primary mb-0">4.9★</h3>
-                                    <p class="stat-label text-muted small mb-0">Rating</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hero-actions">
-                        {% if session.user_id %}
+                    
+                    {% if session.user_id %}
+                    <!-- Quick Access Buttons for Logged in Users -->
+                    <div class="hero-actions mb-4">
                         <a href="{{ url_for('find_doctor') }}" class="btn btn-primary btn-lg rounded-pill px-5 me-3 mb-2">
                             <i class="fas fa-stethoscope me-2"></i>Find My Doctor
                         </a>
                         <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-primary btn-lg rounded-pill px-5 mb-2">
-                            <i class="fas fa-search me-2"></i>Browse All
+                            <i class="fas fa-search me-2"></i>Browse All Doctors
                         </a>
-                        {% else %}
+                    </div>
+                    {% else %}
+                    <!-- Guest User Actions -->
+                    <div class="hero-actions">
                         <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg rounded-pill px-5 me-3 mb-2">
                             <i class="fas fa-user-plus me-2"></i>Get Started
                         </a>
                         <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg rounded-pill px-5 mb-2">
                             <i class="fas fa-sign-in-alt me-2"></i>Sign In
                         </a>
-                        {% endif %}
                     </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-6">
@@ -68,8 +92,83 @@
     </div>
 </section>
 
+{% if session.user_id %}
+<!-- City → Hospital → Doctor Selection Section -->
+<section class="selection-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title fw-bold mb-3">Find Your Doctor</h2>
+            <p class="text-muted">Select city, hospital, and doctor in 3 simple steps</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="selection-card">
+                    <form id="selectionForm">
+                        <div class="row g-4">
+                            <!-- Step 1: Select City -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="step-indicator me-3">1</div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Select City</h6>
+                                        <small class="text-muted">Choose your city</small>
+                                    </div>
+                                </div>
+                                <select class="form-select form-select-lg" id="citySelect" required>
+                                    <option value="">Choose City...</option>
+                                    {% for city in cities %}
+                                    <option value="{{ city.id }}">{{ city.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Step 2: Select Hospital -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="step-indicator me-3">2</div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Select Hospital</h6>
+                                        <small class="text-muted">Pick hospital</small>
+                                    </div>
+                                </div>
+                                <select class="form-select form-select-lg" id="hospitalSelect" disabled required>
+                                    <option value="">First select city...</option>
+                                </select>
+                            </div>
+
+                            <!-- Step 3: Go to Doctors -->
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="step-indicator me-3">3</div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">View Doctors</h6>
+                                        <small class="text-muted">Browse doctors</small>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100" id="viewDoctorsBtn" disabled>
+                                    <i class="fas fa-arrow-right me-2"></i>View Doctors
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Or Browse All Doctors -->
+                <div class="text-center mt-4">
+                    <p class="text-muted mb-2">or</p>
+                    <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-5">
+                        <i class="fas fa-th-large me-2"></i>Browse All Doctors Across All Hospitals
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 <!-- Specializations Section -->
-<section class="specializations-section py-5 bg-light">
+<section class="specializations-section py-5 {% if not session.user_id %}bg-light{% endif %}">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title fw-bold mb-3">Popular Specializations</h2>
@@ -77,145 +176,179 @@
         </div>
         <div class="row g-3">
             <div class="col-6 col-md-3">
-                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
-                    <div class="spec-icon-wrapper bg-danger-subtle">
-                        <i class="fas fa-heartbeat text-danger"></i>
+                <a href="{{ url_for('doctors_list') if session.user_id else url_for('login') }}" class="specialization-card-modern">
+                    <div class="spec-icon">
+                        <i class="fas fa-heartbeat"></i>
                     </div>
-                    <h6 class="spec-title mb-0">Cardiology</h6>
-                    <p class="spec-subtitle text-muted small mb-0">Heart Specialist</p>
+                    <div class="spec-name">Cardiology</div>
                 </a>
             </div>
             <div class="col-6 col-md-3">
-                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
-                    <div class="spec-icon-wrapper bg-info-subtle">
-                        <i class="fas fa-bone text-info"></i>
+                <a href="{{ url_for('doctors_list') if session.user_id else url_for('login') }}" class="specialization-card-modern">
+                    <div class="spec-icon">
+                        <i class="fas fa-brain"></i>
                     </div>
-                    <h6 class="spec-title mb-0">Orthopedics</h6>
-                    <p class="spec-subtitle text-muted small mb-0">Bone & Joints</p>
+                    <div class="spec-name">Neurology</div>
                 </a>
             </div>
             <div class="col-6 col-md-3">
-                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
-                    <div class="spec-icon-wrapper bg-success-subtle">
-                        <i class="fas fa-child text-success"></i>
+                <a href="{{ url_for('doctors_list') if session.user_id else url_for('login') }}" class="specialization-card-modern">
+                    <div class="spec-icon">
+                        <i class="fas fa-bone"></i>
                     </div>
-                    <h6 class="spec-title mb-0">Pediatrics</h6>
-                    <p class="spec-subtitle text-muted small mb-0">Child Care</p>
+                    <div class="spec-name">Orthopedics</div>
                 </a>
             </div>
             <div class="col-6 col-md-3">
-                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
-                    <div class="spec-icon-wrapper bg-warning-subtle">
-                        <i class="fas fa-brain text-warning"></i>
+                <a href="{{ url_for('doctors_list') if session.user_id else url_for('login') }}" class="specialization-card-modern">
+                    <div class="spec-icon">
+                        <i class="fas fa-baby"></i>
                     </div>
-                    <h6 class="spec-title mb-0">Neurology</h6>
-                    <p class="spec-subtitle text-muted small mb-0">Brain & Nerves</p>
+                    <div class="spec-name">Pediatrics</div>
                 </a>
             </div>
             <div class="col-6 col-md-3">
-                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
-                    <div class="spec-icon-wrapper bg-primary-subtle">
-                        <i class="fas fa-stethoscope text-primary"></i>
+                <a href="{{ url_for('doctors_list') if session.user_id else url_for('login') }}" class="specialization-card-modern">
+                    <div class="spec-icon">
+                        <i class="fas fa-allergies"></i>
                     </div>
-                    <h6 class="spec-title mb-0">General</h6>
-                    <p class="spec-subtitle text-muted small mb-0">Primary Care</p>
+                    <div class="spec-name">Dermatology</div>
                 </a>
             </div>
             <div class="col-6 col-md-3">
-                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
-                    <div class="spec-icon-wrapper bg-secondary-subtle">
-                        <i class="fas fa-user-md text-secondary"></i>
+                <a href="{{ url_for('doctors_list') if session.user_id else url_for('login') }}" class="specialization-card-modern">
+                    <div class="spec-icon">
+                        <i class="fas fa-female"></i>
                     </div>
-                    <h6 class="spec-title mb-0">Dermatology</h6>
-                    <p class="spec-subtitle text-muted small mb-0">Skin Care</p>
+                    <div class="spec-name">Gynecology</div>
                 </a>
             </div>
             <div class="col-6 col-md-3">
-                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
-                    <div class="spec-icon-wrapper bg-pink-subtle">
-                        <i class="fas fa-venus text-pink"></i>
+                <a href="{{ url_for('doctors_list') if session.user_id else url_for('login') }}" class="specialization-card-modern">
+                    <div class="spec-icon">
+                        <i class="fas fa-eye"></i>
                     </div>
-                    <h6 class="spec-title mb-0">Gynecology</h6>
-                    <p class="spec-subtitle text-muted small mb-0">Women's Health</p>
+                    <div class="spec-name">Ophthalmology</div>
                 </a>
             </div>
             <div class="col-6 col-md-3">
-                <a href="{{ url_for('doctors_list') }}" class="specialization-card-modern">
-                    <div class="spec-icon-wrapper bg-purple-subtle">
-                        <i class="fas fa-brain text-purple"></i>
+                <a href="{{ url_for('doctors_list') if session.user_id else url_for('login') }}" class="specialization-card-modern">
+                    <div class="spec-icon">
+                        <i class="fas fa-tooth"></i>
                     </div>
-                    <h6 class="spec-title mb-0">Psychiatry</h6>
-                    <p class="spec-subtitle text-muted small mb-0">Mental Health</p>
+                    <div class="spec-name">Dentistry</div>
                 </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Features Section -->
-<section class="features-section py-5">
+<!-- How It Works Section -->
+<section class="how-it-works-section py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title fw-bold mb-3">Why Choose Us</h2>
-            <p class="text-muted">Experience the best in healthcare booking</p>
+            <h2 class="section-title fw-bold mb-3">How It Works</h2>
+            <p class="text-muted">Book your appointment in 4 simple steps</p>
         </div>
         <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card-modern text-center">
-                    <div class="feature-icon-wrapper mx-auto mb-3">
+            <div class="col-md-3">
+                <div class="how-step-card text-center">
+                    <div class="step-number-large mb-3">1</div>
+                    <div class="step-icon-large mb-3">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Choose Location</h5>
+                    <p class="text-muted small">Select your city and preferred hospital</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="how-step-card text-center">
+                    <div class="step-number-large mb-3">2</div>
+                    <div class="step-icon-large mb-3">
                         <i class="fas fa-user-md"></i>
                     </div>
-                    <h5 class="feature-title mb-3">Verified Doctors</h5>
-                    <p class="feature-desc text-muted">All our doctors are verified professionals with proven credentials</p>
+                    <h5 class="fw-bold mb-2">Find Doctor</h5>
+                    <p class="text-muted small">Browse doctors by specialization</p>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card-modern text-center">
-                    <div class="feature-icon-wrapper mx-auto mb-3">
-                        <i class="fas fa-clock"></i>
+            <div class="col-md-3">
+                <div class="how-step-card text-center">
+                    <div class="step-number-large mb-3">3</div>
+                    <div class="step-icon-large mb-3">
+                        <i class="fas fa-calendar-check"></i>
                     </div>
-                    <h5 class="feature-title mb-3">Instant Booking</h5>
-                    <p class="feature-desc text-muted">Book appointments 24/7 with just a few clicks</p>
+                    <h5 class="fw-bold mb-2">Book Slot</h5>
+                    <p class="text-muted small">Choose available date and time</p>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card-modern text-center">
-                    <div class="feature-icon-wrapper mx-auto mb-3">
-                        <i class="fas fa-shield-alt"></i>
+            <div class="col-md-3">
+                <div class="how-step-card text-center">
+                    <div class="step-number-large mb-3">4</div>
+                    <div class="step-icon-large mb-3">
+                        <i class="fas fa-credit-card"></i>
                     </div>
-                    <h5 class="feature-title mb-3">Secure & Private</h5>
-                    <p class="feature-desc text-muted">Your data is protected with industry-standard security</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card-modern text-center">
-                    <div class="feature-icon-wrapper mx-auto mb-3">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <h5 class="feature-title mb-3">24/7 Support</h5>
-                    <p class="feature-desc text-muted">Our support team is always here to help you</p>
+                    <h5 class="fw-bold mb-2">Make Payment</h5>
+                    <p class="text-muted small">Secure online payment</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+{% endblock %}
 
-<!-- CTA Section -->
-<section class="cta-section py-5">
-    <div class="container">
-        <div class="cta-card text-center">
-            <h2 class="cta-title display-5 fw-bold mb-4">Ready to Get Started?</h2>
-            <p class="cta-subtitle lead text-muted mb-4">Join thousands of satisfied patients who trust us with their healthcare needs</p>
-            {% if not session.user_id %}
-            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg rounded-pill px-5">
-                <i class="fas fa-rocket me-2"></i>Create Free Account
-            </a>
-            {% else %}
-            <a href="{{ url_for('doctors_list') }}" class="btn btn-primary btn-lg rounded-pill px-5">
-                <i class="fas fa-search me-2"></i>Browse Doctors
-            </a>
-            {% endif %}
-        </div>
-    </div>
-</section>
+{% block extra_js %}
+<script>
+// City → Hospital → Doctor Selection Logic
+const citySelect = document.getElementById('citySelect');
+const hospitalSelect = document.getElementById('hospitalSelect');
+const viewDoctorsBtn = document.getElementById('viewDoctorsBtn');
+
+if (citySelect) {
+    citySelect.addEventListener('change', async function() {
+        const cityId = this.value;
+        
+        // Reset hospital select
+        hospitalSelect.innerHTML = '<option value="">Loading hospitals...</option>';
+        hospitalSelect.disabled = true;
+        viewDoctorsBtn.disabled = true;
+        
+        if (cityId) {
+            try {
+                // Fetch hospitals for selected city
+                const response = await fetch(`/api/hospitals/${cityId}`);
+                const hospitals = await response.json();
+                
+                // Populate hospital dropdown
+                hospitalSelect.innerHTML = '<option value="">Select Hospital...</option>';
+                hospitals.forEach(hospital => {
+                    const option = document.createElement('option');
+                    option.value = hospital.id;
+                    option.textContent = hospital.name;
+                    hospitalSelect.appendChild(option);
+                });
+                
+                hospitalSelect.disabled = false;
+            } catch (error) {
+                console.error('Error fetching hospitals:', error);
+                hospitalSelect.innerHTML = '<option value="">Error loading hospitals</option>';
+            }
+        } else {
+            hospitalSelect.innerHTML = '<option value="">First select city...</option>';
+        }
+    });
+
+    hospitalSelect.addEventListener('change', function() {
+        viewDoctorsBtn.disabled = !this.value;
+    });
+
+    // Handle form submission
+    document.getElementById('selectionForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const hospitalId = hospitalSelect.value;
+        if (hospitalId) {
+            window.location.href = `/hospital/${hospitalId}/doctors`;
+        }
+    });
+}
+</script>
 {% endblock %}

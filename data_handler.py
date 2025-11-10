@@ -12,6 +12,8 @@ class DataHandler:
         self.users_file = os.path.join(data_dir, 'users.json')
         self.doctors_file = os.path.join(data_dir, 'doctors.json')
         self.appointments_file = os.path.join(data_dir, 'appointments.json')
+        self.cities_file = os.path.join(data_dir, 'cities.json')
+        self.hospitals_file = os.path.join(data_dir, 'hospitals.json')
         
         # Thread lock for atomic operations
         self.lock = threading.Lock()
@@ -80,6 +82,42 @@ class DataHandler:
                 query in doctor['specialization'].lower()):
                 filtered.append(doctor)
         return filtered
+    
+    def get_doctors_by_hospital(self, hospital_id):
+        """Get all doctors for a specific hospital"""
+        doctors = self.get_doctors()
+        return [d for d in doctors if d.get('hospital_id') == hospital_id]
+    
+    # City operations
+    def get_cities(self):
+        """Get all cities"""
+        return self.read_json(self.cities_file)
+    
+    def get_city_by_id(self, city_id):
+        """Get city by ID"""
+        cities = self.get_cities()
+        for city in cities:
+            if city['id'] == city_id:
+                return city
+        return None
+    
+    # Hospital operations
+    def get_hospitals(self):
+        """Get all hospitals"""
+        return self.read_json(self.hospitals_file)
+    
+    def get_hospital_by_id(self, hospital_id):
+        """Get hospital by ID"""
+        hospitals = self.get_hospitals()
+        for hospital in hospitals:
+            if hospital['id'] == hospital_id:
+                return hospital
+        return None
+    
+    def get_hospitals_by_city(self, city_id):
+        """Get all hospitals in a specific city"""
+        hospitals = self.get_hospitals()
+        return [h for h in hospitals if h['city_id'] == city_id]
     
     # Appointment operations
     def get_appointments(self):

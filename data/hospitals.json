@@ -1,0 +1,83 @@
+[
+    {
+        "id": "hosp1",
+        "name": "Apollo Hospital",
+        "city_id": "city1",
+        "address": "154/11, Bannerghatta Road, Bangalore",
+        "phone": "+91-80-2630-2630",
+        "specialties": ["Cardiology", "Neurology", "Orthopedics", "Pediatrics"]
+    },
+    {
+        "id": "hosp2",
+        "name": "Fortis Hospital",
+        "city_id": "city1",
+        "address": "14, Cunningham Road, Bangalore",
+        "phone": "+91-80-6621-4444",
+        "specialties": ["Oncology", "Gastroenterology", "Dermatology", "General Medicine"]
+    },
+    {
+        "id": "hosp3",
+        "name": "Manipal Hospital",
+        "city_id": "city1",
+        "address": "98, HAL Airport Road, Bangalore",
+        "phone": "+91-80-2502-4444",
+        "specialties": ["Cardiology", "Nephrology", "Psychiatry", "ENT"]
+    },
+    {
+        "id": "hosp4",
+        "name": "Lilavati Hospital",
+        "city_id": "city2",
+        "address": "A-791, Bandra Reclamation, Mumbai",
+        "phone": "+91-22-2640-0000",
+        "specialties": ["Cardiology", "Neurology", "Orthopedics", "Gynecology"]
+    },
+    {
+        "id": "hosp5",
+        "name": "Kokilaben Hospital",
+        "city_id": "city2",
+        "address": "Achyutrao Patwardhan Marg, Mumbai",
+        "phone": "+91-22-4296-9999",
+        "specialties": ["Oncology", "Pediatrics", "General Surgery", "Dermatology"]
+    },
+    {
+        "id": "hosp6",
+        "name": "Apollo Hospital",
+        "city_id": "city3",
+        "address": "21, Greams Lane, Chennai",
+        "phone": "+91-44-2829-3333",
+        "specialties": ["Cardiology", "Neurology", "Gastroenterology", "Orthopedics"]
+    },
+    {
+        "id": "hosp7",
+        "name": "Fortis Malar Hospital",
+        "city_id": "city3",
+        "address": "52, 1st Main Road, Chennai",
+        "phone": "+91-44-4289-2222",
+        "specialties": ["Cardiology", "Nephrology", "General Medicine", "Pediatrics"]
+    },
+    {
+        "id": "hosp8",
+        "name": "KIMS Hospital",
+        "city_id": "city4",
+        "address": "1-8-31/1, Minister Road, Hyderabad",
+        "phone": "+91-40-4488-8888",
+        "specialties": ["Cardiology", "Neurology", "Orthopedics", "Oncology"]
+    },
+    {
+        "id": "hosp9",
+        "name": "Apollo Hospital",
+        "city_id": "city4",
+        "address": "Jubilee Hills, Hyderabad",
+        "phone": "+91-40-2360-7777",
+        "specialties": ["Cardiology", "Gastroenterology", "Pediatrics", "Dermatology"]
+    },
+    {
+        "id": "hosp10",
+        "name": "Max Hospital",
+        "city_id": "city5",
+        "address": "Press Enclave Road, Saket, Delhi",
+        "phone": "+91-11-2651-5050",
+        "specialties": ["Cardiology", "Neurology", "Orthopedics", "General Medicine"]
+    }
+]
+

@@ -89,8 +89,60 @@ def get_future_slots_for_date(date_str, all_slots):
 
 @app.route('/')
 def home():
-    """Home page"""
-    return render_template('home.html')
+    """Home page with city selection"""
+    cities = data_handler.get_cities()
+    return render_template('home.html', cities=cities)
+
+@app.route('/api/hospitals/<city_id>')
+def get_hospitals_api(city_id):
+    """API endpoint to get hospitals by city"""
+    from flask import jsonify
+    hospitals = data_handler.get_hospitals_by_city(city_id)
+    return jsonify(hospitals)
+
+@app.route('/api/doctors/<hospital_id>')
+def get_doctors_api(hospital_id):
+    """API endpoint to get doctors by hospital"""
+    from flask import jsonify
+    doctors = data_handler.get_doctors_by_hospital(hospital_id)
+    return jsonify(doctors)
+
+@app.route('/select-location', methods=['POST'])
+def select_location():
+    """Handle city, hospital, doctor selection from homepage"""
+    city_id = request.form.get('city_id')
+    hospital_id = request.form.get('hospital_id')
+    doctor_id = request.form.get('doctor_id')
+    
+    if doctor_id:
+        # Direct to booking page
+        return redirect(url_for('book_appointment', doctor_id=doctor_id))
+    elif hospital_id:
+        # Show doctors for this hospital
+        return redirect(url_for('doctors_by_hospital', hospital_id=hospital_id))
+    else:
+        flash('Please complete the selection.', 'warning')
+        return redirect(url_for('home'))
+
+@app.route('/hospital/<hospital_id>/doctors')
+def doctors_by_hospital(hospital_id):
+    """Show all doctors in a specific hospital"""
+    if 'user_id' not in session:
+        flash('Please login to view doctors.', 'warning')
+        return redirect(url_for('login'))
+    
+    hospital = data_handler.get_hospital_by_id(hospital_id)
+    if not hospital:
+        flash('Hospital not found!', 'danger')
+        return redirect(url_for('home'))
+    
+    city = data_handler.get_city_by_id(hospital['city_id'])
+    doctors = data_handler.get_doctors_by_hospital(hospital_id)
+    
+    return render_template('doctors_by_hospital.html', 
+                         doctors=doctors, 
+                         hospital=hospital,
+                         city=city)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -420,13 +472,26 @@ def admin_mark_paid(appointment_id):
 
 @app.route('/doctors')
 def doctors_list():
-    """List all doctors with search functionality"""
+    """List all doctors with search functionality (Browse All)"""
     if 'user_id' not in session:
         flash('Please login to view doctors.', 'warning')
         return redirect(url_for('login'))
     
     search_query = request.args.get('search', '')
     doctors = data_handler.search_doctors(search_query)
+    
+    # Add hospital and city info to each doctor
+    hospitals = {h['id']: h for h in data_handler.get_hospitals()}
+    cities = {c['id']: c for c in data_handler.get_cities()}
+    
+    for doctor in doctors:
+        hospital_id = doctor.get('hospital_id')
+        if hospital_id and hospital_id in hospitals:
+            hospital = hospitals[hospital_id]
+            doctor['hospital_name'] = hospital['name']
+            city_id = hospital.get('city_id')
+            if city_id and city_id in cities:
+                doctor['city_name'] = cities[city_id]['name']
     
     return render_template('doctors_list.html', doctors=doctors, search_query=search_query)
 
@@ -443,7 +508,13 @@ def doctor_detail(doctor_id):
         flash('Doctor not found!', 'danger')
         return redirect(url_for('doctors_list'))
     
-    return render_template('doctor_detail.html', doctor=doctor)
+    # Add hospital and city info
+    hospital = data_handler.get_hospital_by_id(doctor.get('hospital_id'))
+    city = None
+    if hospital:
+        city = data_handler.get_city_by_id(hospital.get('city_id'))
+    
+    return render_template('doctor_detail.html', doctor=doctor, hospital=hospital, city=city)
 
 @app.route('/book/<doctor_id>', methods=['GET', 'POST'])
 def book_appointment(doctor_id):
@@ -457,6 +528,12 @@ def book_appointment(doctor_id):
     if not doctor:
         flash('Doctor not found!', 'danger')
         return redirect(url_for('doctors_list'))
+    
+    # Get hospital and city info
+    hospital = data_handler.get_hospital_by_id(doctor.get('hospital_id'))
+    city = None
+    if hospital:
+        city = data_handler.get_city_by_id(hospital.get('city_id'))
     
     if request.method == 'POST':
         date = request.form.get('date')
@@ -476,6 +553,10 @@ def book_appointment(doctor_id):
             'user_name': session['user_name'],
             'doctor_id': doctor_id,
             'doctor_name': doctor['name'],
+            'hospital_id': doctor.get('hospital_id'),
+            'hospital_name': hospital['name'] if hospital else None,
+            'city_id': hospital.get('city_id') if hospital else None,
+            'city_name': city['name'] if city else None,
             'date': date,
             'time': time,
             'reason': reason,
@@ -483,6 +564,7 @@ def book_appointment(doctor_id):
             'booked_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'payment_status': 'Pending',
             'payment_method': None,
+            'payment_input': None,
             'transaction_id': None,
             'paid_at': None
         }
@@ -530,7 +612,9 @@ def book_appointment(doctor_id):
                 urgent_slots[slot_key] = True
     
     return render_template('book_appointment.html', 
-                         doctor=doctor, 
+                         doctor=doctor,
+                         hospital=hospital,
+                         city=city,
                          available_dates=available_dates,
                          time_slots=TIME_SLOTS,
                          booked_slots=booked_slots,
@@ -747,38 +831,43 @@ def process_payment(appointment_id):
         flash('Please select a payment method!', 'danger')
         return redirect(url_for('payment_page', appointment_id=appointment_id))
     
+    # Get payment input based on method
+    payment_input = None
+    if payment_method == 'upi':
+        payment_input = request.form.get('upi_id')
+    elif payment_method == 'card':
+        card_number = request.form.get('card_number')
+        card_expiry = request.form.get('card_expiry')
+        card_cvv = request.form.get('card_cvv')
+        payment_input = f"Card ending in {card_number[-4:] if card_number else 'XXXX'}"
+    elif payment_method == 'netbanking':
+        payment_input = request.form.get('bank_name')
+    
     # Mock payment processing
     transaction_id = f"TXN{uuid.uuid4().hex[:12].upper()}"
     
-    if payment_method == 'pay_at_clinic':
-        # Pay at clinic - keep status as pending
+    # Simulate 90% success rate for online payments
+    import random
+    payment_success = random.random() < 0.9
+    
+    if payment_success:
         payment_data = {
-            'payment_method': 'Pay-at-Clinic',
-            'payment_status': 'Pending',
+            'payment_method': payment_method.upper(),
+            'payment_input': payment_input,
+            'payment_status': 'Success',
             'transaction_id': transaction_id,
-            'status': 'confirmed'  # Confirm appointment but payment pending
+            'paid_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'status': 'confirmed'
         }
     else:
-        # Simulate 90% success rate for other payment methods
-        import random
-        payment_success = random.random() < 0.9
-        
-        if payment_success:
-            payment_data = {
-                'payment_method': payment_method.replace('_', ' ').title(),
-                'payment_status': 'Success',
-                'transaction_id': transaction_id,
-                'paid_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                'status': 'confirmed'
-            }
-        else:
-            # Payment failed - cancel appointment to free slot
-            payment_data = {
-                'payment_method': payment_method.replace('_', ' ').title(),
-                'payment_status': 'Failed',
-                'transaction_id': transaction_id,
-                'status': 'cancelled'
-            }
+        # Payment failed - cancel appointment to free slot
+        payment_data = {
+            'payment_method': payment_method.upper(),
+            'payment_input': payment_input,
+            'payment_status': 'Failed',
+            'transaction_id': transaction_id,
+            'status': 'cancelled'
+        }
     
     # Update appointment
     data_handler.update_appointment(appointment_id, payment_data)
