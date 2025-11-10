@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - HealthCare Plus{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <i class="fas fa-user-shield fs-1 mb-3"></i>
+                    <h3 class="mb-0 fw-bold">Admin Login</h3>
+                    <p class="mb-0 small opacity-75">Secure administrative access</p>
+                </div>
+                <div class="card-body p-5">
+                    <form method="POST" action="{{ url_for('admin_login') }}">
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="fas fa-envelope me-2 text-primary"></i>Admin Email
+                            </label>
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold">
+                                <i class="fas fa-lock me-2 text-primary"></i>Password
+                            </label>
+                            <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-danger btn-lg w-100 rounded-pill shadow">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login to Admin Portal
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-2">
+                            <a href="{{ url_for('login') }}" class="text-primary fw-semibold text-decoration-none">
+                                <i class="fas fa-arrow-left me-1"></i>Patient Login
+                            </a>
+                        </p>
+                        <p class="text-muted mb-0">
+                            Need admin access? 
+                            <a href="{{ url_for('admin_register') }}" class="text-danger fw-semibold text-decoration-none">
+                                Register here
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

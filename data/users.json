@@ -5,6 +5,16 @@
         "email": "123@gmail.com",
         "password": "scrypt:32768:8:1$C2VcTf7SmpRd3j8v$8bb9450e4127e8feeaf0aa6723d21e476a672bc137e705adf912bc8df602ea510c7e37b91895ed4e1d0ffbcb33dd7983452e6552ddf0d6561ab7141b5a309063",
         "phone": "57689078",
+        "role": "patient",
         "created_at": "2025-10-12 22:37:33"
+    },
+    {
+        "id": "c0e05cbc-f397-4418-8bc0-cde8053831e0",
+        "name": "ps",
+        "email": "1234@gmail.com",
+        "password": "scrypt:32768:8:1$EI8ks8t04EIFbqYo$13e0f406fc78066859f307d8bd33fe29c18f134caf5a6d199f7e023c04912039b4a6520965a041ab4336f6a3c0efcca82bd61be79e30b3788ff7a67d99890c8e",
+        "phone": "12345",
+        "role": "admin",
+        "created_at": "2025-11-10 20:42:52"
     }
 ]

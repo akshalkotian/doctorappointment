@@ -1,15 +1,20 @@
 import json
 import os
 from datetime import datetime
+import threading
+import fcntl
 
 class DataHandler:
-    """Handler for JSON file operations"""
+    """Handler for JSON file operations with slot locking"""
     
     def __init__(self, data_dir='data'):
         self.data_dir = data_dir
         self.users_file = os.path.join(data_dir, 'users.json')
         self.doctors_file = os.path.join(data_dir, 'doctors.json')
         self.appointments_file = os.path.join(data_dir, 'appointments.json')
+        
+        # Thread lock for atomic operations
+        self.lock = threading.Lock()
         
         # Create data directory if it doesn't exist
         if not os.path.exists(data_dir):
@@ -100,19 +105,44 @@ class DataHandler:
         return doctor_appointments
     
     def is_slot_booked(self, doctor_id, date, time):
-        """Check if a time slot is already booked"""
+        """Check if a time slot is already booked (excluding cancelled and no_show)"""
         appointments = self.get_appointments_by_doctor(doctor_id)
         for appt in appointments:
-            if appt['date'] == date and appt['time'] == time:
+            if (appt['date'] == date and appt['time'] == time and 
+                appt['status'] in ['confirmed', 'pending_payment']):
                 return True
         return False
     
     def add_appointment(self, appointment_data):
-        """Add a new appointment"""
+        """Add a new appointment (use atomic_book_slot for thread-safe booking)"""
         appointments = self.get_appointments()
         appointments.append(appointment_data)
         self.write_json(self.appointments_file, appointments)
         return True
+    
+    def atomic_book_slot(self, doctor_id, date, time, appointment_data):
+        """
+        Atomically book a slot - check and reserve in one operation
+        Returns (success: bool, message: str, appointment_id: str or None)
+        """
+        with self.lock:
+            # Re-check availability within lock
+            if self.is_slot_booked(doctor_id, date, time):
+                return False, "This time slot was just booked by another user. Please select another slot.", None
+            
+            # Check if slot is cancelled (cancelled slots show as available)
+            appointments = self.get_appointments()
+            for appt in appointments:
+                if (appt['doctor_id'] == doctor_id and 
+                    appt['date'] == date and 
+                    appt['time'] == time and 
+                    appt['status'] in ['confirmed', 'pending_payment']):
+                    return False, "This time slot is already booked. Please select another slot.", None
+            
+            # Slot is available, book it
+            appointments.append(appointment_data)
+            self.write_json(self.appointments_file, appointments)
+            return True, "Slot booked successfully", appointment_data['id']
     
     def get_appointment_by_id(self, appointment_id):
         """Get appointment by ID"""
@@ -121,4 +151,62 @@ class DataHandler:
             if appt['id'] == appointment_id:
                 return appt
         return None
+    
+    def update_appointment(self, appointment_id, update_data):
+        """Update an appointment with new data"""
+        with self.lock:
+            appointments = self.get_appointments()
+            for i, appt in enumerate(appointments):
+                if appt['id'] == appointment_id:
+                    appointments[i].update(update_data)
+                    self.write_json(self.appointments_file, appointments)
+                    return True
+            return False
+    
+    def cancel_appointment(self, appointment_id):
+        """Cancel an appointment"""
+        return self.update_appointment(appointment_id, {
+            'status': 'cancelled',
+            'cancelled_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        })
+    
+    def mark_no_show(self, appointment_id):
+        """Mark appointment as no-show"""
+        return self.update_appointment(appointment_id, {
+            'status': 'no_show',
+            'no_show_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        })
+    
+    def process_refund(self, appointment_id):
+        """Process refund for an appointment"""
+        return self.update_appointment(appointment_id, {
+            'payment_status': 'Refunded',
+            'refunded_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        })
+    
+    def mark_payment_paid(self, appointment_id):
+        """Mark a pending payment as paid (for Pay-at-Clinic)"""
+        return self.update_appointment(appointment_id, {
+            'payment_status': 'Success',
+            'paid_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        })
+    
+    def get_user_by_id(self, user_id):
+        """Get user by ID"""
+        users = self.get_users()
+        for user in users:
+            if user['id'] == user_id:
+                return user
+        return None
+    
+    def update_user(self, user_id, update_data):
+        """Update user information"""
+        with self.lock:
+            users = self.get_users()
+            for i, user in enumerate(users):
+                if user['id'] == user_id:
+                    users[i].update(update_data)
+                    self.write_json(self.users_file, users)
+                    return True
+            return False
 

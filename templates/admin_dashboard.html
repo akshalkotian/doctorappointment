@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - HealthCare Plus{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stat-card {
+        border-left: 4px solid;
+        transition: transform 0.2s;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+    .badge-status {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.65rem;
+    }
+    .filter-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold mb-1"><i class="fas fa-tachometer-alt text-danger me-2"></i>Admin Dashboard</h2>
+                    <p class="text-muted mb-0">Manage appointments and view statistics</p>
+                </div>
+                <div>
+                    <a href="{{ url_for('admin_timetable') }}" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-calendar-alt me-1"></i>Timetable View
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card border-0 shadow-sm h-100" style="border-left-color: #4f46e5 !important;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Total Bookings</p>
+                            <h3 class="fw-bold mb-0">{{ stats.total_bookings }}</h3>
+                        </div>
+                        <div class="fs-1 text-primary opacity-50">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card border-0 shadow-sm h-100" style="border-left-color: #10b981 !important;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Confirmed</p>
+                            <h3 class="fw-bold mb-0">{{ stats.confirmed_bookings }}</h3>
+                        </div>
+                        <div class="fs-1 text-success opacity-50">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card border-0 shadow-sm h-100" style="border-left-color: #f59e0b !important;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Pending Payments</p>
+                            <h3 class="fw-bold mb-0">{{ stats.pending_payments }}</h3>
+                        </div>
+                        <div class="fs-1 text-warning opacity-50">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card border-0 shadow-sm h-100" style="border-left-color: #10b981 !important;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1 small">Paid Bookings</p>
+                            <h3 class="fw-bold mb-0">{{ stats.successful_payments }}</h3>
+                        </div>
+                        <div class="fs-1 text-success opacity-50">
+                            <i class="fas fa-money-check-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form method="GET" action="{{ url_for('admin_dashboard') }}" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Filter by Doctor</label>
+                            <select name="doctor" class="form-select">
+                                <option value="">All Doctors</option>
+                                {% for doctor in doctors %}
+                                <option value="{{ doctor.id }}" {% if doctor_filter == doctor.id %}selected{% endif %}>
+                                    {{ doctor.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Filter by Date</label>
+                            <input type="date" name="date" class="form-select" value="{{ date_filter }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Payment Status</label>
+                            <select name="payment_status" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="Success" {% if payment_status_filter == 'Success' %}selected{% endif %}>Success</option>
+                                <option value="Pending" {% if payment_status_filter == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Failed" {% if payment_status_filter == 'Failed' %}selected{% endif %}>Failed</option>
+                                <option value="Refunded" {% if payment_status_filter == 'Refunded' %}selected{% endif %}>Refunded</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-filter me-1"></i>Apply Filters
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointments Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-semibold">
+                        <i class="fas fa-list me-2 text-primary"></i>Appointments
+                        <span class="badge bg-primary ms-2">{{ appointments|length }}</span>
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Date & Time</th>
+                                    <th>Status</th>
+                                    <th>Payment</th>
+                                    <th>Method</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if appointments %}
+                                {% for appt in appointments %}
+                                <tr>
+                                    <td class="small text-muted">{{ appt.id[:8] }}...</td>
+                                    <td>
+                                        <div class="fw-semibold">{{ appt.user_name }}</div>
+                                        <div class="small text-muted">{{ appt.user_email }}</div>
+                                    </td>
+                                    <td>{{ appt.doctor_name }}</td>
+                                    <td>
+                                        <div><i class="fas fa-calendar me-1 text-primary"></i>{{ appt.date }}</div>
+                                        <div class="small text-muted"><i class="fas fa-clock me-1"></i>{{ appt.time }}</div>
+                                    </td>
+                                    <td>
+                                        {% if appt.time_status == 'upcoming' %}
+                                            {% if appt.status == 'confirmed' %}
+                                            <span class="badge bg-primary badge-status">Upcoming</span>
+                                            {% elif appt.status == 'pending_payment' %}
+                                            <span class="badge bg-warning badge-status">Pending Payment</span>
+                                            {% endif %}
+                                        {% elif appt.time_status == 'completed' %}
+                                        <span class="badge bg-success badge-status">Completed</span>
+                                        {% elif appt.time_status == 'missed' %}
+                                        <span class="badge bg-warning badge-status">Missed</span>
+                                        {% elif appt.time_status == 'cancelled' %}
+                                        <span class="badge bg-secondary badge-status">Cancelled</span>
+                                        {% else %}
+                                            {% if appt.status == 'confirmed' %}
+                                            <span class="badge bg-success badge-status">Confirmed</span>
+                                            {% elif appt.status == 'pending_payment' %}
+                                            <span class="badge bg-warning badge-status">Pending Payment</span>
+                                            {% elif appt.status == 'cancelled' %}
+                                            <span class="badge bg-danger badge-status">Cancelled</span>
+                                            {% elif appt.status == 'no_show' %}
+                                            <span class="badge bg-secondary badge-status">No Show</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if appt.payment_status == 'Success' %}
+                                        <span class="badge bg-success badge-status">Paid</span>
+                                        {% elif appt.payment_status == 'Pending' %}
+                                        <span class="badge bg-warning badge-status">Pending</span>
+                                        {% elif appt.payment_status == 'Failed' %}
+                                        <span class="badge bg-danger badge-status">Failed</span>
+                                        {% elif appt.payment_status == 'Refunded' %}
+                                        <span class="badge bg-info badge-status">Refunded</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="small">{{ appt.payment_method or '-' }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            {% if appt.time_status == 'upcoming' %}
+                                                {% if appt.status == 'confirmed' %}
+                                                <form method="POST" action="{{ url_for('admin_cancel_appointment', appointment_id=appt.id) }}" class="d-inline">
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Cancel">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </form>
+                                                {% endif %}
+                                            {% elif appt.time_status in ['completed', 'missed'] %}
+                                                {% if appt.status != 'no_show' %}
+                                                <form method="POST" action="{{ url_for('admin_mark_no_show', appointment_id=appt.id) }}" class="d-inline">
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" title="Mark No Show">
+                                                        <i class="fas fa-user-slash"></i>
+                                                    </button>
+                                                </form>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if appt.payment_status == 'Success' and appt.status != 'cancelled' %}
+                                            <form method="POST" action="{{ url_for('admin_process_refund', appointment_id=appt.id) }}" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-info btn-sm" title="Refund">
+                                                    <i class="fas fa-undo"></i>
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                            {% if appt.payment_status == 'Pending' and appt.payment_method == 'Pay-at-Clinic' %}
+                                            <form method="POST" action="{{ url_for('admin_mark_paid', appointment_id=appt.id) }}" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-success btn-sm" title="Mark Paid">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="8" class="text-center py-5 text-muted">
+                                        <i class="fas fa-inbox fs-1 mb-3 d-block"></i>
+                                        No appointments found
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Booking Counts -->
+    {% if stats.doctor_counts %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-semibold">
+                        <i class="fas fa-chart-bar me-2 text-primary"></i>Booking Count by Doctor
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        {% for doctor_name, count in stats.doctor_counts.items() %}
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                <span class="fw-semibold">{{ doctor_name }}</span>
+                                <span class="badge bg-primary">{{ count }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

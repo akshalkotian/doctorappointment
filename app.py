@@ -16,6 +16,77 @@ TIME_SLOTS = [
     "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"
 ]
 
+# Helper functions for time-based logic
+def parse_time_slot(time_str):
+    """Convert time slot string (e.g., '09:00 AM') to datetime.time object"""
+    return datetime.strptime(time_str, '%I:%M %p').time()
+
+def is_slot_in_past(date_str, time_str):
+    """Check if a slot is in the past"""
+    try:
+        slot_datetime = datetime.strptime(f"{date_str} {time_str}", '%Y-%m-%d %I:%M %p')
+        return slot_datetime < datetime.now()
+    except:
+        return False
+
+def is_slot_within_hour(date_str, time_str):
+    """Check if a slot is within the next hour"""
+    try:
+        slot_datetime = datetime.strptime(f"{date_str} {time_str}", '%Y-%m-%d %I:%M %p')
+        time_diff = slot_datetime - datetime.now()
+        return timedelta(0) < time_diff <= timedelta(hours=1)
+    except:
+        return False
+
+def get_appointment_status(appointment):
+    """
+    Classify appointment status based on current time:
+    - 'upcoming': future appointment
+    - 'completed': past appointment with confirmed status
+    - 'missed': past appointment that was not cancelled
+    """
+    date_str = appointment['date']
+    time_str = appointment['time']
+    status = appointment['status']
+    
+    if is_slot_in_past(date_str, time_str):
+        if status == 'cancelled':
+            return 'cancelled'
+        elif status == 'no_show':
+            return 'missed'
+        elif status in ['confirmed', 'pending_payment']:
+            # If past and not marked as no_show, consider it completed
+            return 'completed'
+        else:
+            return 'missed'
+    else:
+        return 'upcoming'
+
+def get_future_slots_for_date(date_str, all_slots):
+    """
+    Get available future slots for a specific date.
+    If date is today, filter out past slots.
+    If date is future, return all slots.
+    """
+    today = datetime.now().date()
+    selected_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+    
+    if selected_date < today:
+        # Past date - no slots available
+        return []
+    elif selected_date == today:
+        # Today - filter out past slots
+        current_time = datetime.now().time()
+        future_slots = []
+        for slot in all_slots:
+            slot_time = parse_time_slot(slot)
+            if slot_time > current_time:
+                future_slots.append(slot)
+        return future_slots
+    else:
+        # Future date - all slots available
+        return all_slots
+
 @app.route('/')
 def home():
     """Home page"""
@@ -23,7 +94,7 @@ def home():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    """User registration"""
+    """Patient registration"""
     if request.method == 'POST':
         name = request.form.get('name')
         email = request.form.get('email')
@@ -40,13 +111,14 @@ def register():
             flash('Email already registered!', 'danger')
             return redirect(url_for('register'))
         
-        # Create new user
+        # Create new patient user
         user_data = {
             'id': str(uuid.uuid4()),
             'name': name,
             'email': email,
             'password': generate_password_hash(password),
             'phone': phone,
+            'role': 'patient',  # Default role is patient
             'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         
@@ -58,7 +130,7 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """User login"""
+    """Patient login"""
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -66,9 +138,16 @@ def login():
         user = data_handler.get_user_by_email(email)
         
         if user and check_password_hash(user['password'], password):
+            # Ensure patient users only
+            user_role = user.get('role', 'patient')  # Default to patient for existing users
+            if user_role == 'admin':
+                flash('Please use admin login page.', 'warning')
+                return redirect(url_for('admin_login'))
+            
             session['user_id'] = user['id']
             session['user_name'] = user['name']
             session['user_email'] = user['email']
+            session['user_role'] = user_role
             flash(f'Welcome back, {user["name"]}!', 'success')
             return redirect(url_for('doctors_list'))
         else:
@@ -83,6 +162,261 @@ def logout():
     session.clear()
     flash('You have been logged out.', 'info')
     return redirect(url_for('home'))
+
+# Admin Routes
+@app.route('/admin/register', methods=['GET', 'POST'])
+def admin_register():
+    """Admin registration"""
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        phone = request.form.get('phone')
+        admin_code = request.form.get('admin_code')
+        
+        # Validate admin code (simple security measure)
+        if admin_code != 'ADMIN2024':  # Change this in production
+            flash('Invalid admin code!', 'danger')
+            return redirect(url_for('admin_register'))
+        
+        # Validate input
+        if not all([name, email, password, phone]):
+            flash('All fields are required!', 'danger')
+            return redirect(url_for('admin_register'))
+        
+        # Check if user already exists
+        if data_handler.get_user_by_email(email):
+            flash('Email already registered!', 'danger')
+            return redirect(url_for('admin_register'))
+        
+        # Create new admin user
+        user_data = {
+            'id': str(uuid.uuid4()),
+            'name': name,
+            'email': email,
+            'password': generate_password_hash(password),
+            'phone': phone,
+            'role': 'admin',
+            'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+        
+        data_handler.add_user(user_data)
+        flash('Admin registration successful! Please login.', 'success')
+        return redirect(url_for('admin_login'))
+    
+    return render_template('admin_register.html')
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    """Admin login"""
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        user = data_handler.get_user_by_email(email)
+        
+        if user and check_password_hash(user['password'], password):
+            # Ensure admin users only
+            if user.get('role') != 'admin':
+                flash('Access denied. Admin credentials required.', 'danger')
+                return redirect(url_for('admin_login'))
+            
+            session['user_id'] = user['id']
+            session['user_name'] = user['name']
+            session['user_email'] = user['email']
+            session['user_role'] = 'admin'
+            flash(f'Welcome, Admin {user["name"]}!', 'success')
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash('Invalid email or password!', 'danger')
+            return redirect(url_for('admin_login'))
+    
+    return render_template('admin_login.html')
+
+def admin_required(f):
+    """Decorator to require admin authentication"""
+    from functools import wraps
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session or session.get('user_role') != 'admin':
+            flash('Admin access required.', 'danger')
+            return redirect(url_for('admin_login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/admin/dashboard')
+@admin_required
+def admin_dashboard():
+    """Admin dashboard with filters and statistics"""
+    # Get filter parameters
+    doctor_filter = request.args.get('doctor', '')
+    date_filter = request.args.get('date', '')
+    payment_status_filter = request.args.get('payment_status', '')
+    
+    # Get all appointments
+    appointments = data_handler.get_appointments()
+    
+    # Apply filters and add time-based status
+    filtered_appointments = []
+    for appt in appointments:
+        if doctor_filter and appt['doctor_id'] != doctor_filter:
+            continue
+        if date_filter and appt['date'] != date_filter:
+            continue
+        if payment_status_filter and appt.get('payment_status') != payment_status_filter:
+            continue
+        # Add time-based status to appointment
+        appt['time_status'] = get_appointment_status(appt)
+        filtered_appointments.append(appt)
+    
+    # Sort by date and time (most recent first)
+    filtered_appointments.sort(key=lambda x: (x['date'], x['time']), reverse=True)
+    
+    # Calculate statistics
+    total_bookings = len(appointments)
+    confirmed_bookings = len([a for a in appointments if a['status'] == 'confirmed'])
+    cancelled_bookings = len([a for a in appointments if a['status'] == 'cancelled'])
+    pending_payments = len([a for a in appointments if a.get('payment_status') == 'Pending'])
+    successful_payments = len([a for a in appointments if a.get('payment_status') == 'Success'])
+    
+    # Booking count per doctor
+    doctor_counts = {}
+    for appt in appointments:
+        doctor_name = appt['doctor_name']
+        doctor_counts[doctor_name] = doctor_counts.get(doctor_name, 0) + 1
+    
+    # Get all doctors for filter dropdown
+    doctors = data_handler.get_doctors()
+    
+    stats = {
+        'total_bookings': total_bookings,
+        'confirmed_bookings': confirmed_bookings,
+        'cancelled_bookings': cancelled_bookings,
+        'pending_payments': pending_payments,
+        'successful_payments': successful_payments,
+        'doctor_counts': doctor_counts
+    }
+    
+    return render_template('admin_dashboard.html', 
+                         appointments=filtered_appointments,
+                         stats=stats,
+                         doctors=doctors,
+                         doctor_filter=doctor_filter,
+                         date_filter=date_filter,
+                         payment_status_filter=payment_status_filter)
+
+@app.route('/admin/timetable')
+@admin_required
+def admin_timetable():
+    """Admin timetable view showing all slots"""
+    # Get filter parameters
+    doctor_id = request.args.get('doctor', '')
+    date = request.args.get('date', datetime.now().strftime('%Y-%m-%d'))
+    
+    # Get all doctors
+    doctors = data_handler.get_doctors()
+    
+    # If no doctor selected, use first doctor
+    if not doctor_id and doctors:
+        doctor_id = doctors[0]['id']
+    
+    # Get selected doctor
+    selected_doctor = data_handler.get_doctor_by_id(doctor_id) if doctor_id else None
+    
+    # Get appointments for selected doctor and date
+    all_appointments = data_handler.get_appointments_by_doctor(doctor_id) if doctor_id else []
+    
+    # Create slot status map
+    slot_status = {}
+    for time_slot in TIME_SLOTS:
+        slot_key = f"{date}_{time_slot}"
+        
+        # Check if slot is in the past
+        if is_slot_in_past(date, time_slot):
+            slot_status[time_slot] = {
+                'status': 'Past',
+                'appointment': None
+            }
+        else:
+            slot_status[time_slot] = {
+                'status': 'Available',
+                'appointment': None
+            }
+        
+        # Check if slot is booked
+        for appt in all_appointments:
+            if appt['date'] == date and appt['time'] == time_slot:
+                if appt['status'] in ['confirmed', 'pending_payment']:
+                    appt['time_status'] = get_appointment_status(appt)
+                    slot_status[time_slot] = {
+                        'status': 'Booked',
+                        'appointment': appt
+                    }
+                    break
+    
+    # Count bookings for selected doctor and date
+    booking_count = sum(1 for slot in slot_status.values() if slot['status'] == 'Booked')
+    
+    # Generate available dates (30 days range: -15 to +15)
+    today = datetime.now().date()
+    available_dates = []
+    for i in range(-15, 16):
+        date_obj = today + timedelta(days=i)
+        available_dates.append(date_obj.strftime('%Y-%m-%d'))
+    
+    return render_template('admin_timetable.html',
+                         doctors=doctors,
+                         selected_doctor=selected_doctor,
+                         doctor_id=doctor_id,
+                         date=date,
+                         time_slots=TIME_SLOTS,
+                         slot_status=slot_status,
+                         booking_count=booking_count,
+                         available_dates=available_dates)
+
+@app.route('/admin/action/cancel/<appointment_id>', methods=['POST'])
+@admin_required
+def admin_cancel_appointment(appointment_id):
+    """Admin action: Cancel appointment"""
+    success = data_handler.cancel_appointment(appointment_id)
+    if success:
+        flash('Appointment cancelled successfully.', 'success')
+    else:
+        flash('Failed to cancel appointment.', 'danger')
+    return redirect(request.referrer or url_for('admin_dashboard'))
+
+@app.route('/admin/action/no-show/<appointment_id>', methods=['POST'])
+@admin_required
+def admin_mark_no_show(appointment_id):
+    """Admin action: Mark appointment as no-show"""
+    success = data_handler.mark_no_show(appointment_id)
+    if success:
+        flash('Appointment marked as no-show.', 'warning')
+    else:
+        flash('Failed to mark appointment as no-show.', 'danger')
+    return redirect(request.referrer or url_for('admin_dashboard'))
+
+@app.route('/admin/action/refund/<appointment_id>', methods=['POST'])
+@admin_required
+def admin_process_refund(appointment_id):
+    """Admin action: Process refund"""
+    success = data_handler.process_refund(appointment_id)
+    if success:
+        flash('Refund processed successfully.', 'success')
+    else:
+        flash('Failed to process refund.', 'danger')
+    return redirect(request.referrer or url_for('admin_dashboard'))
+
+@app.route('/admin/action/mark-paid/<appointment_id>', methods=['POST'])
+@admin_required
+def admin_mark_paid(appointment_id):
+    """Admin action: Mark payment as paid (for Pay-at-Clinic)"""
+    success = data_handler.mark_payment_paid(appointment_id)
+    if success:
+        flash('Payment marked as paid.', 'success')
+    else:
+        flash('Failed to mark payment as paid.', 'danger')
+    return redirect(request.referrer or url_for('admin_dashboard'))
 
 @app.route('/doctors')
 def doctors_list():
@@ -134,12 +468,7 @@ def book_appointment(doctor_id):
             flash('All fields are required!', 'danger')
             return redirect(url_for('book_appointment', doctor_id=doctor_id))
         
-        # Check if slot is already booked
-        if data_handler.is_slot_booked(doctor_id, date, time):
-            flash('This time slot is already booked. Please select another slot.', 'danger')
-            return redirect(url_for('book_appointment', doctor_id=doctor_id))
-        
-        # Create appointment
+        # Create appointment with pending_payment status
         appointment_data = {
             'id': str(uuid.uuid4()),
             'user_id': session['user_id'],
@@ -150,30 +479,64 @@ def book_appointment(doctor_id):
             'date': date,
             'time': time,
             'reason': reason,
-            'status': 'confirmed',
-            'booked_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            'status': 'pending_payment',
+            'booked_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'payment_status': 'Pending',
+            'payment_method': None,
+            'transaction_id': None,
+            'paid_at': None
         }
         
-        data_handler.add_appointment(appointment_data)
-        flash('Appointment booked successfully!', 'success')
-        return redirect(url_for('appointment_confirmation', appointment_id=appointment_data['id']))
+        # Use atomic booking to prevent race conditions
+        success, message, appointment_id = data_handler.atomic_book_slot(
+            doctor_id, date, time, appointment_data
+        )
+        
+        if success:
+            # Store appointment ID in session for payment
+            session['pending_appointment_id'] = appointment_id
+            return redirect(url_for('payment_page', appointment_id=appointment_id))
+        else:
+            flash(message, 'danger')
+            return redirect(url_for('book_appointment', doctor_id=doctor_id))
     
-    # Generate available dates (next 30 days)
+    # Generate available dates (next 30 days, starting from today)
     today = datetime.now().date()
-    available_dates = [(today + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(1, 31)]
+    available_dates = [(today + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(0, 30)]
     
     # Get booked slots for this doctor
     doctor_appointments = data_handler.get_appointments_by_doctor(doctor_id)
     booked_slots = {}
+    slot_counts = {}
+    past_slots = {}
+    urgent_slots = {}
+    
     for appt in doctor_appointments:
-        key = f"{appt['date']}_{appt['time']}"
-        booked_slots[key] = True
+        if appt['status'] in ['confirmed', 'pending_payment']:
+            key = f"{appt['date']}_{appt['time']}"
+            booked_slots[key] = True
+            
+            # Count bookings per day for status badges
+            date_key = appt['date']
+            slot_counts[date_key] = slot_counts.get(date_key, 0) + 1
+    
+    # Mark past slots and urgent slots for all dates
+    for date_str in available_dates:
+        for slot in TIME_SLOTS:
+            slot_key = f"{date_str}_{slot}"
+            if is_slot_in_past(date_str, slot):
+                past_slots[slot_key] = True
+            elif is_slot_within_hour(date_str, slot):
+                urgent_slots[slot_key] = True
     
     return render_template('book_appointment.html', 
                          doctor=doctor, 
                          available_dates=available_dates,
                          time_slots=TIME_SLOTS,
-                         booked_slots=booked_slots)
+                         booked_slots=booked_slots,
+                         slot_counts=slot_counts,
+                         past_slots=past_slots,
+                         urgent_slots=urgent_slots)
 
 @app.route('/appointment/confirmation/<appointment_id>')
 def appointment_confirmation(appointment_id):
@@ -199,10 +562,263 @@ def my_appointments():
     
     appointments = data_handler.get_appointments_by_user(session['user_email'])
     
-    # Sort by date and time (most recent first)
-    appointments.sort(key=lambda x: (x['date'], x['time']), reverse=True)
+    # Classify appointments by status
+    upcoming_appointments = []
+    completed_appointments = []
+    missed_appointments = []
+    cancelled_appointments = []
     
-    return render_template('my_appointments.html', appointments=appointments)
+    for appt in appointments:
+        time_status = get_appointment_status(appt)
+        appt['time_status'] = time_status  # Add to appointment for template use
+        
+        if time_status == 'upcoming':
+            upcoming_appointments.append(appt)
+        elif time_status == 'completed':
+            completed_appointments.append(appt)
+        elif time_status == 'missed':
+            missed_appointments.append(appt)
+        elif time_status == 'cancelled':
+            cancelled_appointments.append(appt)
+    
+    # Sort each category by date and time
+    upcoming_appointments.sort(key=lambda x: (x['date'], x['time']))
+    completed_appointments.sort(key=lambda x: (x['date'], x['time']), reverse=True)
+    missed_appointments.sort(key=lambda x: (x['date'], x['time']), reverse=True)
+    cancelled_appointments.sort(key=lambda x: (x['date'], x['time']), reverse=True)
+    
+    return render_template('my_appointments.html', 
+                         upcoming_appointments=upcoming_appointments,
+                         completed_appointments=completed_appointments,
+                         missed_appointments=missed_appointments,
+                         cancelled_appointments=cancelled_appointments)
+
+@app.route('/appointment/cancel/<appointment_id>', methods=['POST'])
+def cancel_appointment_user(appointment_id):
+    """Cancel an appointment (patient action)"""
+    if 'user_id' not in session:
+        flash('Please login to cancel appointments.', 'warning')
+        return redirect(url_for('login'))
+    
+    appointment = data_handler.get_appointment_by_id(appointment_id)
+    
+    if not appointment or appointment['user_id'] != session['user_id']:
+        flash('Appointment not found!', 'danger')
+        return redirect(url_for('my_appointments'))
+    
+    # Check if appointment is in the future
+    if is_slot_in_past(appointment['date'], appointment['time']):
+        flash('Cannot cancel past appointments.', 'danger')
+        return redirect(url_for('my_appointments'))
+    
+    # Cancel the appointment
+    success = data_handler.cancel_appointment(appointment_id)
+    if success:
+        flash('Appointment cancelled successfully.', 'success')
+    else:
+        flash('Failed to cancel appointment.', 'danger')
+    
+    return redirect(url_for('my_appointments'))
+
+@app.route('/appointment/reschedule/<appointment_id>', methods=['GET', 'POST'])
+def reschedule_appointment(appointment_id):
+    """Reschedule an appointment"""
+    if 'user_id' not in session:
+        flash('Please login to reschedule appointments.', 'warning')
+        return redirect(url_for('login'))
+    
+    appointment = data_handler.get_appointment_by_id(appointment_id)
+    
+    if not appointment or appointment['user_id'] != session['user_id']:
+        flash('Appointment not found!', 'danger')
+        return redirect(url_for('my_appointments'))
+    
+    # Check if appointment is in the future
+    if is_slot_in_past(appointment['date'], appointment['time']):
+        flash('Cannot reschedule past appointments.', 'danger')
+        return redirect(url_for('my_appointments'))
+    
+    doctor = data_handler.get_doctor_by_id(appointment['doctor_id'])
+    
+    if request.method == 'POST':
+        new_date = request.form.get('date')
+        new_time = request.form.get('time')
+        
+        if not all([new_date, new_time]):
+            flash('Please select both date and time.', 'danger')
+            return redirect(url_for('reschedule_appointment', appointment_id=appointment_id))
+        
+        # Check if new slot is available
+        if data_handler.is_slot_booked(appointment['doctor_id'], new_date, new_time):
+            flash('Selected time slot is not available. Please choose another slot.', 'danger')
+            return redirect(url_for('reschedule_appointment', appointment_id=appointment_id))
+        
+        # Update appointment with new date and time
+        update_data = {
+            'date': new_date,
+            'time': new_time,
+            'rescheduled_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+        
+        success = data_handler.update_appointment(appointment_id, update_data)
+        
+        if success:
+            flash('Appointment rescheduled successfully!', 'success')
+            return redirect(url_for('my_appointments'))
+        else:
+            flash('Failed to reschedule appointment.', 'danger')
+    
+    # Generate available dates (next 30 days, starting from today)
+    today = datetime.now().date()
+    available_dates = [(today + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(0, 30)]
+    
+    # Get booked slots for this doctor
+    doctor_appointments = data_handler.get_appointments_by_doctor(appointment['doctor_id'])
+    booked_slots = {}
+    past_slots = {}
+    urgent_slots = {}
+    
+    for appt in doctor_appointments:
+        # Exclude current appointment from booked slots (since it will be released)
+        if appt['id'] == appointment_id:
+            continue
+            
+        if appt['status'] in ['confirmed', 'pending_payment']:
+            key = f"{appt['date']}_{appt['time']}"
+            booked_slots[key] = True
+    
+    # Mark past slots
+    for date_str in available_dates:
+        for slot in TIME_SLOTS:
+            slot_key = f"{date_str}_{slot}"
+            if is_slot_in_past(date_str, slot):
+                past_slots[slot_key] = True
+            elif is_slot_within_hour(date_str, slot):
+                urgent_slots[slot_key] = True
+    
+    return render_template('reschedule_appointment.html',
+                         appointment=appointment,
+                         doctor=doctor,
+                         available_dates=available_dates,
+                         time_slots=TIME_SLOTS,
+                         booked_slots=booked_slots,
+                         past_slots=past_slots,
+                         urgent_slots=urgent_slots)
+
+# Payment Routes
+@app.route('/payment/<appointment_id>')
+def payment_page(appointment_id):
+    """Show payment options page"""
+    if 'user_id' not in session:
+        flash('Please login to continue.', 'warning')
+        return redirect(url_for('login'))
+    
+    appointment = data_handler.get_appointment_by_id(appointment_id)
+    
+    if not appointment or appointment['user_id'] != session['user_id']:
+        flash('Appointment not found!', 'danger')
+        return redirect(url_for('doctors_list'))
+    
+    # Check if already paid
+    if appointment.get('payment_status') == 'Success':
+        flash('This appointment has already been paid for.', 'info')
+        return redirect(url_for('appointment_confirmation', appointment_id=appointment_id))
+    
+    doctor = data_handler.get_doctor_by_id(appointment['doctor_id'])
+    
+    return render_template('payment.html', appointment=appointment, doctor=doctor)
+
+@app.route('/payment/process/<appointment_id>', methods=['POST'])
+def process_payment(appointment_id):
+    """Process payment for appointment"""
+    if 'user_id' not in session:
+        flash('Please login to continue.', 'warning')
+        return redirect(url_for('login'))
+    
+    appointment = data_handler.get_appointment_by_id(appointment_id)
+    
+    if not appointment or appointment['user_id'] != session['user_id']:
+        flash('Appointment not found!', 'danger')
+        return redirect(url_for('doctors_list'))
+    
+    payment_method = request.form.get('payment_method')
+    
+    if not payment_method:
+        flash('Please select a payment method!', 'danger')
+        return redirect(url_for('payment_page', appointment_id=appointment_id))
+    
+    # Mock payment processing
+    transaction_id = f"TXN{uuid.uuid4().hex[:12].upper()}"
+    
+    if payment_method == 'pay_at_clinic':
+        # Pay at clinic - keep status as pending
+        payment_data = {
+            'payment_method': 'Pay-at-Clinic',
+            'payment_status': 'Pending',
+            'transaction_id': transaction_id,
+            'status': 'confirmed'  # Confirm appointment but payment pending
+        }
+    else:
+        # Simulate 90% success rate for other payment methods
+        import random
+        payment_success = random.random() < 0.9
+        
+        if payment_success:
+            payment_data = {
+                'payment_method': payment_method.replace('_', ' ').title(),
+                'payment_status': 'Success',
+                'transaction_id': transaction_id,
+                'paid_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'status': 'confirmed'
+            }
+        else:
+            # Payment failed - cancel appointment to free slot
+            payment_data = {
+                'payment_method': payment_method.replace('_', ' ').title(),
+                'payment_status': 'Failed',
+                'transaction_id': transaction_id,
+                'status': 'cancelled'
+            }
+    
+    # Update appointment
+    data_handler.update_appointment(appointment_id, payment_data)
+    
+    if payment_data['payment_status'] == 'Failed':
+        return redirect(url_for('payment_failed', appointment_id=appointment_id))
+    else:
+        return redirect(url_for('payment_success', appointment_id=appointment_id))
+
+@app.route('/payment/success/<appointment_id>')
+def payment_success(appointment_id):
+    """Payment success page"""
+    if 'user_id' not in session:
+        flash('Please login to continue.', 'warning')
+        return redirect(url_for('login'))
+    
+    appointment = data_handler.get_appointment_by_id(appointment_id)
+    
+    if not appointment or appointment['user_id'] != session['user_id']:
+        flash('Appointment not found!', 'danger')
+        return redirect(url_for('doctors_list'))
+    
+    return render_template('payment_success.html', appointment=appointment)
+
+@app.route('/payment/failed/<appointment_id>')
+def payment_failed(appointment_id):
+    """Payment failed page"""
+    if 'user_id' not in session:
+        flash('Please login to continue.', 'warning')
+        return redirect(url_for('login'))
+    
+    appointment = data_handler.get_appointment_by_id(appointment_id)
+    
+    if not appointment or appointment['user_id'] != session['user_id']:
+        flash('Appointment not found!', 'danger')
+        return redirect(url_for('doctors_list'))
+    
+    doctor = data_handler.get_doctor_by_id(appointment['doctor_id'])
+    
+    return render_template('payment_failed.html', appointment=appointment, doctor=doctor)
 
 # Symptom to specialization mapping
 SYMPTOM_SPECIALIZATION_MAP = {

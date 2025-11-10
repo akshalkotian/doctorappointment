@@ -40,25 +40,44 @@
                         <a class="nav-link px-3" href="{{ url_for('home') }}">Home</a>
                     </li>
                     {% if session.user_id %}
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="{{ url_for('find_doctor') }}">
-                            <i class="fas fa-stethoscope me-1"></i>Find My Doctor
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="{{ url_for('doctors_list') }}">
-                            <i class="fas fa-search me-1"></i>Browse Doctors
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="{{ url_for('my_appointments') }}">
-                            <i class="fas fa-calendar-check me-1"></i>My Appointments
-                        </a>
-                    </li>
+                        {% if session.user_role == 'admin' %}
+                        <!-- Admin Navigation -->
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{{ url_for('admin_dashboard') }}">
+                                <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{{ url_for('admin_timetable') }}">
+                                <i class="fas fa-calendar-alt me-1"></i>Timetable
+                            </a>
+                        </li>
+                        {% else %}
+                        <!-- Patient Navigation -->
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{{ url_for('find_doctor') }}">
+                                <i class="fas fa-stethoscope me-1"></i>Find My Doctor
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{{ url_for('doctors_list') }}">
+                                <i class="fas fa-search me-1"></i>Browse Doctors
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3" href="{{ url_for('my_appointments') }}">
+                                <i class="fas fa-calendar-check me-1"></i>My Appointments
+                            </a>
+                        </li>
+                        {% endif %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center px-3" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             <div class="user-avatar me-2">
+                                {% if session.user_role == 'admin' %}
+                                <i class="fas fa-user-shield"></i>
+                                {% else %}
                                 <i class="fas fa-user"></i>
+                                {% endif %}
                             </div>
                             {{ session.user_name }}
                         </a>
@@ -72,7 +91,12 @@
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="{{ url_for('login') }}">Login</a>
+                        <a class="nav-link px-3" href="{{ url_for('login') }}">Patient Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 text-danger" href="{{ url_for('admin_login') }}">
+                            <i class="fas fa-user-shield me-1"></i>Admin
+                        </a>
                     </li>
                     <li class="nav-item ms-lg-2">
                         <a class="btn btn-primary rounded-pill px-4" href="{{ url_for('register') }}">

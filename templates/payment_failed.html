@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Failed - HealthCare Plus{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-lg text-center">
+                <div class="card-body p-5">
+                    <!-- Failed Icon -->
+                    <div class="mb-4">
+                        <div class="error-icon">
+                            <i class="fas fa-times-circle text-danger" style="font-size: 80px;"></i>
+                        </div>
+                    </div>
+
+                    <h2 class="fw-bold text-danger mb-3">Payment Failed</h2>
+                    <p class="text-muted mb-4">
+                        Unfortunately, your payment could not be processed. The appointment slot has been released.
+                    </p>
+
+                    <!-- Failed Details -->
+                    <div class="card bg-light border-0 mb-4">
+                        <div class="card-body">
+                            <div class="row text-start">
+                                <div class="col-6 mb-3">
+                                    <p class="text-muted mb-1 small">Transaction ID</p>
+                                    <p class="fw-semibold mb-0 small">{{ appointment.transaction_id }}</p>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <p class="text-muted mb-1 small">Status</p>
+                                    <p class="mb-0">
+                                        <span class="badge bg-danger">Failed</span>
+                                    </p>
+                                </div>
+                                <div class="col-12">
+                                    <p class="text-muted mb-1 small">Doctor</p>
+                                    <p class="fw-semibold mb-0">{{ appointment.doctor_name }}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-muted mb-1 small">Date</p>
+                                    <p class="fw-semibold mb-0">{{ appointment.date }}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-muted mb-1 small">Time</p>
+                                    <p class="fw-semibold mb-0">{{ appointment.time }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Possible Reasons -->
+                    <div class="alert alert-warning text-start mb-4">
+                        <h6 class="fw-semibold mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Possible Reasons</h6>
+                        <ul class="mb-0 small">
+                            <li>Insufficient balance in your account</li>
+                            <li>Payment gateway timeout</li>
+                            <li>Incorrect payment details</li>
+                            <li>Bank server issues</li>
+                        </ul>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" 
+                           class="btn btn-primary btn-lg rounded-pill">
+                            <i class="fas fa-redo me-2"></i>Try Booking Again
+                        </a>
+                        <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-secondary rounded-pill">
+                            <i class="fas fa-home me-2"></i>Back to Home
+                        </a>
+                    </div>
+
+                    <!-- Help Section -->
+                    <div class="mt-4 pt-4 border-top">
+                        <p class="text-muted mb-2 small">Need help?</p>
+                        <p class="mb-0">
+                            <a href="#" class="text-primary text-decoration-none me-3">
+                                <i class="fas fa-phone me-1"></i>+1-555-HEALTH
+                            </a>
+                            <a href="#" class="text-primary text-decoration-none">
+                                <i class="fas fa-envelope me-1"></i>support@healthcareplus.com
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

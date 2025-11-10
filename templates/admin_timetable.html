@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Timetable - HealthCare Plus{% endblock %}
+
+{% block extra_css %}
+<style>
+    .slot-card {
+        border-radius: 10px;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+    .slot-available {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    .slot-booked {
+        background: #f3f4f6;
+        border: 2px solid #e5e7eb;
+        color: #374151;
+    }
+    .slot-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold mb-1"><i class="fas fa-calendar-alt text-danger me-2"></i>Daily Timetable</h2>
+                    <p class="text-muted mb-0">View all slots for selected doctor and date</p>
+                </div>
+                <div>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form method="GET" action="{{ url_for('admin_timetable') }}" class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Select Doctor</label>
+                            <select name="doctor" class="form-select form-select-lg" onchange="this.form.submit()">
+                                {% for doctor in doctors %}
+                                <option value="{{ doctor.id }}" {% if doctor_id == doctor.id %}selected{% endif %}>
+                                    {{ doctor.name }} - {{ doctor.specialization }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Select Date</label>
+                            <input type="date" name="date" class="form-select form-select-lg" value="{{ date }}" onchange="this.form.submit()">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if selected_doctor %}
+    <!-- Doctor Info & Stats -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="me-4">
+                            <img src="{{ selected_doctor.image }}" alt="{{ selected_doctor.name }}" 
+                                 class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-1">{{ selected_doctor.name }}</h4>
+                            <p class="text-muted mb-2">{{ selected_doctor.specialization }}</p>
+                            <p class="mb-0">
+                                <span class="badge bg-primary me-2">
+                                    <i class="fas fa-graduation-cap me-1"></i>{{ selected_doctor.qualification }}
+                                </span>
+                                <span class="badge bg-success">
+                                    <i class="fas fa-briefcase me-1"></i>{{ selected_doctor.experience }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div class="card-body text-white d-flex flex-column justify-content-center">
+                    <h6 class="opacity-75 mb-2">Bookings for {{ date }}</h6>
+                    <h2 class="fw-bold mb-0">{{ booking_count }} / {{ time_slots|length }}</h2>
+                    <div class="progress mt-3" style="height: 8px;">
+                        <div class="progress-bar bg-white" role="progressbar" 
+                             style="width: {{ (booking_count / time_slots|length * 100)|round }}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timetable Slots -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-semibold">
+                        <i class="fas fa-clock me-2 text-primary"></i>Time Slots
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        {% for time_slot in time_slots %}
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            {% if slot_status[time_slot].status == 'Past' %}
+                            <!-- Past Slot -->
+                            <div class="slot-card p-4 text-center" style="background: #f3f4f6; opacity: 0.6;">
+                                <div class="fs-3 mb-2 text-muted">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <h5 class="fw-bold mb-1 text-muted">{{ time_slot }}</h5>
+                                <p class="mb-0 small text-muted">Slot Over</p>
+                            </div>
+                            {% elif slot_status[time_slot].status == 'Available' %}
+                            <!-- Available Slot -->
+                            <div class="slot-card slot-available p-4 text-center">
+                                <div class="fs-3 mb-2">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <h5 class="fw-bold mb-1">{{ time_slot }}</h5>
+                                <p class="mb-0 small opacity-75">Available</p>
+                            </div>
+                            {% else %}
+                            <!-- Booked Slot -->
+                            {% set appt = slot_status[time_slot].appointment %}
+                            <div class="slot-card slot-booked p-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="fw-bold mb-0">{{ time_slot }}</h6>
+                                    <span class="badge bg-danger">Booked</span>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="small fw-semibold text-primary">
+                                        <i class="fas fa-user me-1"></i>{{ appt.user_name }}
+                                    </div>
+                                    <div class="small text-muted">{{ appt.user_email }}</div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="small">
+                                        <strong>Reason:</strong> {{ appt.reason[:30] }}{% if appt.reason|length > 30 %}...{% endif %}
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        {% if appt.time_status == 'upcoming' %}
+                                        <span class="badge bg-primary badge-sm">Upcoming</span>
+                                        {% elif appt.time_status == 'completed' %}
+                                        <span class="badge bg-success badge-sm">Completed</span>
+                                        {% elif appt.time_status == 'missed' %}
+                                        <span class="badge bg-warning badge-sm">Missed</span>
+                                        {% endif %}
+                                        {% if appt.payment_status == 'Success' %}
+                                        <span class="badge bg-success badge-sm">Paid</span>
+                                        {% elif appt.payment_status == 'Pending' %}
+                                        <span class="badge bg-warning badge-sm">Pending</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="btn-group btn-group-sm">
+                                        {% if appt.time_status == 'upcoming' and appt.status == 'confirmed' %}
+                                        <form method="POST" action="{{ url_for('admin_cancel_appointment', appointment_id=appt.id) }}" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Cancel">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                        {% if appt.payment_status == 'Pending' and appt.payment_method == 'Pay-at-Clinic' %}
+                                        <form method="POST" action="{{ url_for('admin_mark_paid', appointment_id=appt.id) }}" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-success" title="Mark Paid">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="fw-semibold mb-3">Legend:</h6>
+                    <div class="d-flex flex-wrap gap-4">
+                        <div class="d-flex align-items-center">
+                            <div style="width: 20px; height: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" class="rounded me-2"></div>
+                            <span>Available Slot</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div style="width: 20px; height: 20px; background: #f3f4f6; border: 2px solid #e5e7eb;" class="rounded me-2"></div>
+                            <span>Booked Slot</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

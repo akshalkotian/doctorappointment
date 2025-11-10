@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Payment - HealthCare Plus{% endblock %}
+
+{% block extra_css %}
+<style>
+    .payment-method {
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .payment-method:hover {
+        border-color: #4f46e5;
+        background-color: #f9fafb;
+        transform: translateY(-2px);
+    }
+    .payment-method input[type="radio"]:checked + label {
+        border-color: #4f46e5;
+        background-color: #eef2ff;
+    }
+    .payment-icon {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Appointment Summary -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-receipt me-2"></i>Appointment Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1 small">Doctor</p>
+                            <p class="fw-semibold mb-0">{{ doctor.name }}</p>
+                            <p class="text-muted small">{{ doctor.specialization }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1 small">Patient</p>
+                            <p class="fw-semibold mb-0">{{ appointment.user_name }}</p>
+                            <p class="text-muted small">{{ appointment.user_email }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1 small">Appointment Date</p>
+                            <p class="fw-semibold mb-0"><i class="fas fa-calendar text-primary me-2"></i>{{ appointment.date }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1 small">Appointment Time</p>
+                            <p class="fw-semibold mb-0"><i class="fas fa-clock text-primary me-2"></i>{{ appointment.time }}</p>
+                        </div>
+                        <div class="col-12">
+                            <p class="text-muted mb-1 small">Reason for Visit</p>
+                            <p class="fw-semibold mb-0">{{ appointment.reason }}</p>
+                        </div>
+                    </div>
+                    <hr class="my-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Consultation Fee</h5>
+                        <h4 class="mb-0 text-primary fw-bold">₹500</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-semibold"><i class="fas fa-credit-card me-2"></i>Select Payment Method</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('process_payment', appointment_id=appointment.id) }}">
+                        <div class="row g-3">
+                            <!-- UPI Payment -->
+                            <div class="col-md-6">
+                                <input type="radio" name="payment_method" value="upi" id="upi" class="d-none" required>
+                                <label for="upi" class="payment-method w-100 text-center">
+                                    <div class="payment-icon text-primary">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <h6 class="fw-semibold mb-1">UPI Payment</h6>
+                                    <p class="text-muted small mb-0">PhonePe, GPay, Paytm</p>
+                                </label>
+                            </div>
+
+                            <!-- Card Payment -->
+                            <div class="col-md-6">
+                                <input type="radio" name="payment_method" value="card" id="card" class="d-none">
+                                <label for="card" class="payment-method w-100 text-center">
+                                    <div class="payment-icon text-success">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                    <h6 class="fw-semibold mb-1">Card Payment</h6>
+                                    <p class="text-muted small mb-0">Credit / Debit Card</p>
+                                </label>
+                            </div>
+
+                            <!-- Net Banking -->
+                            <div class="col-md-6">
+                                <input type="radio" name="payment_method" value="netbanking" id="netbanking" class="d-none">
+                                <label for="netbanking" class="payment-method w-100 text-center">
+                                    <div class="payment-icon text-info">
+                                        <i class="fas fa-university"></i>
+                                    </div>
+                                    <h6 class="fw-semibold mb-1">Net Banking</h6>
+                                    <p class="text-muted small mb-0">All major banks</p>
+                                </label>
+                            </div>
+
+                            <!-- Wallet -->
+                            <div class="col-md-6">
+                                <input type="radio" name="payment_method" value="wallet" id="wallet" class="d-none">
+                                <label for="wallet" class="payment-method w-100 text-center">
+                                    <div class="payment-icon text-warning">
+                                        <i class="fas fa-wallet"></i>
+                                    </div>
+                                    <h6 class="fw-semibold mb-1">Wallet</h6>
+                                    <p class="text-muted small mb-0">Paytm, PhonePe Wallet</p>
+                                </label>
+                            </div>
+
+                            <!-- Pay at Clinic -->
+                            <div class="col-12">
+                                <input type="radio" name="payment_method" value="pay_at_clinic" id="pay_at_clinic" class="d-none">
+                                <label for="pay_at_clinic" class="payment-method w-100 text-center">
+                                    <div class="payment-icon text-secondary">
+                                        <i class="fas fa-hospital"></i>
+                                    </div>
+                                    <h6 class="fw-semibold mb-1">Pay at Clinic</h6>
+                                    <p class="text-muted small mb-0">Pay cash at the clinic during your visit</p>
+                                    <div class="alert alert-info mt-3 mb-0 small">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Your appointment will be confirmed, but payment will be marked as pending until you pay at the clinic.
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow">
+                                <i class="fas fa-lock me-2"></i>Proceed to Pay ₹500
+                            </button>
+                            <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-secondary rounded-pill">
+                                Cancel
+                            </a>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <p class="text-muted small mb-0">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Your payment information is secure and encrypted
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Add click handler for better UX
+    document.querySelectorAll('.payment-method').forEach(label => {
+        label.addEventListener('click', function() {
+            document.querySelectorAll('.payment-method').forEach(l => {
+                l.style.borderColor = '#e5e7eb';
+                l.style.backgroundColor = 'white';
+            });
+            this.style.borderColor = '#4f46e5';
+            this.style.backgroundColor = '#eef2ff';
+        });
+    });
+</script>
+{% endblock %}
+

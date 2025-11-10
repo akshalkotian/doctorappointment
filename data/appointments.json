@@ -5,12 +5,16 @@
         "user_email": "123@gmail.com",
         "user_name": "123",
         "doctor_id": "doc1",
-        "doctor_name": "Dr. Sarah Johnson",
+        "doctor_name": "Dr. Rajesh Kumar Sharma",
         "date": "2025-10-18",
         "time": "09:00 AM",
         "reason": "hvjbkjn,m.",
         "status": "confirmed",
-        "booked_at": "2025-10-12 22:37:56"
+        "booked_at": "2025-10-12 22:37:56",
+        "payment_status": "Success",
+        "payment_method": "UPI",
+        "transaction_id": "TXN1234567890AB",
+        "paid_at": "2025-10-12 22:38:00"
     },
     {
         "id": "0d027ca0-ea37-477c-a086-422267c7f4c7",
@@ -23,6 +27,27 @@
         "time": "03:00 PM",
         "reason": "asdasd",
         "status": "confirmed",
-        "booked_at": "2025-10-12 23:05:06"
+        "booked_at": "2025-10-12 23:05:06",
+        "payment_status": "Success",
+        "payment_method": "Card",
+        "transaction_id": "TXN0987654321CD",
+        "paid_at": "2025-10-12 23:05:10"
+    },
+    {
+        "id": "f6702c2d-4696-4ca5-864c-186e139e28f7",
+        "user_id": "89edd03f-3d04-4920-a23c-d485e21619c7",
+        "user_email": "123@gmail.com",
+        "user_name": "123",
+        "doctor_id": "doc2",
+        "doctor_name": "Dr. Amit Singh Rathore",
+        "date": "2025-11-12",
+        "time": "10:00 AM",
+        "reason": "jnk,m,",
+        "status": "confirmed",
+        "booked_at": "2025-11-10 20:30:37",
+        "payment_status": "Success",
+        "payment_method": "Upi",
+        "transaction_id": "TXN976705ED0093",
+        "paid_at": "2025-11-10 20:30:44"
     }
 ]
