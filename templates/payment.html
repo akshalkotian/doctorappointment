@@ -192,85 +192,90 @@
 </div>
 
 <script>
-    // Payment method selection and dynamic input fields
-    const paymentInputsDiv = document.getElementById('paymentInputs');
-    const upiInputsDiv = document.getElementById('upiInputs');
-    const cardInputsDiv = document.getElementById('cardInputs');
-    const netbankingInputsDiv = document.getElementById('netbankingInputs');
-    const payButton = document.getElementById('payButton');
+// Payment method selection with proper show/hide logic
+const paymentInputsDiv = document.getElementById('paymentInputs');
+const upiInputsDiv = document.getElementById('upiInputs');
+const cardInputsDiv = document.getElementById('cardInputs');
+const netbankingInputsDiv = document.getElementById('netbankingInputs');
+const payButton = document.getElementById('payButton');
 
-    // Add click handler for payment method selection
-    document.querySelectorAll('.payment-method').forEach(label => {
-        label.addEventListener('click', function() {
-            // Update UI
-            document.querySelectorAll('.payment-method').forEach(l => {
-                l.style.borderColor = '#e5e7eb';
-                l.style.backgroundColor = 'white';
-            });
-            this.style.borderColor = '#4f46e5';
-            this.style.backgroundColor = '#eef2ff';
-
-            // Get selected payment method
-            const selectedMethod = document.querySelector('input[name="payment_method"]:checked').value;
-
-            // Hide all input divs
-            paymentInputsDiv.style.display = 'none';
-            upiInputsDiv.style.display = 'none';
-            cardInputsDiv.style.display = 'none';
-            netbankingInputsDiv.style.display = 'none';
-
-            // Clear all inputs
-            document.getElementById('upiIdInput').value = '';
-            document.getElementById('upiIdInput').required = false;
-            document.getElementById('cardNumberInput').value = '';
-            document.getElementById('cardNumberInput').required = false;
-            document.getElementById('cardExpiryInput').value = '';
-            document.getElementById('cardExpiryInput').required = false;
-            document.getElementById('cardCvvInput').value = '';
-            document.getElementById('cardCvvInput').required = false;
-            document.getElementById('bankNameInput').value = '';
-            document.getElementById('bankNameInput').required = false;
-
-            // Show appropriate input fields
-            paymentInputsDiv.style.display = 'block';
-            if (selectedMethod === 'upi') {
-                upiInputsDiv.style.display = 'block';
-                document.getElementById('upiIdInput').required = true;
-                payButton.disabled = false;
-            } else if (selectedMethod === 'card') {
-                cardInputsDiv.style.display = 'block';
-                document.getElementById('cardNumberInput').required = true;
-                document.getElementById('cardExpiryInput').required = true;
-                document.getElementById('cardCvvInput').required = true;
-                payButton.disabled = false;
-            } else if (selectedMethod === 'netbanking') {
-                netbankingInputsDiv.style.display = 'block';
-                document.getElementById('bankNameInput').required = true;
-                payButton.disabled = false;
-            }
+// Radio button change handlers
+document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const selectedMethod = this.value;
+        
+        // Update visual styling
+        document.querySelectorAll('.payment-method').forEach(l => {
+            l.style.borderColor = '#e5e7eb';
+            l.style.backgroundColor = 'white';
         });
-    });
+        this.nextElementSibling.style.borderColor = '#4f46e5';
+        this.nextElementSibling.style.backgroundColor = '#eef2ff';
 
-    // Format card number input
-    document.getElementById('cardNumberInput').addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\s/g, '');
-        let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-        e.target.value = formattedValue;
-    });
+        // Hide ALL payment input sections first
+        upiInputsDiv.style.display = 'none';
+        cardInputsDiv.style.display = 'none';
+        netbankingInputsDiv.style.display = 'none';
 
-    // Format expiry date input
-    document.getElementById('cardExpiryInput').addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length >= 2) {
-            value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        // Clear all inputs and remove required attributes
+        document.getElementById('upiIdInput').value = '';
+        document.getElementById('upiIdInput').required = false;
+        document.getElementById('cardNumberInput').value = '';
+        document.getElementById('cardNumberInput').required = false;
+        document.getElementById('cardExpiryInput').value = '';
+        document.getElementById('cardExpiryInput').required = false;
+        document.getElementById('cardCvvInput').value = '';
+        document.getElementById('cardCvvInput').required = false;
+        document.getElementById('bankNameInput').value = '';
+        document.getElementById('bankNameInput').required = false;
+
+        // Show ONLY the selected payment method's input fields
+        paymentInputsDiv.style.display = 'block';
+        
+        if (selectedMethod === 'upi') {
+            upiInputsDiv.style.display = 'block';
+            cardInputsDiv.style.display = 'none';  // Explicitly hide others
+            netbankingInputsDiv.style.display = 'none';
+            document.getElementById('upiIdInput').required = true;
+            payButton.disabled = false;
+        } else if (selectedMethod === 'card') {
+            upiInputsDiv.style.display = 'none';  // Explicitly hide others
+            cardInputsDiv.style.display = 'block';
+            netbankingInputsDiv.style.display = 'none';
+            document.getElementById('cardNumberInput').required = true;
+            document.getElementById('cardExpiryInput').required = true;
+            document.getElementById('cardCvvInput').required = true;
+            payButton.disabled = false;
+        } else if (selectedMethod === 'netbanking') {
+            upiInputsDiv.style.display = 'none';  // Explicitly hide others
+            cardInputsDiv.style.display = 'none';
+            netbankingInputsDiv.style.display = 'block';
+            document.getElementById('bankNameInput').required = true;
+            payButton.disabled = false;
         }
-        e.target.value = value;
     });
+});
 
-    // Only allow numbers for CVV
-    document.getElementById('cardCvvInput').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/\D/g, '');
-    });
+// Format card number input (auto-spacing)
+document.getElementById('cardNumberInput').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+    e.target.value = formattedValue;
+});
+
+// Format expiry date input (MM/YY)
+document.getElementById('cardExpiryInput').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    e.target.value = value;
+});
+
+// Only allow numbers for CVV
+document.getElementById('cardCvvInput').addEventListener('input', function(e) {
+    e.target.value = e.target.value.replace(/\D/g, '');
+});
 </script>
 {% endblock %}
 

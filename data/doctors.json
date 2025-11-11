@@ -10,7 +10,7 @@
         "hospital_id": "hosp1",
         "email": "dr.rajesh@apollo.com",
         "phone": "+91-98765-43210",
-        "image": "https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Expert in interventional cardiology and heart disease management."
     },
     {
@@ -24,7 +24,7 @@
         "hospital_id": "hosp1",
         "email": "dr.priya@apollo.com",
         "phone": "+91-98765-43211",
-        "image": "https://images.unsplash.com/photo-1603597843475-4c0700868a2f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Specializes in stroke management and neurological disorders."
     },
     {
@@ -38,7 +38,7 @@
         "hospital_id": "hosp1",
         "email": "dr.amit@apollo.com",
         "phone": "+91-98765-43212",
-        "image": "https://images.pexels.com/photos/5214997/pexels-photo-5214997.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Expert in joint replacement and sports medicine."
     },
     {
@@ -52,7 +52,7 @@
         "hospital_id": "hosp1",
         "email": "dr.meera@apollo.com",
         "phone": "+91-98765-43213",
-        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Child specialist with focus on preventive care and vaccinations."
     },
     {
@@ -66,7 +66,7 @@
         "hospital_id": "hosp1",
         "email": "dr.suresh@apollo.com",
         "phone": "+91-98765-43214",
-        "image": "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced physician for general health concerns and chronic diseases."
     },
     {
@@ -80,7 +80,7 @@
         "hospital_id": "hosp1",
         "email": "dr.anjali@apollo.com",
         "phone": "+91-98765-43215",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Skin specialist with expertise in cosmetic dermatology."
     },
     {
@@ -94,7 +94,7 @@
         "hospital_id": "hosp1",
         "email": "dr.vikram@apollo.com",
         "phone": "+91-98765-43216",
-        "image": "https://images.unsplash.com/photo-1603597843236-056ce8141ff3?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Expert in ear, nose, and throat disorders."
     },
     {
@@ -108,7 +108,7 @@
         "hospital_id": "hosp1",
         "email": "dr.kavita@apollo.com",
         "phone": "+91-98765-43217",
-        "image": "https://images.pexels.com/photos/4167540/pexels-photo-4167540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Women's health specialist with focus on prenatal care."
     },
     {
@@ -122,7 +122,7 @@
         "hospital_id": "hosp1",
         "email": "dr.arjun@apollo.com",
         "phone": "+91-98765-43218",
-        "image": "https://images.unsplash.com/photo-1584515933610-d02c892b1572?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Mental health specialist with expertise in anxiety and depression."
     },
     {
@@ -136,7 +136,7 @@
         "hospital_id": "hosp1",
         "email": "dr.deepa@apollo.com",
         "phone": "+91-98765-43219",
-        "image": "https://images.pexels.com/photos/4173251/pexels-photo-4173251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Dental surgeon specializing in cosmetic dentistry."
     },
     {
@@ -150,7 +150,7 @@
         "hospital_id": "hosp2",
         "email": "dr.ramesh@fortis.com",
         "phone": "+91-98765-43220",
-        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d10?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Expert in digestive system disorders and endoscopy."
     },
     {
@@ -164,7 +164,7 @@
         "hospital_id": "hosp2",
         "email": "dr.shalini@fortis.com",
         "phone": "+91-98765-43221",
-        "image": "https://images.pexels.com/photos/4167544/pexels-photo-4167544.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Skin and hair specialist with modern treatment approaches."
     },
     {
@@ -178,7 +178,7 @@
         "hospital_id": "hosp2",
         "email": "dr.karthik@fortis.com",
         "phone": "+91-98765-43222",
-        "image": "https://images.unsplash.com/photo-1603597843440-2708f5d02319?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced surgeon in laparoscopic and general surgeries."
     },
     {
@@ -192,7 +192,7 @@
         "hospital_id": "hosp2",
         "email": "dr.pooja@fortis.com",
         "phone": "+91-98765-43223",
-        "image": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Child health expert with special interest in nutrition."
     },
     {
@@ -206,7 +206,7 @@
         "hospital_id": "hosp2",
         "email": "dr.anil@fortis.com",
         "phone": "+91-98765-43224",
-        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Senior cardiologist with expertise in complex heart procedures."
     },
     {
@@ -220,7 +220,7 @@
         "hospital_id": "hosp2",
         "email": "dr.tanvi@fortis.com",
         "phone": "+91-98765-43225",
-        "image": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Cancer specialist with focus on chemotherapy."
     },
     {
@@ -234,7 +234,7 @@
         "hospital_id": "hosp2",
         "email": "dr.naveen@fortis.com",
         "phone": "+91-98765-43226",
-        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "ENT surgeon specializing in sinus treatments."
     },
     {
@@ -248,7 +248,7 @@
         "hospital_id": "hosp2",
         "email": "dr.lakshmi@fortis.com",
         "phone": "+91-98765-43227",
-        "image": "https://images.pexels.com/photos/4173239/pexels-photo-4173239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Neurologist with expertise in epilepsy management."
     },
     {
@@ -262,7 +262,7 @@
         "hospital_id": "hosp2",
         "email": "dr.harish@fortis.com",
         "phone": "+91-98765-43228",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Orthopedic surgeon specializing in knee replacements."
     },
     {
@@ -276,7 +276,7 @@
         "hospital_id": "hosp2",
         "email": "dr.sneha@fortis.com",
         "phone": "+91-98765-43229",
-        "image": "https://images.pexels.com/photos/7659564/pexels-photo-7659564.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Primary care physician for routine health concerns."
     },
     {
@@ -290,7 +290,7 @@
         "hospital_id": "hosp3",
         "email": "dr.nisha@hospital.com",
         "phone": "+91-98765-40021",
-        "image": "https://images.unsplash.com/photo-1603597843475-4c0700868a2f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced nephrologist with expertise in nephrology."
     },
     {
@@ -304,7 +304,7 @@
         "hospital_id": "hosp3",
         "email": "dr.sandeep@hospital.com",
         "phone": "+91-98765-40022",
-        "image": "https://images.pexels.com/photos/5407206/pexels-photo-5407206.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced psychiatrist with expertise in psychiatry."
     },
     {
@@ -318,7 +318,7 @@
         "hospital_id": "hosp3",
         "email": "dr.lakshmi@hospital.com",
         "phone": "+91-98765-40023",
-        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -332,7 +332,7 @@
         "hospital_id": "hosp3",
         "email": "dr.ravi@hospital.com",
         "phone": "+91-98765-40024",
-        "image": "https://images.pexels.com/photos/6129100/pexels-photo-6129100.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -346,7 +346,7 @@
         "hospital_id": "hosp3",
         "email": "dr.sneha@hospital.com",
         "phone": "+91-98765-40025",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -360,7 +360,7 @@
         "hospital_id": "hosp3",
         "email": "dr.manoj@hospital.com",
         "phone": "+91-98765-40026",
-        "image": "https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -374,7 +374,7 @@
         "hospital_id": "hosp3",
         "email": "dr.anita@hospital.com",
         "phone": "+91-98765-40027",
-        "image": "https://images.pexels.com/photos/4167540/pexels-photo-4167540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -388,7 +388,7 @@
         "hospital_id": "hosp3",
         "email": "dr.kiran@hospital.com",
         "phone": "+91-98765-40028",
-        "image": "https://images.pexels.com/photos/5214997/pexels-photo-5214997.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced dentist with expertise in dental."
     },
     {
@@ -402,7 +402,7 @@
         "hospital_id": "hosp4",
         "email": "dr.ashok@hospital.com",
         "phone": "+91-98765-40029",
-        "image": "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced neurologist with expertise in neurology."
     },
     {
@@ -416,7 +416,7 @@
         "hospital_id": "hosp4",
         "email": "dr.sunita@hospital.com",
         "phone": "+91-98765-40030",
-        "image": "https://images.pexels.com/photos/4173251/pexels-photo-4173251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Experienced gynecologist with expertise in gynecology."
     },
     {
@@ -430,7 +430,7 @@
         "hospital_id": "hosp4",
         "email": "dr.manoj@hospital.com",
         "phone": "+91-98765-40031",
-        "image": "https://images.unsplash.com/photo-1603597843236-056ce8141ff3?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -444,7 +444,7 @@
         "hospital_id": "hosp4",
         "email": "dr.divya@hospital.com",
         "phone": "+91-98765-40032",
-        "image": "https://images.pexels.com/photos/4167544/pexels-photo-4167544.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -458,7 +458,7 @@
         "hospital_id": "hosp4",
         "email": "dr.rahul@hospital.com",
         "phone": "+91-98765-40033",
-        "image": "https://images.unsplash.com/photo-1584515933610-d02c892b1572?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -472,7 +472,7 @@
         "hospital_id": "hosp4",
         "email": "dr.priti@hospital.com",
         "phone": "+91-98765-40034",
-        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d10?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -486,7 +486,7 @@
         "hospital_id": "hosp4",
         "email": "dr.sanjay@hospital.com",
         "phone": "+91-98765-40035",
-        "image": "https://images.unsplash.com/photo-1603597843440-2708f5d02319?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -500,7 +500,7 @@
         "hospital_id": "hosp4",
         "email": "dr.neha@hospital.com",
         "phone": "+91-98765-40036",
-        "image": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -514,7 +514,7 @@
         "hospital_id": "hosp5",
         "email": "dr.varun@hospital.com",
         "phone": "+91-98765-40037",
-        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -528,7 +528,7 @@
         "hospital_id": "hosp5",
         "email": "dr.rekha@hospital.com",
         "phone": "+91-98765-40038",
-        "image": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -542,7 +542,7 @@
         "hospital_id": "hosp5",
         "email": "dr.satish@hospital.com",
         "phone": "+91-98765-40039",
-        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced general surgeon with expertise in general surgery."
     },
     {
@@ -556,7 +556,7 @@
         "hospital_id": "hosp5",
         "email": "dr.swati@hospital.com",
         "phone": "+91-98765-40040",
-        "image": "https://images.pexels.com/photos/4173239/pexels-photo-4173239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Experienced oncologist with expertise in oncology."
     },
     {
@@ -570,7 +570,7 @@
         "hospital_id": "hosp5",
         "email": "dr.rajiv@hospital.com",
         "phone": "+91-98765-40041",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -584,7 +584,7 @@
         "hospital_id": "hosp5",
         "email": "dr.poornima@hospital.com",
         "phone": "+91-98765-40042",
-        "image": "https://images.pexels.com/photos/7659564/pexels-photo-7659564.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Experienced neurologist with expertise in neurology."
     },
     {
@@ -598,7 +598,7 @@
         "hospital_id": "hosp5",
         "email": "dr.vinay@hospital.com",
         "phone": "+91-98765-40043",
-        "image": "https://images.pexels.com/photos/5407206/pexels-photo-5407206.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -612,7 +612,7 @@
         "hospital_id": "hosp5",
         "email": "dr.smita@hospital.com",
         "phone": "+91-98765-40044",
-        "image": "https://images.unsplash.com/photo-1603597843475-4c0700868a2f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -626,7 +626,7 @@
         "hospital_id": "hosp5",
         "email": "dr.amit@hospital.com",
         "phone": "+91-98765-40045",
-        "image": "https://images.pexels.com/photos/6129100/pexels-photo-6129100.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -640,7 +640,7 @@
         "hospital_id": "hosp5",
         "email": "dr.manisha@hospital.com",
         "phone": "+91-98765-40046",
-        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced dentist with expertise in dental."
     },
     {
@@ -654,7 +654,7 @@
         "hospital_id": "hosp6",
         "email": "dr.ramachandran@hospital.com",
         "phone": "+91-98765-40047",
-        "image": "https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -668,7 +668,7 @@
         "hospital_id": "hosp6",
         "email": "dr.lakshmi@hospital.com",
         "phone": "+91-98765-40048",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced neurologist with expertise in neurology."
     },
     {
@@ -682,7 +682,7 @@
         "hospital_id": "hosp6",
         "email": "dr.venkat@hospital.com",
         "phone": "+91-98765-40049",
-        "image": "https://images.pexels.com/photos/5214997/pexels-photo-5214997.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced gastroenterologist with expertise in gastroenterology."
     },
     {
@@ -696,7 +696,7 @@
         "hospital_id": "hosp6",
         "email": "dr.padma@hospital.com",
         "phone": "+91-98765-40050",
-        "image": "https://images.pexels.com/photos/4167540/pexels-photo-4167540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -710,7 +710,7 @@
         "hospital_id": "hosp6",
         "email": "dr.suresh@hospital.com",
         "phone": "+91-98765-40051",
-        "image": "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -724,7 +724,7 @@
         "hospital_id": "hosp6",
         "email": "dr.priya@hospital.com",
         "phone": "+91-98765-40052",
-        "image": "https://images.pexels.com/photos/4173251/pexels-photo-4173251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -738,7 +738,7 @@
         "hospital_id": "hosp6",
         "email": "dr.karthik@hospital.com",
         "phone": "+91-98765-40053",
-        "image": "https://images.unsplash.com/photo-1603597843236-056ce8141ff3?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -752,7 +752,7 @@
         "hospital_id": "hosp6",
         "email": "dr.divya@hospital.com",
         "phone": "+91-98765-40054",
-        "image": "https://images.pexels.com/photos/4167544/pexels-photo-4167544.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -766,7 +766,7 @@
         "hospital_id": "hosp7",
         "email": "dr.anand@hospital.com",
         "phone": "+91-98765-40055",
-        "image": "https://images.unsplash.com/photo-1584515933610-d02c892b1572?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -780,7 +780,7 @@
         "hospital_id": "hosp7",
         "email": "dr.meenakshi@hospital.com",
         "phone": "+91-98765-40056",
-        "image": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced nephrologist with expertise in nephrology."
     },
     {
@@ -794,7 +794,7 @@
         "hospital_id": "hosp7",
         "email": "dr.bala@hospital.com",
         "phone": "+91-98765-40057",
-        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d10?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -808,7 +808,7 @@
         "hospital_id": "hosp7",
         "email": "dr.geetha@hospital.com",
         "phone": "+91-98765-40058",
-        "image": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -822,7 +822,7 @@
         "hospital_id": "hosp7",
         "email": "dr.vijay@hospital.com",
         "phone": "+91-98765-40059",
-        "image": "https://images.unsplash.com/photo-1603597843440-2708f5d02319?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -836,7 +836,7 @@
         "hospital_id": "hosp7",
         "email": "dr.archana@hospital.com",
         "phone": "+91-98765-40060",
-        "image": "https://images.pexels.com/photos/4173239/pexels-photo-4173239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Experienced gynecologist with expertise in gynecology."
     },
     {
@@ -850,7 +850,7 @@
         "hospital_id": "hosp7",
         "email": "dr.sundar@hospital.com",
         "phone": "+91-98765-40061",
-        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -864,7 +864,7 @@
         "hospital_id": "hosp7",
         "email": "dr.revathi@hospital.com",
         "phone": "+91-98765-40062",
-        "image": "https://images.pexels.com/photos/7659564/pexels-photo-7659564.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -878,7 +878,7 @@
         "hospital_id": "hosp8",
         "email": "dr.narasimha@hospital.com",
         "phone": "+91-98765-40063",
-        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -892,7 +892,7 @@
         "hospital_id": "hosp8",
         "email": "dr.vaishali@hospital.com",
         "phone": "+91-98765-40064",
-        "image": "https://images.unsplash.com/photo-1603597843475-4c0700868a2f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced neurologist with expertise in neurology."
     },
     {
@@ -906,7 +906,7 @@
         "hospital_id": "hosp8",
         "email": "dr.krishna@hospital.com",
         "phone": "+91-98765-40065",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -920,7 +920,7 @@
         "hospital_id": "hosp8",
         "email": "dr.lakshmi@hospital.com",
         "phone": "+91-98765-40066",
-        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced oncologist with expertise in oncology."
     },
     {
@@ -934,7 +934,7 @@
         "hospital_id": "hosp8",
         "email": "dr.ramesh@hospital.com",
         "phone": "+91-98765-40067",
-        "image": "https://images.pexels.com/photos/5407206/pexels-photo-5407206.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -948,7 +948,7 @@
         "hospital_id": "hosp8",
         "email": "dr.madhavi@hospital.com",
         "phone": "+91-98765-40068",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -962,7 +962,7 @@
         "hospital_id": "hosp8",
         "email": "dr.srinivas@hospital.com",
         "phone": "+91-98765-40069",
-        "image": "https://images.pexels.com/photos/6129100/pexels-photo-6129100.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -976,7 +976,7 @@
         "hospital_id": "hosp8",
         "email": "dr.anitha@hospital.com",
         "phone": "+91-98765-40070",
-        "image": "https://images.pexels.com/photos/4167540/pexels-photo-4167540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -990,7 +990,7 @@
         "hospital_id": "hosp9",
         "email": "dr.sanjay@hospital.com",
         "phone": "+91-98765-40071",
-        "image": "https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -1004,7 +1004,7 @@
         "hospital_id": "hosp9",
         "email": "dr.kavitha@hospital.com",
         "phone": "+91-98765-40072",
-        "image": "https://images.pexels.com/photos/5214997/pexels-photo-5214997.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced gastroenterologist with expertise in gastroenterology."
     },
     {
@@ -1018,7 +1018,7 @@
         "hospital_id": "hosp9",
         "email": "dr.vinod@hospital.com",
         "phone": "+91-98765-40073",
-        "image": "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -1032,7 +1032,7 @@
         "hospital_id": "hosp9",
         "email": "dr.sudha@hospital.com",
         "phone": "+91-98765-40074",
-        "image": "https://images.pexels.com/photos/4173251/pexels-photo-4173251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -1046,7 +1046,7 @@
         "hospital_id": "hosp9",
         "email": "dr.praveen@hospital.com",
         "phone": "+91-98765-40075",
-        "image": "https://images.unsplash.com/photo-1603597843236-056ce8141ff3?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -1060,7 +1060,7 @@
         "hospital_id": "hosp9",
         "email": "dr.ramya@hospital.com",
         "phone": "+91-98765-40076",
-        "image": "https://images.unsplash.com/photo-1584515933610-d02c892b1572?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced gynecologist with expertise in gynecology."
     },
     {
@@ -1074,7 +1074,7 @@
         "hospital_id": "hosp9",
         "email": "dr.arun@hospital.com",
         "phone": "+91-98765-40077",
-        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d10?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -1088,7 +1088,7 @@
         "hospital_id": "hosp9",
         "email": "dr.deepika@hospital.com",
         "phone": "+91-98765-40078",
-        "image": "https://images.unsplash.com/photo-1603597843440-2708f5d02319?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced neurologist with expertise in neurology."
     },
     {
@@ -1102,7 +1102,7 @@
         "hospital_id": "hosp10",
         "email": "dr.rajat@hospital.com",
         "phone": "+91-98765-40079",
-        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -1116,7 +1116,7 @@
         "hospital_id": "hosp10",
         "email": "dr.shweta@hospital.com",
         "phone": "+91-98765-40080",
-        "image": "https://images.pexels.com/photos/4167544/pexels-photo-4167544.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced neurologist with expertise in neurology."
     },
     {
@@ -1130,7 +1130,7 @@
         "hospital_id": "hosp10",
         "email": "dr.vikas@hospital.com",
         "phone": "+91-98765-40081",
-        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -1144,7 +1144,7 @@
         "hospital_id": "hosp10",
         "email": "dr.ritu@hospital.com",
         "phone": "+91-98765-40082",
-        "image": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -1158,7 +1158,7 @@
         "hospital_id": "hosp10",
         "email": "dr.ashish@hospital.com",
         "phone": "+91-98765-40083",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -1172,7 +1172,7 @@
         "hospital_id": "hosp10",
         "email": "dr.nidhi@hospital.com",
         "phone": "+91-98765-40084",
-        "image": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -1186,7 +1186,7 @@
         "hospital_id": "hosp10",
         "email": "dr.saurabh@hospital.com",
         "phone": "+91-98765-40085",
-        "image": "https://images.pexels.com/photos/5407206/pexels-photo-5407206.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -1200,7 +1200,7 @@
         "hospital_id": "hosp10",
         "email": "dr.preeti@hospital.com",
         "phone": "+91-98765-40086",
-        "image": "https://images.pexels.com/photos/4173239/pexels-photo-4173239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Experienced gynecologist with expertise in gynecology."
     },
     {
@@ -1214,7 +1214,7 @@
         "hospital_id": "hosp11",
         "email": "dr.sudhir@hospital.com",
         "phone": "+91-98765-40087",
-        "image": "https://images.pexels.com/photos/6129100/pexels-photo-6129100.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -1228,7 +1228,7 @@
         "hospital_id": "hosp11",
         "email": "dr.pooja@hospital.com",
         "phone": "+91-98765-40088",
-        "image": "https://images.pexels.com/photos/7659564/pexels-photo-7659564.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Experienced neurologist with expertise in neurology."
     },
     {
@@ -1242,7 +1242,7 @@
         "hospital_id": "hosp11",
         "email": "dr.ganesh@hospital.com",
         "phone": "+91-98765-40089",
-        "image": "https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -1256,7 +1256,7 @@
         "hospital_id": "hosp11",
         "email": "dr.savitha@hospital.com",
         "phone": "+91-98765-40090",
-        "image": "https://images.unsplash.com/photo-1603597843475-4c0700868a2f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -1270,7 +1270,7 @@
         "hospital_id": "hosp11",
         "email": "dr.arun@hospital.com",
         "phone": "+91-98765-40091",
-        "image": "https://images.pexels.com/photos/5214997/pexels-photo-5214997.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -1284,7 +1284,7 @@
         "hospital_id": "hosp11",
         "email": "dr.manjula@hospital.com",
         "phone": "+91-98765-40092",
-        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced gynecologist with expertise in gynecology."
     },
     {
@@ -1298,7 +1298,7 @@
         "hospital_id": "hosp11",
         "email": "dr.ramesh@hospital.com",
         "phone": "+91-98765-40093",
-        "image": "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -1312,7 +1312,7 @@
         "hospital_id": "hosp11",
         "email": "dr.vandana@hospital.com",
         "phone": "+91-98765-40094",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -1326,7 +1326,7 @@
         "hospital_id": "hosp11",
         "email": "dr.prasad@hospital.com",
         "phone": "+91-98765-40095",
-        "image": "https://images.unsplash.com/photo-1603597843236-056ce8141ff3?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Experienced dentist with expertise in dental."
     },
     {
@@ -1340,7 +1340,7 @@
         "hospital_id": "hosp12",
         "email": "dr.mohan@hospital.com",
         "phone": "+91-98765-40096",
-        "image": "https://images.unsplash.com/photo-1584515933610-d02c892b1572?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -1354,7 +1354,7 @@
         "hospital_id": "hosp12",
         "email": "dr.sowmya@hospital.com",
         "phone": "+91-98765-40097",
-        "image": "https://images.pexels.com/photos/4167540/pexels-photo-4167540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -1368,7 +1368,7 @@
         "hospital_id": "hosp12",
         "email": "dr.nagaraj@hospital.com",
         "phone": "+91-98765-40098",
-        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d10?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced dentist with expertise in dental."
     },
     {
@@ -1382,7 +1382,7 @@
         "hospital_id": "hosp12",
         "email": "dr.vaishali@hospital.com",
         "phone": "+91-98765-40099",
-        "image": "https://images.pexels.com/photos/4173251/pexels-photo-4173251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -1396,7 +1396,7 @@
         "hospital_id": "hosp12",
         "email": "dr.harish@hospital.com",
         "phone": "+91-98765-40100",
-        "image": "https://images.unsplash.com/photo-1603597843440-2708f5d02319?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -1410,7 +1410,7 @@
         "hospital_id": "hosp12",
         "email": "dr.rekha@hospital.com",
         "phone": "+91-98765-40101",
-        "image": "https://images.pexels.com/photos/4167544/pexels-photo-4167544.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -1424,7 +1424,7 @@
         "hospital_id": "hosp12",
         "email": "dr.sunil@hospital.com",
         "phone": "+91-98765-40102",
-        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -1438,7 +1438,7 @@
         "hospital_id": "hosp12",
         "email": "dr.pragathi@hospital.com",
         "phone": "+91-98765-40103",
-        "image": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced gynecologist with expertise in gynecology."
     },
     {
@@ -1452,7 +1452,7 @@
         "hospital_id": "hosp13",
         "email": "dr.vishwanath@hospital.com",
         "phone": "+91-98765-40104",
-        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -1466,7 +1466,7 @@
         "hospital_id": "hosp13",
         "email": "dr.sharada@hospital.com",
         "phone": "+91-98765-40105",
-        "image": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -1480,7 +1480,7 @@
         "hospital_id": "hosp13",
         "email": "dr.girish@hospital.com",
         "phone": "+91-98765-40106",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Experienced gastroenterologist with expertise in gastroenterology."
     },
     {
@@ -1494,7 +1494,7 @@
         "hospital_id": "hosp13",
         "email": "dr.veena@hospital.com",
         "phone": "+91-98765-40107",
-        "image": "https://images.pexels.com/photos/4173239/pexels-photo-4173239.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Experienced neurologist with expertise in neurology."
     },
     {
@@ -1508,7 +1508,7 @@
         "hospital_id": "hosp13",
         "email": "dr.raghavendra@hospital.com",
         "phone": "+91-98765-40108",
-        "image": "https://images.pexels.com/photos/5407206/pexels-photo-5407206.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -1522,7 +1522,7 @@
         "hospital_id": "hosp13",
         "email": "dr.shilpa@hospital.com",
         "phone": "+91-98765-40109",
-        "image": "https://images.pexels.com/photos/7659564/pexels-photo-7659564.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -1536,7 +1536,7 @@
         "hospital_id": "hosp13",
         "email": "dr.mohan@hospital.com",
         "phone": "+91-98765-40110",
-        "image": "https://images.pexels.com/photos/6129100/pexels-photo-6129100.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -1550,7 +1550,7 @@
         "hospital_id": "hosp13",
         "email": "dr.jyothi@hospital.com",
         "phone": "+91-98765-40111",
-        "image": "https://images.unsplash.com/photo-1603597843475-4c0700868a2f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -1564,7 +1564,7 @@
         "hospital_id": "hosp14",
         "email": "dr.prakash@hospital.com",
         "phone": "+91-98765-40112",
-        "image": "https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -1578,7 +1578,7 @@
         "hospital_id": "hosp14",
         "email": "dr.suma@hospital.com",
         "phone": "+91-98765-40113",
-        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -1592,7 +1592,7 @@
         "hospital_id": "hosp14",
         "email": "dr.rajesh@hospital.com",
         "phone": "+91-98765-40114",
-        "image": "https://images.pexels.com/photos/5214997/pexels-photo-5214997.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced ent specialist with expertise in ent."
     },
     {
@@ -1606,7 +1606,7 @@
         "hospital_id": "hosp14",
         "email": "dr.anupama@hospital.com",
         "phone": "+91-98765-40115",
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -1620,7 +1620,7 @@
         "hospital_id": "hosp14",
         "email": "dr.nagesh@hospital.com",
         "phone": "+91-98765-40116",
-        "image": "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced dentist with expertise in dental."
     },
     {
@@ -1634,7 +1634,7 @@
         "hospital_id": "hosp14",
         "email": "dr.madhuri@hospital.com",
         "phone": "+91-98765-40117",
-        "image": "https://images.pexels.com/photos/4167540/pexels-photo-4167540.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     },
     {
@@ -1648,7 +1648,7 @@
         "hospital_id": "hosp14",
         "email": "dr.suresh@hospital.com",
         "phone": "+91-98765-40118",
-        "image": "https://images.unsplash.com/photo-1603597843236-056ce8141ff3?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -1662,7 +1662,7 @@
         "hospital_id": "hosp14",
         "email": "dr.kavitha@hospital.com",
         "phone": "+91-98765-40119",
-        "image": "https://images.unsplash.com/photo-1584515933610-d02c892b1572?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced gynecologist with expertise in gynecology."
     },
     {
@@ -1676,7 +1676,7 @@
         "hospital_id": "hosp15",
         "email": "dr.vinayak@hospital.com",
         "phone": "+91-98765-40120",
-        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d10?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=800&q=80",
         "about": "Experienced general surgeon with expertise in general surgery."
     },
     {
@@ -1690,7 +1690,7 @@
         "hospital_id": "hosp15",
         "email": "dr.asha@hospital.com",
         "phone": "+91-98765-40121",
-        "image": "https://images.pexels.com/photos/4173251/pexels-photo-4173251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=800&q=80",
         "about": "Experienced cardiologist with expertise in cardiology."
     },
     {
@@ -1704,7 +1704,7 @@
         "hospital_id": "hosp15",
         "email": "dr.shankar@hospital.com",
         "phone": "+91-98765-40122",
-        "image": "https://images.unsplash.com/photo-1603597843440-2708f5d02319?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80",
         "about": "Experienced neurologist with expertise in neurology."
     },
     {
@@ -1718,7 +1718,7 @@
         "hospital_id": "hosp15",
         "email": "dr.renuka@hospital.com",
         "phone": "+91-98765-40123",
-        "image": "https://images.pexels.com/photos/4167544/pexels-photo-4167544.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=800&q=80",
         "about": "Experienced gynecologist with expertise in gynecology."
     },
     {
@@ -1732,7 +1732,7 @@
         "hospital_id": "hosp15",
         "email": "dr.ganesh@hospital.com",
         "phone": "+91-98765-40124",
-        "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=800&q=80",
         "about": "Experienced pediatrician with expertise in pediatrics."
     },
     {
@@ -1746,7 +1746,7 @@
         "hospital_id": "hosp15",
         "email": "dr.sowmya@hospital.com",
         "phone": "+91-98765-40125",
-        "image": "https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80",
         "about": "Experienced dermatologist with expertise in dermatology."
     },
     {
@@ -1760,7 +1760,7 @@
         "hospital_id": "hosp15",
         "email": "dr.raghav@hospital.com",
         "phone": "+91-98765-40126",
-        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?fm=jpg&w=1080&fit=max",
+        "image": "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=800&q=80",
         "about": "Experienced orthopedic surgeon with expertise in orthopedics."
     },
     {
@@ -1774,7 +1774,7 @@
         "hospital_id": "hosp15",
         "email": "dr.prathima@hospital.com",
         "phone": "+91-98765-40127",
-        "image": "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "image": "https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=800&q=80",
         "about": "Experienced general physician with expertise in general medicine."
     }
 ]

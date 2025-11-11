@@ -2,6 +2,192 @@
 
 {% block title %}Book Appointment - {{ doctor.name }}{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* Modern Calendar-style Date Selection */
+    .date-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .date-card {
+        background: white;
+        border: 2px solid #E2E8F0;
+        border-radius: 1rem;
+        padding: 1.25rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+    }
+    
+    .date-card:hover {
+        border-color: #6FB4D6;
+        background: #F7FBFD;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(111, 180, 214, 0.2);
+    }
+    
+    .date-card.active {
+        background: linear-gradient(135deg, #6FB4D6 0%, #7FD4C1 100%);
+        border-color: #6FB4D6;
+        color: white;
+    }
+    
+    .date-day {
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        opacity: 0.8;
+        margin-bottom: 0.5rem;
+    }
+    
+    .date-date {
+        font-size: 1.75rem;
+        font-weight: 800;
+        margin-bottom: 0.25rem;
+    }
+    
+    .date-month {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    
+    .date-card.active .date-day,
+    .date-card.active .date-date,
+    .date-card.active .date-month {
+        color: white;
+    }
+    
+    .date-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    /* Modern Time Slot Cards */
+    .time-slots-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+    
+    .time-slot-btn {
+        background: white;
+        border: 2px solid #E2E8F0;
+        border-radius: 0.75rem;
+        padding: 1rem 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .time-slot-btn:not(.disabled):hover {
+        border-color: #6FB4D6;
+        background: #F7FBFD;
+        transform: translateY(-2px);
+    }
+    
+    .time-slot-btn.active {
+        background: linear-gradient(135deg, #6FB4D6 0%, #7FD4C1 100%);
+        border-color: #6FB4D6;
+        color: white;
+    }
+    
+    .time-slot-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: #F9FAFB;
+    }
+    
+    .time-slot-icon {
+        font-size: 1.25rem;
+        color: #6FB4D6;
+    }
+    
+    .time-slot-btn.active .time-slot-icon {
+        color: white;
+    }
+    
+    .time-slot-btn.disabled .time-slot-icon {
+        color: #CBD5E0;
+    }
+    
+    .time-slot-time {
+        font-weight: 700;
+        font-size: 1rem;
+    }
+    
+    .time-slot-btn .badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    /* Step styling */
+    .booking-step {
+        background: white;
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .step-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #6FB4D6 0%, #7FD4C1 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+    
+    .step-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #2D3748;
+        margin: 0;
+    }
+    
+    .step-subtitle {
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    
+    .empty-slot-message {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: #718096;
+    }
+    
+    .empty-slot-message i {
+        font-size: 3rem;
+        color: #CBD5E0;
+        display: block;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Booking Header -->
 <section class="booking-header py-4 bg-light">
@@ -68,41 +254,35 @@
                     <form method="POST" action="{{ url_for('book_appointment', doctor_id=doctor.id) }}" id="bookingForm">
                         <!-- Step 1: Select Date -->
                         <div class="booking-step mb-4">
-                            <div class="step-header mb-3">
+                            <div class="step-header">
                                 <div class="step-number">1</div>
                                 <div class="step-info">
-                                    <h5 class="step-title mb-1">Select Date</h5>
-                                    <p class="step-subtitle text-muted mb-0">Choose your preferred appointment date</p>
+                                    <h5 class="step-title">Select Date</h5>
+                                    <p class="step-subtitle text-muted">Choose your preferred appointment date</p>
                                 </div>
                             </div>
-                            <select class="form-select form-select-lg" id="date" name="date" required>
-                                <option value="">Choose a date...</option>
+                            
+                            <div class="date-grid" id="dateGrid">
                                 {% for date in available_dates %}
                                 {% set count = slot_counts.get(date, 0) %}
                                 {% set total_slots = time_slots|length %}
                                 {% set availability_pct = (count / total_slots * 100)|round %}
-                                <option value="{{ date }}">
-                                    {{ date }}
+                                {% set date_parts = date.split('-') %}
+                                <div class="date-card" data-date="{{ date }}" data-availability="{{ availability_pct }}">
+                                    <div class="date-day">{{ date }}</div>
+                                    <div class="date-date">{{ date_parts[0] }}</div>
+                                    <div class="date-month">{{ date_parts[1][:3] }} {{ date_parts[2] }}</div>
                                     {% if count == total_slots %}
-                                        - Full
+                                        <span class="badge bg-secondary date-badge">Full</span>
                                     {% elif availability_pct >= 75 %}
-                                        - Almost Full
+                                        <span class="badge bg-danger date-badge">Filling</span>
                                     {% elif availability_pct >= 50 %}
-                                        - Filling Fast
-                                    {% elif count > 0 %}
-                                        - Available
+                                        <span class="badge bg-warning date-badge">Fast</span>
                                     {% endif %}
-                                </option>
+                                </div>
                                 {% endfor %}
-                            </select>
-                            <div class="mt-3">
-                                <small class="text-muted">
-                                    <span class="badge bg-success me-2">Available</span>
-                                    <span class="badge bg-warning me-2">Filling Fast</span>
-                                    <span class="badge bg-danger me-2">Almost Full</span>
-                                    <span class="badge bg-secondary">Full</span>
-                                </small>
                             </div>
+                            <input type="hidden" name="date" id="selectedDate" required>
                         </div>
 
                         <!-- Step 2: Select Time -->
@@ -158,8 +338,27 @@ const pastSlots = {{ past_slots | tojson }};
 const urgentSlots = {{ urgent_slots | tojson }};
 const timeSlots = {{ time_slots | tojson }};
 
-document.getElementById('date').addEventListener('change', function() {
-    const selectedDate = this.value;
+// Date card selection
+document.querySelectorAll('.date-card').forEach(card => {
+    card.addEventListener('click', function() {
+        // Remove active class from all date cards
+        document.querySelectorAll('.date-card').forEach(c => {
+            c.classList.remove('active');
+        });
+        
+        // Add active class to clicked card
+        this.classList.add('active');
+        
+        // Get selected date
+        const selectedDate = this.dataset.date;
+        document.getElementById('selectedDate').value = selectedDate;
+        
+        // Load time slots for selected date
+        loadTimeSlots(selectedDate);
+    });
+});
+
+function loadTimeSlots(selectedDate) {
     const timeSlotContainer = document.getElementById('timeSlotContainer');
     const submitBtn = document.getElementById('submitBtn');
     
@@ -179,13 +378,13 @@ document.getElementById('date').addEventListener('change', function() {
             if (isPast) {
                 buttonClass += ' disabled';
                 disabledAttr = 'disabled';
-                badgeHtml = '<span class="badge bg-secondary">Slot Over</span>';
+                badgeHtml = '<span class="badge bg-secondary">Past</span>';
             } else if (isBooked) {
                 buttonClass += ' disabled';
                 disabledAttr = 'disabled';
                 badgeHtml = '<span class="badge bg-danger">Booked</span>';
             } else if (isUrgent) {
-                badgeHtml = '<span class="badge bg-warning">Filling Fast</span>';
+                badgeHtml = '<span class="badge bg-warning text-dark">Filling</span>';
             } else {
                 badgeHtml = '<span class="badge bg-success">Available</span>';
             }
@@ -222,20 +421,32 @@ document.getElementById('date').addEventListener('change', function() {
                 
                 // Enable submit button
                 submitBtn.disabled = false;
+                
+                // Smooth scroll to submit button
+                submitBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             });
         });
     } else {
-        timeSlotContainer.innerHTML = '<div class="empty-slot-message"><i class="fas fa-calendar-alt mb-2"></i><p class="mb-0">Please select a date first to see available time slots</p></div>';
+        timeSlotContainer.innerHTML = '<div class="empty-slot-message"><i class="fas fa-calendar-alt"></i><p class="mb-0">Please select a date first to see available time slots</p></div>';
         submitBtn.disabled = true;
     }
-});
+}
 
 // Form validation
 document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    const selectedDate = document.getElementById('selectedDate');
     const selectedTime = document.getElementById('selectedTime');
+    
+    if (!selectedDate || !selectedDate.value) {
+        e.preventDefault();
+        alert('Please select a date!');
+        return;
+    }
+    
     if (!selectedTime || !selectedTime.value) {
         e.preventDefault();
         alert('Please select a time slot!');
+        return;
     }
 });
 </script>

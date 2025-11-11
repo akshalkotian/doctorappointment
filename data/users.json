@@ -43,5 +43,14 @@
         "phone": "34234",
         "role": "patient",
         "created_at": "2025-11-11 09:09:33"
+    },
+    {
+        "id": "2e186767-6b54-4864-b6b0-8448b11d2c5c",
+        "name": "star kids",
+        "email": "sp@gmail.com",
+        "password": "scrypt:32768:8:1$p63xhq0PzhMvh8EU$568b1a991f0dcbb3ea5f9cf71314d4d43be1153c4c3e4030b9d5f368a62dcc8790ea27cc57b67dc6e96a2f9f73e80828d23adbb7d476b609d07fc664f6283e63",
+        "phone": "34234",
+        "role": "admin",
+        "created_at": "2025-11-11 22:57:47"
     }
 ]

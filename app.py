@@ -367,33 +367,65 @@ def admin_dashboard():
     # Get all appointments
     appointments = data_handler.get_appointments()
     
+    # Get lookup dictionaries for enrichment
+    all_doctors = data_handler.get_doctors()
+    doctors_dict = {d['id']: d for d in all_doctors}
+    
+    hospitals = data_handler.get_hospitals()
+    hospitals_dict = {h['id']: h for h in hospitals}
+    
+    cities = data_handler.get_cities()
+    cities_dict = {c['id']: c for c in cities}
+    
+    # Enrich appointments with doctor and hospital info (in case missing)
+    for appt in appointments:
+        # Ensure doctor info is present
+        if 'doctor_name' not in appt or not appt.get('doctor_name'):
+            doctor_id = appt.get('doctor_id')
+            if doctor_id and doctor_id in doctors_dict:
+                appt['doctor_name'] = doctors_dict[doctor_id]['name']
+        
+        # Ensure hospital info is present
+        if 'hospital_name' not in appt or not appt.get('hospital_name'):
+            hospital_id = appt.get('hospital_id')
+            if hospital_id and hospital_id in hospitals_dict:
+                appt['hospital_name'] = hospitals_dict[hospital_id]['name']
+            else:
+                appt['hospital_name'] = 'Unknown Hospital'
+    
     # Apply filters and add time-based status
     filtered_appointments = []
     for appt in appointments:
-        if doctor_filter and appt['doctor_id'] != doctor_filter:
+        # Doctor filter - check if filter is applied and matches
+        if doctor_filter and str(appt.get('doctor_id', '')) != str(doctor_filter):
             continue
-        if date_filter and appt['date'] != date_filter:
+        
+        # Date filter - check if filter is applied and matches
+        if date_filter and appt.get('date', '') != date_filter:
             continue
-        if payment_status_filter and appt.get('payment_status') != payment_status_filter:
+        
+        # Payment status filter - check if filter is applied and matches
+        if payment_status_filter and appt.get('payment_status', '') != payment_status_filter:
             continue
+        
         # Add time-based status to appointment
         appt['time_status'] = get_appointment_status(appt)
         filtered_appointments.append(appt)
     
     # Sort by date and time (most recent first)
-    filtered_appointments.sort(key=lambda x: (x['date'], x['time']), reverse=True)
+    filtered_appointments.sort(key=lambda x: (x.get('date', ''), x.get('time', '')), reverse=True)
     
     # Calculate statistics
     total_bookings = len(appointments)
-    confirmed_bookings = len([a for a in appointments if a['status'] == 'confirmed'])
-    cancelled_bookings = len([a for a in appointments if a['status'] == 'cancelled'])
+    confirmed_bookings = len([a for a in appointments if a.get('status') == 'confirmed'])
+    cancelled_bookings = len([a for a in appointments if a.get('status') == 'cancelled'])
     pending_payments = len([a for a in appointments if a.get('payment_status') == 'Pending'])
     successful_payments = len([a for a in appointments if a.get('payment_status') == 'Success'])
     
     # Booking count per doctor
     doctor_counts = {}
     for appt in appointments:
-        doctor_name = appt['doctor_name']
+        doctor_name = appt.get('doctor_name', 'Unknown Doctor')
         doctor_counts[doctor_name] = doctor_counts.get(doctor_name, 0) + 1
     
     # Booking count per hospital
@@ -403,18 +435,13 @@ def admin_dashboard():
         hospital_counts[hospital_name] = hospital_counts.get(hospital_name, 0) + 1
     
     # Count unique doctors
-    all_doctors = data_handler.get_doctors()
     total_doctors = len(all_doctors)
     
     # Count doctors per hospital
-    hospitals = data_handler.get_hospitals()
     doctors_per_hospital = {}
     for hospital in hospitals:
         hospital_doctors = data_handler.get_doctors_by_hospital(hospital['id'])
         doctors_per_hospital[hospital['name']] = len(hospital_doctors)
-    
-    # Get all doctors for filter dropdown
-    doctors = all_doctors
     
     stats = {
         'total_bookings': total_bookings,
@@ -431,7 +458,7 @@ def admin_dashboard():
     return render_template('admin_dashboard.html', 
                          appointments=filtered_appointments,
                          stats=stats,
-                         doctors=doctors,
+                         doctors=all_doctors,
                          doctor_filter=doctor_filter,
                          date_filter=date_filter,
                          payment_status_filter=payment_status_filter)
