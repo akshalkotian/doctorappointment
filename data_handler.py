@@ -2,7 +2,6 @@ import json
 import os
 from datetime import datetime
 import threading
-import fcntl
 
 class DataHandler:
     """Handler for JSON file operations with slot locking"""
