@@ -16,5 +16,23 @@
         "phone": "12345",
         "role": "admin",
         "created_at": "2025-11-10 20:42:52"
+    },
+    {
+        "id": "b72872a9-e96c-4104-89f8-b558b4cda867",
+        "name": "Prarthan Paarth",
+        "email": "admin@codive.co",
+        "password": "scrypt:32768:8:1$A8l16eezONvgK930$433ebdcc8b19e346f0e4361ca215a5f951cfe090ca8430fe976ce292a68ac88614e7c707adcb3cb9a9277f790288ee7956cdb3ced8d361ecc06f0bca59fc313b",
+        "phone": "8123720284",
+        "role": "patient",
+        "created_at": "2025-11-11 08:00:26"
+    },
+    {
+        "id": "e1c4c371-d51c-4dcb-a559-ada8fa226a55",
+        "name": "Prarthan Paarth",
+        "email": "prarthan.48k@gmail.com",
+        "password": "scrypt:32768:8:1$Di9tLUkizbGRrft1$230ff2660c7017e1cae4ead131491ab527f3bfc6b62322aeb106a9d8e033b39562e72825f46176f992db3d18ba6b07b22b4dd32b7d9032fb09f827d6d84d2336",
+        "phone": "8123720284",
+        "role": "admin",
+        "created_at": "2025-11-11 08:03:08"
     }
 ]

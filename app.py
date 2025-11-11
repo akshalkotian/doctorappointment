@@ -87,6 +87,32 @@ def get_future_slots_for_date(date_str, all_slots):
         # Future date - all slots available
         return all_slots
 
+# Authentication decorators
+def patient_required(f):
+    """Decorator to require patient authentication"""
+    from functools import wraps
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Please login to continue.', 'warning')
+            return redirect(url_for('login'))
+        if session.get('user_role') == 'admin':
+            flash('This is a patient-only area.', 'danger')
+            return redirect(url_for('admin_dashboard'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def admin_required(f):
+    """Decorator to require admin authentication"""
+    from functools import wraps
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session or session.get('user_role') != 'admin':
+            flash('Admin access required.', 'danger')
+            return redirect(url_for('admin_login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route('/')
 def home():
     """Home page with city selection"""
@@ -125,16 +151,13 @@ def select_location():
         return redirect(url_for('home'))
 
 @app.route('/hospital/<hospital_id>/doctors')
+@patient_required
 def doctors_by_hospital(hospital_id):
     """Show all doctors in a specific hospital"""
-    if 'user_id' not in session:
-        flash('Please login to view doctors.', 'warning')
-        return redirect(url_for('login'))
-    
     hospital = data_handler.get_hospital_by_id(hospital_id)
     if not hospital:
         flash('Hospital not found!', 'danger')
-        return redirect(url_for('home'))
+        return redirect(url_for('patient_dashboard'))
     
     city = data_handler.get_city_by_id(hospital['city_id'])
     doctors = data_handler.get_doctors_by_hospital(hospital_id)
@@ -201,7 +224,7 @@ def login():
             session['user_email'] = user['email']
             session['user_role'] = user_role
             flash(f'Welcome back, {user["name"]}!', 'success')
-            return redirect(url_for('doctors_list'))
+            return redirect(url_for('patient_dashboard'))
         else:
             flash('Invalid email or password!', 'danger')
             return redirect(url_for('login'))
@@ -214,6 +237,53 @@ def logout():
     session.clear()
     flash('You have been logged out.', 'info')
     return redirect(url_for('home'))
+
+# Patient Dashboard
+@app.route('/patient/dashboard')
+def patient_dashboard():
+    """Patient dashboard - main landing after login"""
+    if 'user_id' not in session:
+        flash('Please login to access patient dashboard.', 'warning')
+        return redirect(url_for('login'))
+    
+    if session.get('user_role') == 'admin':
+        flash('Admins cannot access patient dashboard.', 'danger')
+        return redirect(url_for('admin_dashboard'))
+    
+    # Get cities for selection
+    cities = data_handler.get_cities()
+    
+    # Get user's appointments
+    appointments = data_handler.get_appointments_by_user(session['user_email'])
+    
+    # Classify appointments
+    upcoming_appointments = []
+    completed_appointments = []
+    missed_appointments = []
+    
+    for appt in appointments:
+        time_status = get_appointment_status(appt)
+        if time_status == 'upcoming':
+            upcoming_appointments.append(appt)
+        elif time_status == 'completed':
+            completed_appointments.append(appt)
+        elif time_status == 'missed':
+            missed_appointments.append(appt)
+    
+    # Sort
+    upcoming_appointments.sort(key=lambda x: (x['date'], x['time']))
+    completed_appointments.sort(key=lambda x: (x['date'], x['time']), reverse=True)
+    
+    # Get summary stats
+    total_appointments = len(appointments)
+    upcoming_count = len(upcoming_appointments)
+    
+    return render_template('patient_dashboard.html',
+                         cities=cities,
+                         upcoming_appointments=upcoming_appointments[:3],  # Show latest 3
+                         completed_appointments=completed_appointments[:3],
+                         total_appointments=total_appointments,
+                         upcoming_count=upcoming_count)
 
 # Admin Routes
 @app.route('/admin/register', methods=['GET', 'POST'])
@@ -285,17 +355,6 @@ def admin_login():
     
     return render_template('admin_login.html')
 
-def admin_required(f):
-    """Decorator to require admin authentication"""
-    from functools import wraps
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'user_id' not in session or session.get('user_role') != 'admin':
-            flash('Admin access required.', 'danger')
-            return redirect(url_for('admin_login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
 @app.route('/admin/dashboard')
 @admin_required
 def admin_dashboard():
@@ -337,8 +396,25 @@ def admin_dashboard():
         doctor_name = appt['doctor_name']
         doctor_counts[doctor_name] = doctor_counts.get(doctor_name, 0) + 1
     
+    # Booking count per hospital
+    hospital_counts = {}
+    for appt in appointments:
+        hospital_name = appt.get('hospital_name', 'Unknown Hospital')
+        hospital_counts[hospital_name] = hospital_counts.get(hospital_name, 0) + 1
+    
+    # Count unique doctors
+    all_doctors = data_handler.get_doctors()
+    total_doctors = len(all_doctors)
+    
+    # Count doctors per hospital
+    hospitals = data_handler.get_hospitals()
+    doctors_per_hospital = {}
+    for hospital in hospitals:
+        hospital_doctors = data_handler.get_doctors_by_hospital(hospital['id'])
+        doctors_per_hospital[hospital['name']] = len(hospital_doctors)
+    
     # Get all doctors for filter dropdown
-    doctors = data_handler.get_doctors()
+    doctors = all_doctors
     
     stats = {
         'total_bookings': total_bookings,
@@ -346,7 +422,10 @@ def admin_dashboard():
         'cancelled_bookings': cancelled_bookings,
         'pending_payments': pending_payments,
         'successful_payments': successful_payments,
-        'doctor_counts': doctor_counts
+        'doctor_counts': doctor_counts,
+        'hospital_counts': hospital_counts,
+        'total_doctors': total_doctors,
+        'doctors_per_hospital': doctors_per_hospital
     }
     
     return render_template('admin_dashboard.html', 
@@ -471,12 +550,9 @@ def admin_mark_paid(appointment_id):
     return redirect(request.referrer or url_for('admin_dashboard'))
 
 @app.route('/doctors')
+@patient_required
 def doctors_list():
     """List all doctors with search functionality (Browse All)"""
-    if 'user_id' not in session:
-        flash('Please login to view doctors.', 'warning')
-        return redirect(url_for('login'))
-    
     search_query = request.args.get('search', '')
     doctors = data_handler.search_doctors(search_query)
     
@@ -496,12 +572,9 @@ def doctors_list():
     return render_template('doctors_list.html', doctors=doctors, search_query=search_query)
 
 @app.route('/doctor/<doctor_id>')
+@patient_required
 def doctor_detail(doctor_id):
     """View doctor profile details"""
-    if 'user_id' not in session:
-        flash('Please login to view doctor details.', 'warning')
-        return redirect(url_for('login'))
-    
     doctor = data_handler.get_doctor_by_id(doctor_id)
     
     if not doctor:
@@ -517,11 +590,9 @@ def doctor_detail(doctor_id):
     return render_template('doctor_detail.html', doctor=doctor, hospital=hospital, city=city)
 
 @app.route('/book/<doctor_id>', methods=['GET', 'POST'])
+@patient_required
 def book_appointment(doctor_id):
     """Book an appointment with a doctor"""
-    if 'user_id' not in session:
-        flash('Please login to book an appointment.', 'warning')
-        return redirect(url_for('login'))
     
     doctor = data_handler.get_doctor_by_id(doctor_id)
     
@@ -623,11 +694,9 @@ def book_appointment(doctor_id):
                          urgent_slots=urgent_slots)
 
 @app.route('/appointment/confirmation/<appointment_id>')
+@patient_required
 def appointment_confirmation(appointment_id):
     """Show appointment confirmation"""
-    if 'user_id' not in session:
-        flash('Please login to view appointment details.', 'warning')
-        return redirect(url_for('login'))
     
     appointment = data_handler.get_appointment_by_id(appointment_id)
     
@@ -637,12 +706,10 @@ def appointment_confirmation(appointment_id):
     
     return render_template('appointment_confirmation.html', appointment=appointment)
 
-@app.route('/my-appointments')
+@app.route('/patient/my-appointments')
+@patient_required
 def my_appointments():
     """View user's appointments"""
-    if 'user_id' not in session:
-        flash('Please login to view your appointments.', 'warning')
-        return redirect(url_for('login'))
     
     appointments = data_handler.get_appointments_by_user(session['user_email'])
     
@@ -678,11 +745,9 @@ def my_appointments():
                          cancelled_appointments=cancelled_appointments)
 
 @app.route('/appointment/cancel/<appointment_id>', methods=['POST'])
+@patient_required
 def cancel_appointment_user(appointment_id):
     """Cancel an appointment (patient action)"""
-    if 'user_id' not in session:
-        flash('Please login to cancel appointments.', 'warning')
-        return redirect(url_for('login'))
     
     appointment = data_handler.get_appointment_by_id(appointment_id)
     
@@ -705,11 +770,9 @@ def cancel_appointment_user(appointment_id):
     return redirect(url_for('my_appointments'))
 
 @app.route('/appointment/reschedule/<appointment_id>', methods=['GET', 'POST'])
+@patient_required
 def reschedule_appointment(appointment_id):
     """Reschedule an appointment"""
-    if 'user_id' not in session:
-        flash('Please login to reschedule appointments.', 'warning')
-        return redirect(url_for('login'))
     
     appointment = data_handler.get_appointment_by_id(appointment_id)
     
@@ -791,11 +854,9 @@ def reschedule_appointment(appointment_id):
 
 # Payment Routes
 @app.route('/payment/<appointment_id>')
+@patient_required
 def payment_page(appointment_id):
     """Show payment options page"""
-    if 'user_id' not in session:
-        flash('Please login to continue.', 'warning')
-        return redirect(url_for('login'))
     
     appointment = data_handler.get_appointment_by_id(appointment_id)
     
@@ -813,11 +874,9 @@ def payment_page(appointment_id):
     return render_template('payment.html', appointment=appointment, doctor=doctor)
 
 @app.route('/payment/process/<appointment_id>', methods=['POST'])
+@patient_required
 def process_payment(appointment_id):
     """Process payment for appointment"""
-    if 'user_id' not in session:
-        flash('Please login to continue.', 'warning')
-        return redirect(url_for('login'))
     
     appointment = data_handler.get_appointment_by_id(appointment_id)
     
@@ -878,11 +937,9 @@ def process_payment(appointment_id):
         return redirect(url_for('payment_success', appointment_id=appointment_id))
 
 @app.route('/payment/success/<appointment_id>')
+@patient_required
 def payment_success(appointment_id):
     """Payment success page"""
-    if 'user_id' not in session:
-        flash('Please login to continue.', 'warning')
-        return redirect(url_for('login'))
     
     appointment = data_handler.get_appointment_by_id(appointment_id)
     
@@ -893,11 +950,9 @@ def payment_success(appointment_id):
     return render_template('payment_success.html', appointment=appointment)
 
 @app.route('/payment/failed/<appointment_id>')
+@patient_required
 def payment_failed(appointment_id):
     """Payment failed page"""
-    if 'user_id' not in session:
-        flash('Please login to continue.', 'warning')
-        return redirect(url_for('login'))
     
     appointment = data_handler.get_appointment_by_id(appointment_id)
     
@@ -944,19 +999,24 @@ SYMPTOM_SPECIALIZATION_MAP = {
 }
 
 @app.route('/find-doctor', methods=['GET', 'POST'])
+@patient_required
 def find_doctor():
-    """Find doctor based on symptoms"""
-    if 'user_id' not in session:
-        flash('Please login to use symptom checker.', 'warning')
-        return redirect(url_for('login'))
+    """Find doctor based on symptoms with city and hospital filter"""
+    
+    # Get cities and hospitals for selection
+    cities = data_handler.get_cities()
     
     recommended_doctors = []
     symptom_input = ''
     recommended_specializations = []
     possible_causes = []
+    city_filter = request.args.get('city', '')
+    hospital_filter = request.args.get('hospital', '')
     
     if request.method == 'POST':
         symptom_input = request.form.get('symptom', '').lower().strip()
+        city_filter = request.form.get('city_id', '')
+        hospital_filter = request.form.get('hospital_id', '')
         
         if symptom_input:
             # Find matching specializations
@@ -971,36 +1031,68 @@ def find_doctor():
                 # Get all doctors
                 all_doctors = data_handler.get_doctors()
                 
+                # Filter by city/hospital if selected
+                if hospital_filter:
+                    all_doctors = [d for d in all_doctors if d.get('hospital_id') == hospital_filter]
+                elif city_filter:
+                    city_hospitals = data_handler.get_hospitals_by_city(city_filter)
+                    hospital_ids = [h['id'] for h in city_hospitals]
+                    all_doctors = [d for d in all_doctors if d.get('hospital_id') in hospital_ids]
+                
                 # Filter doctors by specialization
                 for doctor in all_doctors:
                     if doctor['specialization'] in matched_specs:
+                        # Add hospital and city info
+                        hospital = data_handler.get_hospital_by_id(doctor.get('hospital_id'))
+                        if hospital:
+                            doctor['hospital_name'] = hospital['name']
+                            city = data_handler.get_city_by_id(hospital.get('city_id'))
+                            if city:
+                                doctor['city_name'] = city['name']
                         recommended_doctors.append(doctor)
                 
                 # Generate possible causes based on symptom
                 possible_causes = generate_possible_causes(symptom_input)
                 
                 if not recommended_doctors:
-                    flash('No doctors found for this symptom. Showing all doctors.', 'info')
-                    recommended_doctors = all_doctors
+                    flash('No doctors found for this symptom in the selected location. Try expanding your search.', 'info')
             else:
                 flash('No specific specialization found. Showing general physicians.', 'info')
                 all_doctors = data_handler.get_doctors()
+                
+                # Filter by location
+                if hospital_filter:
+                    all_doctors = [d for d in all_doctors if d.get('hospital_id') == hospital_filter]
+                elif city_filter:
+                    city_hospitals = data_handler.get_hospitals_by_city(city_filter)
+                    hospital_ids = [h['id'] for h in city_hospitals]
+                    all_doctors = [d for d in all_doctors if d.get('hospital_id') in hospital_ids]
+                
                 for doctor in all_doctors:
-                    if 'general' in doctor['specialization'].lower():
+                    if 'general' in doctor['specialization'].lower() or 'physician' in doctor['specialization'].lower():
                         recommended_doctors.append(doctor)
                 
                 if not recommended_doctors:
-                    recommended_doctors = all_doctors
+                    recommended_doctors = all_doctors[:10]  # Show first 10
     
     # Get predefined symptoms for the UI
     predefined_symptoms = list(SYMPTOM_SPECIALIZATION_MAP.keys())
     
+    # Get hospitals for selected city
+    hospitals = []
+    if city_filter:
+        hospitals = data_handler.get_hospitals_by_city(city_filter)
+    
     return render_template('find_doctor.html',
+                         cities=cities,
+                         hospitals=hospitals,
                          recommended_doctors=recommended_doctors,
                          symptom_input=symptom_input,
                          recommended_specializations=recommended_specializations,
                          possible_causes=possible_causes,
-                         predefined_symptoms=predefined_symptoms)
+                         predefined_symptoms=predefined_symptoms,
+                         city_filter=city_filter,
+                         hospital_filter=hospital_filter)
 
 def generate_possible_causes(symptom):
     """Generate possible causes for symptoms"""

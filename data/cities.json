@@ -23,6 +23,11 @@
         "id": "city5",
         "name": "Delhi",
         "state": "Delhi"
+    },
+    {
+        "id": "city6",
+        "name": "Udupi",
+        "state": "Karnataka"
     }
 ]
 

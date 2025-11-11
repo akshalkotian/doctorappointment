@@ -56,7 +56,9 @@
                 <div class="doctor-card-modern">
                     <div class="doctor-card-header">
                         <div class="doctor-image-wrapper">
-                            <img src="{{ doctor.image }}" class="doctor-image" alt="{{ doctor.name }}">
+                            <img src="{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}" 
+                                 class="doctor-image" alt="{{ doctor.name }}" 
+                                 onerror="this.src='{{ url_for('static', filename='images/doctors/default.jpg') }}'">
                             <div class="verified-badge">
                                 <i class="fas fa-check-circle"></i>
                             </div>
@@ -64,22 +66,30 @@
                     </div>
                     <div class="doctor-card-body">
                         <h5 class="doctor-name mb-2">{{ doctor.name }}</h5>
-                        <p class="doctor-specialization mb-3">
-                            <i class="fas fa-stethoscope me-1"></i>{{ doctor.specialization }}
+                        <p class="doctor-specialization mb-2">
+                            <i class="fas fa-stethoscope me-1 text-primary"></i>{{ doctor.specialization }}
                         </p>
                         
                         <div class="doctor-info-grid mb-3">
+                            {% if doctor.hospital_name %}
                             <div class="info-item">
-                                <i class="fas fa-graduation-cap text-muted me-2"></i>
-                                <span class="text-muted small">{{ doctor.qualification }}</span>
+                                <i class="fas fa-hospital text-muted me-2"></i>
+                                <span class="text-muted small">{{ doctor.hospital_name }}</span>
                             </div>
+                            {% endif %}
+                            {% if doctor.city_name %}
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt text-muted me-2"></i>
+                                <span class="text-muted small">{{ doctor.city_name }}</span>
+                            </div>
+                            {% endif %}
                             <div class="info-item">
                                 <i class="fas fa-briefcase text-muted me-2"></i>
                                 <span class="text-muted small">{{ doctor.experience }}</span>
                             </div>
                             <div class="info-item">
-                                <i class="fas fa-map-marker-alt text-muted me-2"></i>
-                                <span class="text-muted small">{{ doctor.location }}</span>
+                                <i class="fas fa-rupee-sign text-muted me-2"></i>
+                                <span class="text-muted small fw-semibold">₹{{ doctor.fees }}</span>
                             </div>
                         </div>
                         

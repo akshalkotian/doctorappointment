@@ -27,7 +27,9 @@
             <div class="col-lg-4">
                 <div class="booking-doctor-card sticky-top" style="top: 100px;">
                     <div class="doctor-card-header-booking">
-                        <img src="{{ doctor.image }}" alt="{{ doctor.name }}" class="doctor-image-booking">
+                        <img src="{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}" 
+                             alt="{{ doctor.name }}" class="doctor-image-booking"
+                             onerror="this.src='{{ url_for('static', filename='images/doctors/default.jpg') }}'">
                     </div>
                     <div class="doctor-card-body-booking">
                         <h5 class="doctor-name-booking mb-2">{{ doctor.name }}</h5>
@@ -35,17 +37,25 @@
                             <i class="fas fa-stethoscope me-1"></i>{{ doctor.specialization }}
                         </p>
                         <div class="doctor-meta-booking">
+                            {% if hospital %}
                             <div class="meta-item-booking">
-                                <i class="fas fa-graduation-cap text-primary me-2"></i>
-                                <span>{{ doctor.qualification }}</span>
+                                <i class="fas fa-hospital text-primary me-2"></i>
+                                <span>{{ hospital.name }}</span>
                             </div>
+                            {% endif %}
+                            {% if city %}
                             <div class="meta-item-booking">
                                 <i class="fas fa-map-marker-alt text-primary me-2"></i>
-                                <span>{{ doctor.location }}</span>
+                                <span>{{ city.name }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="meta-item-booking">
+                                <i class="fas fa-briefcase text-primary me-2"></i>
+                                <span>{{ doctor.experience }}</span>
                             </div>
                             <div class="meta-item-booking">
-                                <i class="fas fa-star text-warning me-2"></i>
-                                <span>4.8 Rating</span>
+                                <i class="fas fa-rupee-sign text-primary me-2"></i>
+                                <span>Fees: ₹{{ doctor.fees }}</span>
                             </div>
                         </div>
                     </div>

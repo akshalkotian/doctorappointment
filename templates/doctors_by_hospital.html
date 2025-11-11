@@ -42,8 +42,9 @@
             <div class="col-md-6 col-lg-4">
                 <div class="doctor-card-compact">
                     <div class="doctor-image-wrapper">
-                        <img src="https://via.placeholder.com/300x300/667eea/ffffff?text={{ doctor.name.split()[1][0] }}" 
-                             alt="{{ doctor.name }}" class="doctor-image">
+                        <img src="{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}" 
+                             alt="{{ doctor.name }}" class="doctor-image"
+                             onerror="this.src='{{ url_for('static', filename='images/doctors/default.jpg') }}'">
                     </div>
                     <div class="doctor-info">
                         <h5 class="doctor-name mb-1">{{ doctor.name }}</h5>

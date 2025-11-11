@@ -50,11 +50,11 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <p class="text-muted mb-1 small">Total Bookings</p>
-                            <h3 class="fw-bold mb-0">{{ stats.total_bookings }}</h3>
+                            <p class="text-muted mb-1 small">Total Doctors</p>
+                            <h3 class="fw-bold mb-0">{{ stats.total_doctors }}</h3>
                         </div>
                         <div class="fs-1 text-primary opacity-50">
-                            <i class="fas fa-calendar-check"></i>
+                            <i class="fas fa-user-md"></i>
                         </div>
                     </div>
                 </div>
@@ -66,11 +66,11 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <p class="text-muted mb-1 small">Confirmed</p>
-                            <h3 class="fw-bold mb-0">{{ stats.confirmed_bookings }}</h3>
+                            <p class="text-muted mb-1 small">Total Bookings</p>
+                            <h3 class="fw-bold mb-0">{{ stats.total_bookings }}</h3>
                         </div>
                         <div class="fs-1 text-success opacity-50">
-                            <i class="fas fa-check-circle"></i>
+                            <i class="fas fa-calendar-check"></i>
                         </div>
                     </div>
                 </div>
@@ -186,7 +186,20 @@
                                         <div class="fw-semibold">{{ appt.user_name }}</div>
                                         <div class="small text-muted">{{ appt.user_email }}</div>
                                     </td>
-                                    <td>{{ appt.doctor_name }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ url_for('static', filename='images/doctors/default.jpg') }}" 
+                                                 alt="{{ appt.doctor_name }}" 
+                                                 class="rounded-circle me-2" 
+                                                 style="width: 40px; height: 40px; object-fit: cover;">
+                                            <div>
+                                                <div class="fw-semibold">{{ appt.doctor_name }}</div>
+                                                {% if appt.hospital_name %}
+                                                <div class="small text-muted">{{ appt.hospital_name }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td>
                                         <div><i class="fas fa-calendar me-1 text-primary"></i>{{ appt.date }}</div>
                                         <div class="small text-muted"><i class="fas fa-clock me-1"></i>{{ appt.time }}</div>
@@ -283,23 +296,43 @@
         </div>
     </div>
 
-    <!-- Doctor Booking Counts -->
-    {% if stats.doctor_counts %}
+    <!-- Hospital Statistics -->
     <div class="row mt-4">
-        <div class="col-12">
+        <div class="col-md-6">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom py-3">
                     <h5 class="mb-0 fw-semibold">
-                        <i class="fas fa-chart-bar me-2 text-primary"></i>Booking Count by Doctor
+                        <i class="fas fa-hospital me-2 text-primary"></i>Doctors per Hospital
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        {% for doctor_name, count in stats.doctor_counts.items() %}
-                        <div class="col-md-4">
+                        {% for hospital_name, count in stats.doctors_per_hospital.items() %}
+                        <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
-                                <span class="fw-semibold">{{ doctor_name }}</span>
-                                <span class="badge bg-primary">{{ count }}</span>
+                                <span class="fw-semibold">{{ hospital_name }}</span>
+                                <span class="badge bg-primary">{{ count }} doctors</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-semibold">
+                        <i class="fas fa-calendar-check me-2 text-primary"></i>Bookings per Hospital
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        {% for hospital_name, count in stats.hospital_counts.items() %}
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                <span class="fw-semibold">{{ hospital_name }}</span>
+                                <span class="badge bg-success">{{ count }} bookings</span>
                             </div>
                         </div>
                         {% endfor %}
@@ -308,7 +341,6 @@
             </div>
         </div>
     </div>
-    {% endif %}
 </div>
 {% endblock %}
 

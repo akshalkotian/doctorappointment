@@ -78,6 +78,46 @@
         "address": "Press Enclave Road, Saket, Delhi",
         "phone": "+91-11-2651-5050",
         "specialties": ["Cardiology", "Neurology", "Orthopedics", "General Medicine"]
+    },
+    {
+        "id": "hosp11",
+        "name": "Kasturba Medical College Hospital",
+        "city_id": "city6",
+        "address": "Madhav Nagar, Manipal, Udupi",
+        "phone": "+91-820-257-1201",
+        "specialties": ["Cardiology", "Neurology", "Orthopedics", "Pediatrics", "General Medicine"]
+    },
+    {
+        "id": "hosp12",
+        "name": "Dr. TMA Pai Hospital",
+        "city_id": "city6",
+        "address": "Kunjibettu, Udupi",
+        "phone": "+91-820-252-0115",
+        "specialties": ["ENT", "Dermatology", "Dental", "Orthopedics", "Pediatrics"]
+    },
+    {
+        "id": "hosp13",
+        "name": "Adarsh Hospital",
+        "city_id": "city6",
+        "address": "Court Road, Udupi",
+        "phone": "+91-820-252-3456",
+        "specialties": ["General Medicine", "Cardiology", "Gastroenterology", "Neurology"]
+    },
+    {
+        "id": "hosp14",
+        "name": "Sai Hospitals",
+        "city_id": "city6",
+        "address": "Ajjarkad, Udupi",
+        "phone": "+91-820-252-7890",
+        "specialties": ["Orthopedics", "Pediatrics", "ENT", "Dermatology", "Dental"]
+    },
+    {
+        "id": "hosp15",
+        "name": "City Hospital",
+        "city_id": "city6",
+        "address": "Diana Circle, Udupi",
+        "phone": "+91-820-252-9999",
+        "specialties": ["General Surgery", "Cardiology", "Neurology", "Gynecology", "Pediatrics"]
     }
 ]
 

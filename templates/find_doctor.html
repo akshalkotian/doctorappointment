@@ -23,8 +23,45 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
+                <!-- City & Hospital Selection -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h6 class="fw-bold mb-3">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i>Filter by Location (Optional)
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">City</label>
+                                <select class="form-select" id="citySelectFind" name="city_id">
+                                    <option value="">All Cities</option>
+                                    {% for city in cities %}
+                                    <option value="{{ city.id }}" {% if city_filter == city.id %}selected{% endif %}>
+                                        {{ city.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Hospital</label>
+                                <select class="form-select" id="hospitalSelectFind" name="hospital_id">
+                                    <option value="">All Hospitals</option>
+                                    {% for hospital in hospitals %}
+                                    <option value="{{ hospital.id }}" {% if hospital_filter == hospital.id %}selected{% endif %}>
+                                        {{ hospital.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="symptom-input-card">
-                    <form method="POST" action="{{ url_for('find_doctor') }}">
+                    <form method="POST" action="{{ url_for('find_doctor') }}" id="symptomForm">
+                        <!-- Hidden fields for city/hospital -->
+                        <input type="hidden" name="city_id" id="cityIdHidden" value="{{ city_filter }}">
+                        <input type="hidden" name="hospital_id" id="hospitalIdHidden" value="{{ hospital_filter }}">
+                        
                         <div class="mb-4">
                             <label for="symptom" class="form-label fw-bold">What are you experiencing?</label>
                             <div class="input-group input-group-lg">
@@ -137,7 +174,9 @@
                 <div class="doctor-card-modern">
                     <div class="doctor-card-header">
                         <div class="doctor-image-wrapper">
-                            <img src="{{ doctor.image }}" class="doctor-image" alt="{{ doctor.name }}">
+                            <img src="{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}" 
+                                 class="doctor-image" alt="{{ doctor.name }}"
+                                 onerror="this.src='{{ url_for('static', filename='images/doctors/default.jpg') }}'">
                             <div class="verified-badge">
                                 <i class="fas fa-check-circle"></i>
                             </div>
@@ -153,17 +192,25 @@
                         </p>
                         
                         <div class="doctor-info-grid mb-3">
+                            {% if doctor.hospital_name %}
                             <div class="info-item">
-                                <i class="fas fa-graduation-cap text-muted me-2"></i>
-                                <span class="text-muted small">{{ doctor.qualification }}</span>
+                                <i class="fas fa-hospital text-muted me-2"></i>
+                                <span class="text-muted small">{{ doctor.hospital_name }}</span>
                             </div>
+                            {% endif %}
+                            {% if doctor.city_name %}
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt text-muted me-2"></i>
+                                <span class="text-muted small">{{ doctor.city_name }}</span>
+                            </div>
+                            {% endif %}
                             <div class="info-item">
                                 <i class="fas fa-briefcase text-muted me-2"></i>
                                 <span class="text-muted small">{{ doctor.experience }}</span>
                             </div>
                             <div class="info-item">
-                                <i class="fas fa-map-marker-alt text-muted me-2"></i>
-                                <span class="text-muted small">{{ doctor.location }}</span>
+                                <i class="fas fa-rupee-sign text-muted me-2"></i>
+                                <span class="text-muted small fw-semibold">₹{{ doctor.fees }}</span>
                             </div>
                         </div>
                         
@@ -174,7 +221,7 @@
                             </a>
                             <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" 
                                class="btn btn-primary btn-sm flex-grow-1">
-                                <i class="fas fa-calendar-plus me-1"></i>Book Now
+                                <i class="fas fa-calendar-plus me-1"></i>Book Appointment
                             </a>
                         </div>
                     </div>
@@ -253,5 +300,53 @@
     </div>
 </section>
 {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// City and Hospital dynamic selection for find_doctor
+const citySelectFind = document.getElementById('citySelectFind');
+const hospitalSelectFind = document.getElementById('hospitalSelectFind');
+const cityIdHidden = document.getElementById('cityIdHidden');
+const hospitalIdHidden = document.getElementById('hospitalIdHidden');
+
+if (citySelectFind) {
+    citySelectFind.addEventListener('change', async function() {
+        const cityId = this.value;
+        cityIdHidden.value = cityId;
+        
+        // Reset hospital select
+        hospitalSelectFind.innerHTML = '<option value="">Loading...</option>';
+        hospitalSelectFind.disabled = true;
+        hospitalIdHidden.value = '';
+        
+        if (cityId) {
+            try {
+                const response = await fetch(`/api/hospitals/${cityId}`);
+                const hospitals = await response.json();
+                
+                hospitalSelectFind.innerHTML = '<option value="">All Hospitals in City</option>';
+                hospitals.forEach(hospital => {
+                    const option = document.createElement('option');
+                    option.value = hospital.id;
+                    option.textContent = hospital.name;
+                    hospitalSelectFind.appendChild(option);
+                });
+                
+                hospitalSelectFind.disabled = false;
+            } catch (error) {
+                hospitalSelectFind.innerHTML = '<option value="">Error loading</option>';
+            }
+        } else {
+            hospitalSelectFind.innerHTML = '<option value="">All Hospitals</option>';
+            hospitalSelectFind.disabled = false;
+        }
+    });
+
+    hospitalSelectFind.addEventListener('change', function() {
+        hospitalIdHidden.value = this.value;
+    });
+}
+</script>
 {% endblock %}
 

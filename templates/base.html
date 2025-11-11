@@ -55,18 +55,23 @@
                         {% else %}
                         <!-- Patient Navigation -->
                         <li class="nav-item">
+                            <a class="nav-link px-3" href="{{ url_for('patient_dashboard') }}">
+                                <i class="fas fa-home me-1"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link px-3" href="{{ url_for('find_doctor') }}">
-                                <i class="fas fa-stethoscope me-1"></i>Find My Doctor
+                                <i class="fas fa-stethoscope me-1"></i>Find Doctor
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link px-3" href="{{ url_for('doctors_list') }}">
-                                <i class="fas fa-search me-1"></i>Browse Doctors
+                                <i class="fas fa-search me-1"></i>Browse All
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link px-3" href="{{ url_for('my_appointments') }}">
-                                <i class="fas fa-calendar-check me-1"></i>My Appointments
+                                <i class="fas fa-calendar-check me-1"></i>Appointments
                             </a>
                         </li>
                         {% endif %}
