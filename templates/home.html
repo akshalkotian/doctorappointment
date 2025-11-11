@@ -5,40 +5,80 @@
 {% block extra_css %}
 <style>
     .selection-card {
-        border: 2px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 25px;
-        background: white;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        border: 2px solid transparent;
+        border-radius: 2rem;
+        padding: 2.5rem;
+        background: linear-gradient(135deg, white 0%, #F8FBFD 100%);
+        box-shadow: 0 8px 24px rgba(111, 180, 214, 0.12);
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
     }
+    
+    .selection-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 2rem;
+        padding: 2px;
+        background: linear-gradient(135deg, #6FB4D6, #7FD4C1);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+    
+    .selection-card:hover::before {
+        opacity: 1;
+    }
+    
+    .selection-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 48px rgba(111, 180, 214, 0.2);
+    }
+    
     .step-indicator {
-        width: 40px;
-        height: 40px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #6FB4D6 0%, #7FD4C1 100%);
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: bold;
-        font-size: 18px;
+        font-weight: 800;
+        font-size: 1.25rem;
+        box-shadow: 0 8px 16px rgba(111, 180, 214, 0.3);
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
+    
+    .step-indicator:hover {
+        transform: scale(1.15) rotate(10deg);
+    }
+    
     .doctor-card-mini {
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 10px;
+        border: 2px solid #E2E8F0;
+        border-radius: 1rem;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: white;
     }
+    
     .doctor-card-mini:hover {
-        border-color: #667eea;
-        background: #f9fafb;
-        transform: translateY(-2px);
+        border-color: #6FB4D6;
+        background: linear-gradient(135deg, #E3F2F9 0%, #D4F4EC 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(111, 180, 214, 0.15);
     }
+    
     .doctor-card-mini.selected {
-        border-color: #667eea;
-        background: #eef2ff;
+        border-color: #7FD4C1;
+        background: linear-gradient(135deg, #D4F4EC 0%, #E3F2F9 100%);
+        box-shadow: 0 8px 24px rgba(127, 212, 193, 0.2);
     }
 </style>
 {% endblock %}
@@ -74,11 +114,16 @@
                     <!-- Guest User Actions -->
                     <div class="hero-actions">
                         <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg rounded-pill px-5 me-3 mb-2">
-                            <i class="fas fa-user-plus me-2"></i>Get Started
+                            <i class="fas fa-user-plus me-2"></i>Create Account
                         </a>
-                        <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg rounded-pill px-5 mb-2">
-                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        <a href="{{ url_for('login') }}" class="btn btn-success btn-lg rounded-pill px-5 mb-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Patient Login
                         </a>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            Healthcare staff? <a href="{{ url_for('admin_login') }}" class="text-danger fw-bold text-decoration-none">Admin Login <i class="fas fa-arrow-right ms-1"></i></a>
+                        </small>
                     </div>
                     {% endif %}
                 </div>

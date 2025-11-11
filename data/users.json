@@ -34,5 +34,14 @@
         "phone": "8123720284",
         "role": "admin",
         "created_at": "2025-11-11 08:03:08"
+    },
+    {
+        "id": "69982a68-a909-42bb-84ea-b33177f676eb",
+        "name": "ps",
+        "email": "ps@gmail.com",
+        "password": "scrypt:32768:8:1$a0HZxIoPJgcACf3e$13365e244342750ac7f74cdd43da9ebc220aac07d38475021820731f350417f376100d320afeb7878183b7a8fed221652da53cea2fd5cf36dd7aadfebe521171",
+        "phone": "34234",
+        "role": "patient",
+        "created_at": "2025-11-11 09:09:33"
     }
 ]

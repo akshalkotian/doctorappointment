@@ -216,8 +216,8 @@ def login():
             # Ensure patient users only
             user_role = user.get('role', 'patient')  # Default to patient for existing users
             if user_role == 'admin':
-                flash('Please use admin login page.', 'warning')
-                return redirect(url_for('admin_login'))
+                flash('❌ This is an ADMIN account! Please use the Admin Login button (red button) to login.', 'danger')
+                return redirect(url_for('login'))
             
             session['user_id'] = user['id']
             session['user_name'] = user['name']
@@ -1115,5 +1115,5 @@ def generate_possible_causes(symptom):
     return ['Please consult a doctor for accurate diagnosis']
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)
 
