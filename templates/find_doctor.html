@@ -2,6 +2,201 @@
 
 {% block title %}Find My Doctor - HealthCare Plus{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* Enhanced How It Works Section */
+    .how-it-works-section {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .how-it-works-section::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 80%;
+        background: radial-gradient(circle, rgba(111, 180, 214, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    
+    .step-card {
+        background: white;
+        border-radius: 1.5rem;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        position: relative;
+        height: 100%;
+        border: 2px solid transparent;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+    
+    .step-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 1.5rem;
+        padding: 2px;
+        background: linear-gradient(135deg, #6FB4D6, #7FD4C1);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.4s;
+    }
+    
+    .step-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(111, 180, 214, 0.25);
+    }
+    
+    .step-card:hover::before {
+        opacity: 1;
+    }
+    
+    .step-number {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #6FB4D6 0%, #7FD4C1 100%);
+        color: white;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 20px rgba(111, 180, 214, 0.4);
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+    }
+    
+    .step-number::after {
+        content: '';
+        position: absolute;
+        inset: -5px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6FB4D6 0%, #7FD4C1 100%);
+        opacity: 0;
+        animation: pulse-ring 2s infinite;
+    }
+    
+    @keyframes pulse-ring {
+        0%, 100% {
+            opacity: 0;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.3;
+            transform: scale(1.2);
+        }
+    }
+    
+    .step-card:hover .step-number {
+        transform: scale(1.15) rotate(10deg);
+        box-shadow: 0 12px 28px rgba(111, 180, 214, 0.5);
+    }
+    
+    .step-icon {
+        font-size: 3rem;
+        color: #6FB4D6;
+        margin-bottom: 1.5rem;
+        transition: all 0.4s ease;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .step-card:hover .step-icon {
+        transform: scale(1.2);
+        color: #7FD4C1;
+    }
+    
+    .step-icon::before {
+        content: '';
+        position: absolute;
+        inset: -15px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(111, 180, 214, 0.1), rgba(127, 212, 193, 0.1));
+        z-index: -1;
+        transition: all 0.4s ease;
+        opacity: 0;
+    }
+    
+    .step-card:hover .step-icon::before {
+        opacity: 1;
+        transform: scale(1.3);
+    }
+    
+    .step-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #2D3748;
+        margin-bottom: 1rem;
+        transition: color 0.3s;
+    }
+    
+    .step-card:hover .step-title {
+        color: #6FB4D6;
+    }
+    
+    .step-description {
+        color: #718096;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 0;
+    }
+    
+    /* Connection Lines Between Steps */
+    @media (min-width: 768px) {
+        .step-card::after {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: calc(100% - 1rem);
+            width: calc(100% - 4rem);
+            height: 3px;
+            background: linear-gradient(90deg, #6FB4D6 0%, #7FD4C1 100%);
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        .col-md-4:last-child .step-card::after {
+            display: none;
+        }
+        
+        .step-card:hover::after {
+            opacity: 0.6;
+            animation: flow 2s linear infinite;
+        }
+        
+        @keyframes flow {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+    }
+    
+    /* Enhanced Disclaimer Card */
+    .disclaimer-card {
+        background: linear-gradient(135deg, #FFF8E1 0%, #FFE5B4 100%);
+        border-left: 4px solid #F59E0B;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Page Header -->
 <section class="page-header py-5 bg-light">
@@ -174,7 +369,7 @@
                 <div class="doctor-card-modern">
                     <div class="doctor-card-header">
                         <div class="doctor-image-wrapper">
-                            <img src="{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}" 
+                            <img src="{% if doctor.image and doctor.image.startswith('http') %}{{ doctor.image }}{% else %}{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}{% endif %}" 
                                  class="doctor-image" alt="{{ doctor.name }}"
                                  onerror="this.src='{{ url_for('static', filename='images/doctors/default.jpg') }}'">
                             <div class="verified-badge">

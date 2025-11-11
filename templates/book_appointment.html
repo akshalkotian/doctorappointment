@@ -27,7 +27,7 @@
             <div class="col-lg-4">
                 <div class="booking-doctor-card sticky-top" style="top: 100px;">
                     <div class="doctor-card-header-booking">
-                        <img src="{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}" 
+                        <img src="{% if doctor.image and doctor.image.startswith('http') %}{{ doctor.image }}{% else %}{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}{% endif %}" 
                              alt="{{ doctor.name }}" class="doctor-image-booking"
                              onerror="this.src='{{ url_for('static', filename='images/doctors/default.jpg') }}'">
                     </div>

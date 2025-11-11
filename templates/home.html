@@ -80,6 +80,164 @@
         background: linear-gradient(135deg, #D4F4EC 0%, #E3F2F9 100%);
         box-shadow: 0 8px 24px rgba(127, 212, 193, 0.2);
     }
+    
+    /* City Icon Cards */
+    .city-icon-card {
+        background: white;
+        border-radius: 1rem;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid #E2E8F0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .city-icon-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(111, 180, 214, 0.2);
+        border-color: #6FB4D6;
+    }
+    
+    .city-icon-card.active {
+        background: linear-gradient(135deg, #6FB4D6 0%, #7FD4C1 100%);
+        border-color: #6FB4D6;
+        box-shadow: 0 8px 24px rgba(111, 180, 214, 0.3);
+    }
+    
+    .city-icon-card.active .city-icon {
+        color: white;
+    }
+    
+    .city-icon-card.active .city-name {
+        color: white;
+        font-weight: 700;
+    }
+    
+    .city-icon {
+        font-size: 2.5rem;
+        color: #6FB4D6;
+        margin-bottom: 0.75rem;
+        transition: all 0.3s ease;
+    }
+    
+    .city-name {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #2D3748;
+        transition: all 0.3s ease;
+    }
+    
+    .city-icon-card:hover .city-icon {
+        transform: scale(1.15);
+    }
+    
+    /* Hospital Cards with Images */
+    .hospital-card {
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 2px solid transparent;
+        height: 100%;
+    }
+    
+    .hospital-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 28px rgba(111, 180, 214, 0.25);
+        border-color: #6FB4D6;
+    }
+    
+    .hospital-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #E3F2F9 0%, #D4F4EC 100%);
+    }
+    
+    .hospital-content {
+        padding: 1.25rem;
+    }
+    
+    .hospital-name {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #2D3748;
+        margin-bottom: 0.75rem;
+    }
+    
+    .hospital-location {
+        display: flex;
+        align-items: start;
+        color: #718096;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .hospital-location i {
+        color: #6FB4D6;
+        margin-right: 0.5rem;
+        margin-top: 0.2rem;
+        flex-shrink: 0;
+    }
+    
+    .hospital-phone {
+        display: flex;
+        align-items: center;
+        color: #718096;
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .hospital-phone i {
+        color: #7FD4C1;
+        margin-right: 0.5rem;
+    }
+    
+    .hospital-specialties {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+    
+    .specialty-badge {
+        background: linear-gradient(135deg, #E3F2F9 0%, #D4F4EC 100%);
+        color: #2D3748;
+        padding: 0.25rem 0.6rem;
+        border-radius: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .view-doctors-badge {
+        background: linear-gradient(135deg, #6FB4D6 0%, #7FD4C1 100%);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 0.75rem;
+        transition: all 0.3s ease;
+    }
+    
+    .hospital-card:hover .view-doctors-badge {
+        transform: scale(1.05);
+    }
+    
+    .no-hospitals-msg {
+        text-align: center;
+        padding: 3rem;
+        color: #718096;
+    }
+    
+    .no-hospitals-msg i {
+        font-size: 3rem;
+        color: #CBD5E0;
+        margin-bottom: 1rem;
+    }
 </style>
 {% endblock %}
 
@@ -138,75 +296,96 @@
 </section>
 
 {% if session.user_id %}
-<!-- City → Hospital → Doctor Selection Section -->
+<!-- Book Appointment by Location Section -->
 <section class="selection-section py-5 bg-light">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title fw-bold mb-3">Find Your Doctor</h2>
-            <p class="text-muted">Select city, hospital, and doctor in 3 simple steps</p>
+        <div class="text-center mb-4">
+            <h2 class="section-title fw-bold mb-2">
+                <i class="fas fa-map-marker-alt text-primary me-2"></i>Book Appointment by Location
+            </h2>
+            <p class="text-muted">Select your city to view hospitals and book appointments</p>
         </div>
 
-        <div class="row justify-content-center">
+        <!-- City Selection Icons -->
+        <div class="row justify-content-center mb-4">
             <div class="col-lg-10">
-                <div class="selection-card">
-                    <form id="selectionForm">
-                        <div class="row g-4">
-                            <!-- Step 1: Select City -->
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="step-indicator me-3">1</div>
-                                    <div>
-                                        <h6 class="mb-0 fw-bold">Select City</h6>
-                                        <small class="text-muted">Choose your city</small>
-                                    </div>
-                                </div>
-                                <select class="form-select form-select-lg" id="citySelect" required>
-                                    <option value="">Choose City...</option>
-                                    {% for city in cities %}
-                                    <option value="{{ city.id }}">{{ city.name }}</option>
-                                    {% endfor %}
-                                </select>
+                <div class="row g-3">
+                    <div class="col-4 col-md-2">
+                        <div class="city-icon-card" data-city-id="city1" data-city-name="Bangalore">
+                            <div class="city-icon">
+                                <i class="fas fa-city"></i>
                             </div>
-
-                            <!-- Step 2: Select Hospital -->
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="step-indicator me-3">2</div>
-                                    <div>
-                                        <h6 class="mb-0 fw-bold">Select Hospital</h6>
-                                        <small class="text-muted">Pick hospital</small>
-                                    </div>
-                                </div>
-                                <select class="form-select form-select-lg" id="hospitalSelect" disabled required>
-                                    <option value="">First select city...</option>
-                                </select>
-                            </div>
-
-                            <!-- Step 3: Go to Doctors -->
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="step-indicator me-3">3</div>
-                                    <div>
-                                        <h6 class="mb-0 fw-bold">View Doctors</h6>
-                                        <small class="text-muted">Browse doctors</small>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-lg w-100" id="viewDoctorsBtn" disabled>
-                                    <i class="fas fa-arrow-right me-2"></i>View Doctors
-                                </button>
-                            </div>
+                            <div class="city-name">Bangalore</div>
                         </div>
-                    </form>
-                </div>
-
-                <!-- Or Browse All Doctors -->
-                <div class="text-center mt-4">
-                    <p class="text-muted mb-2">or</p>
-                    <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-5">
-                        <i class="fas fa-th-large me-2"></i>Browse All Doctors Across All Hospitals
-                    </a>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="city-icon-card" data-city-id="city2" data-city-name="Mumbai">
+                            <div class="city-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="city-name">Mumbai</div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="city-icon-card" data-city-id="city3" data-city-name="Chennai">
+                            <div class="city-icon">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <div class="city-name">Chennai</div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="city-icon-card" data-city-id="city4" data-city-name="Hyderabad">
+                            <div class="city-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="city-name">Hyderabad</div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="city-icon-card" data-city-id="city5" data-city-name="Delhi">
+                            <div class="city-icon">
+                                <i class="fas fa-gopuram"></i>
+                            </div>
+                            <div class="city-name">Delhi</div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="city-icon-card" data-city-id="city6" data-city-name="Udupi">
+                            <div class="city-icon">
+                                <i class="fas fa-place-of-worship"></i>
+                            </div>
+                            <div class="city-name">Udupi</div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Hospitals Display Section -->
+        <div id="hospitalsSection" class="row justify-content-center" style="display: none;">
+            <div class="col-lg-11">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h4 class="fw-bold mb-0">
+                        <i class="fas fa-hospital text-primary me-2"></i>
+                        <span id="selectedCityName">Hospitals</span>
+                    </h4>
+                    <button class="btn btn-outline-secondary btn-sm" id="clearCityBtn">
+                        <i class="fas fa-times me-1"></i>Clear Selection
+                    </button>
+                </div>
+                <div class="row g-4" id="hospitalsContainer">
+                    <!-- Hospital cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Or Browse All Doctors -->
+        <div class="text-center mt-4">
+            <p class="text-muted mb-2">or</p>
+            <a href="{{ url_for('doctors_list') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-5">
+                <i class="fas fa-th-large me-2"></i>Browse All Doctors Across All Hospitals
+            </a>
         </div>
     </div>
 </section>
@@ -343,57 +522,157 @@
 
 {% block extra_js %}
 <script>
-// City → Hospital → Doctor Selection Logic
-const citySelect = document.getElementById('citySelect');
-const hospitalSelect = document.getElementById('hospitalSelect');
-const viewDoctorsBtn = document.getElementById('viewDoctorsBtn');
+// City Icon Selection and Hospital Display
+const cityCards = document.querySelectorAll('.city-icon-card');
+const hospitalsSection = document.getElementById('hospitalsSection');
+const hospitalsContainer = document.getElementById('hospitalsContainer');
+const selectedCityName = document.getElementById('selectedCityName');
+const clearCityBtn = document.getElementById('clearCityBtn');
 
-if (citySelect) {
-    citySelect.addEventListener('change', async function() {
-        const cityId = this.value;
+// Hospital images mapping (real hospital images from Unsplash)
+const hospitalImages = {
+    'Apollo Hospital': 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
+    'Fortis Hospital': 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800&q=80',
+    'Manipal Hospital': 'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=800&q=80',
+    'Lilavati Hospital': 'https://images.unsplash.com/photo-1632833239869-a37e3a5806d2?w=800&q=80',
+    'Kokilaben Hospital': 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
+    'Fortis Malar Hospital': 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800&q=80',
+    'KIMS Hospital': 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=800&q=80',
+    'Max Hospital': 'https://images.unsplash.com/photo-1596541223130-5d31a73fb6c6?w=800&q=80',
+    'Kasturba Medical College Hospital': 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
+    'Dr. TMA Pai Hospital': 'https://images.unsplash.com/photo-1632833239869-a37e3a5806d2?w=800&q=80',
+    'Adarsh Hospital': 'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=800&q=80',
+    'Sai Hospitals': 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800&q=80',
+    'City Hospital': 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=800&q=80'
+};
+
+// Handle city card clicks
+cityCards.forEach(card => {
+    card.addEventListener('click', async function() {
+        const cityId = this.dataset.cityId;
+        const cityName = this.dataset.cityName;
         
-        // Reset hospital select
-        hospitalSelect.innerHTML = '<option value="">Loading hospitals...</option>';
-        hospitalSelect.disabled = true;
-        viewDoctorsBtn.disabled = true;
+        // Remove active class from all cards
+        cityCards.forEach(c => c.classList.remove('active'));
         
-        if (cityId) {
-            try {
-                // Fetch hospitals for selected city
-                const response = await fetch(`/api/hospitals/${cityId}`);
-                const hospitals = await response.json();
-                
-                // Populate hospital dropdown
-                hospitalSelect.innerHTML = '<option value="">Select Hospital...</option>';
-                hospitals.forEach(hospital => {
-                    const option = document.createElement('option');
-                    option.value = hospital.id;
-                    option.textContent = hospital.name;
-                    hospitalSelect.appendChild(option);
-                });
-                
-                hospitalSelect.disabled = false;
-            } catch (error) {
-                console.error('Error fetching hospitals:', error);
-                hospitalSelect.innerHTML = '<option value="">Error loading hospitals</option>';
+        // Add active class to clicked card
+        this.classList.add('active');
+        
+        // Update city name
+        selectedCityName.textContent = `Hospitals in ${cityName}`;
+        
+        // Show loading state
+        hospitalsContainer.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-3">Loading hospitals...</p>
+            </div>
+        `;
+        hospitalsSection.style.display = 'block';
+        
+        // Smooth scroll to hospitals section
+        hospitalsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        try {
+            // Fetch hospitals for selected city
+            const response = await fetch(`/api/hospitals/${cityId}`);
+            const hospitals = await response.json();
+            
+            if (hospitals.length === 0) {
+                hospitalsContainer.innerHTML = `
+                    <div class="col-12">
+                        <div class="no-hospitals-msg">
+                            <i class="fas fa-hospital"></i>
+                            <h5>No Hospitals Found</h5>
+                            <p>Sorry, no hospitals available in this city yet.</p>
+                        </div>
+                    </div>
+                `;
+                return;
             }
-        } else {
-            hospitalSelect.innerHTML = '<option value="">First select city...</option>';
+            
+            // Display hospitals
+            hospitalsContainer.innerHTML = '';
+            hospitals.forEach(hospital => {
+                const hospitalCard = createHospitalCard(hospital);
+                hospitalsContainer.innerHTML += hospitalCard;
+            });
+            
+            // Add click handlers to hospital cards
+            document.querySelectorAll('.hospital-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const hospitalId = this.dataset.hospitalId;
+                    window.location.href = `/hospital/${hospitalId}/doctors`;
+                });
+            });
+            
+        } catch (error) {
+            console.error('Error fetching hospitals:', error);
+            hospitalsContainer.innerHTML = `
+                <div class="col-12">
+                    <div class="no-hospitals-msg">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h5>Error Loading Hospitals</h5>
+                        <p>Please try again later.</p>
+                    </div>
+                </div>
+            `;
         }
     });
+});
 
-    hospitalSelect.addEventListener('change', function() {
-        viewDoctorsBtn.disabled = !this.value;
+// Clear city selection
+if (clearCityBtn) {
+    clearCityBtn.addEventListener('click', function() {
+        cityCards.forEach(c => c.classList.remove('active'));
+        hospitalsSection.style.display = 'none';
+        hospitalsContainer.innerHTML = '';
     });
+}
 
-    // Handle form submission
-    document.getElementById('selectionForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const hospitalId = hospitalSelect.value;
-        if (hospitalId) {
-            window.location.href = `/hospital/${hospitalId}/doctors`;
-        }
-    });
+// Create hospital card HTML
+function createHospitalCard(hospital) {
+    const imageUrl = hospitalImages[hospital.name] || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80';
+    
+    // Show only first 3 specialties
+    const specialtiesToShow = hospital.specialties.slice(0, 3);
+    const moreCount = hospital.specialties.length - 3;
+    
+    const specialtiesHTML = specialtiesToShow.map(spec => 
+        `<span class="specialty-badge">${spec}</span>`
+    ).join('');
+    
+    const moreSpecialtiesHTML = moreCount > 0 ? 
+        `<span class="specialty-badge">+${moreCount} more</span>` : '';
+    
+    return `
+        <div class="col-md-6 col-lg-4">
+            <div class="hospital-card" data-hospital-id="${hospital.id}">
+                <img src="${imageUrl}" alt="${hospital.name}" class="hospital-image" 
+                     onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80'">
+                <div class="hospital-content">
+                    <div class="hospital-name">${hospital.name}</div>
+                    <div class="hospital-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${hospital.address}</span>
+                    </div>
+                    <div class="hospital-phone">
+                        <i class="fas fa-phone"></i>
+                        <span>${hospital.phone}</span>
+                    </div>
+                    <div class="hospital-specialties">
+                        ${specialtiesHTML}
+                        ${moreSpecialtiesHTML}
+                    </div>
+                    <div class="view-doctors-badge">
+                        <i class="fas fa-user-md me-2"></i>View Doctors
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
 }
 </script>
 {% endblock %}

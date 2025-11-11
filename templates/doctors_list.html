@@ -2,62 +2,160 @@
 
 {% block title %}Find Doctors - HealthCare Plus{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* Fast loading optimizations */
+    .doctor-card-modern {
+        transition: none !important;
+    }
+    
+    .doctor-card-modern:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        transition: all 0.15s ease;
+    }
+    
+    .doctor-image {
+        background: linear-gradient(135deg, #E3F2F9 0%, #D4F4EC 100%);
+    }
+    
+    /* Filter buttons */
+    .filter-btn {
+        border: 2px solid #E2E8F0;
+        background: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .filter-btn:hover {
+        border-color: #6FB4D6;
+        background: #F7FBFD;
+    }
+    
+    .filter-btn.active {
+        background: linear-gradient(135deg, #6FB4D6 0%, #7FD4C1 100%);
+        border-color: #6FB4D6;
+        color: white;
+    }
+    
+    .filter-section {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+    }
+    
+    .gender-icon {
+        font-size: 1.2rem;
+    }
+    
+    .results-count {
+        font-size: 0.95rem;
+        color: #718096;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Page Header -->
-<section class="page-header py-5 bg-light">
+<section class="page-header py-4 bg-light">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <h1 class="display-5 fw-bold mb-3">Find Your Doctor</h1>
-                <p class="lead text-muted mb-0">Browse through our network of verified healthcare professionals</p>
+            <div class="col-lg-6 mb-3 mb-lg-0">
+                <h1 class="h3 fw-bold mb-2">Find Your Doctor</h1>
+                <p class="text-muted mb-0">Browse through our network of verified healthcare professionals</p>
             </div>
             <div class="col-lg-6">
-                <!-- Search Bar -->
-                <form method="GET" action="{{ url_for('doctors_list') }}">
-                    <div class="search-box-modern">
-                        <div class="input-group input-group-lg">
-                            <span class="input-group-text bg-white border-end-0">
-                                <i class="fas fa-search text-muted"></i>
-                            </span>
-                            <input type="text" class="form-control border-start-0 ps-0" name="search" 
-                                   placeholder="Search by name or specialization..." 
-                                   value="{{ search_query }}">
-                            <button class="btn btn-primary px-4" type="submit">
-                                <i class="fas fa-search me-2"></i>Search
-                            </button>
-                        </div>
+                <!-- Instant Search -->
+                <div class="search-box-modern">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0 ps-0" id="instantSearch" 
+                               placeholder="Search by name or specialization..." 
+                               value="{{ search_query }}">
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-        
-        {% if search_query %}
-        <div class="mt-4">
-            <div class="d-flex align-items-center">
-                <span class="badge bg-primary-subtle text-primary px-3 py-2">
-                    <i class="fas fa-filter me-1"></i>{{ doctors|length }} results for "{{ search_query }}"
-                </span>
-                <a href="{{ url_for('doctors_list') }}" class="btn btn-sm btn-outline-secondary ms-3">
-                    <i class="fas fa-times me-1"></i>Clear Filter
-                </a>
+    </div>
+</section>
+
+<!-- Filters Section -->
+<section class="py-3 bg-light border-bottom">
+    <div class="container">
+        <div class="filter-section">
+            <div class="row g-3 align-items-center">
+                <!-- Gender Filter -->
+                <div class="col-md-4">
+                    <label class="small text-muted mb-2 d-block"><i class="fas fa-venus-mars me-1"></i> Gender</label>
+                    <div class="d-flex gap-2">
+                        <button class="filter-btn active" data-filter="all" id="filterAll">
+                            <i class="fas fa-users gender-icon"></i> All
+                        </button>
+                        <button class="filter-btn" data-filter="male" id="filterMale">
+                            <i class="fas fa-mars gender-icon" style="color: #3B82F6;"></i> Male
+                        </button>
+                        <button class="filter-btn" data-filter="female" id="filterFemale">
+                            <i class="fas fa-venus gender-icon" style="color: #EC4899;"></i> Female
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Experience Filter -->
+                <div class="col-md-4">
+                    <label class="small text-muted mb-2 d-block"><i class="fas fa-briefcase me-1"></i> Experience</label>
+                    <select class="form-select" id="experienceFilter">
+                        <option value="all">All Experience Levels</option>
+                        <option value="0-5">0-5 years</option>
+                        <option value="6-10">6-10 years</option>
+                        <option value="11-15">11-15 years</option>
+                        <option value="16-20">16-20 years</option>
+                        <option value="20+">20+ years</option>
+                    </select>
+                </div>
+                
+                <!-- Results Count -->
+                <div class="col-md-4 text-md-end">
+                    <div class="results-count">
+                        <i class="fas fa-user-md me-1"></i>
+                        <span id="resultsCount">{{ doctors|length }}</span> Doctors Found
+                    </div>
+                    <button class="btn btn-sm btn-outline-secondary mt-2" id="clearFilters">
+                        <i class="fas fa-redo me-1"></i>Reset Filters
+                    </button>
+                </div>
             </div>
         </div>
-        {% endif %}
     </div>
 </section>
 
 <!-- Doctors Grid -->
-<section class="doctors-section py-5">
+<section class="doctors-section py-4">
     <div class="container">
         {% if doctors %}
-        <div class="row g-4">
+        <div class="row g-4" id="doctorsGrid">
             {% for doctor in doctors %}
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-4 doctor-card-wrapper" 
+                 data-name="{{ doctor.name|lower }}" 
+                 data-specialization="{{ doctor.specialization|lower }}"
+                 data-gender="{% if 'priya' in doctor.name|lower or 'meera' in doctor.name|lower or 'anjali' in doctor.name|lower or 'kavita' in doctor.name|lower or 'deepa' in doctor.name|lower or 'shalini' in doctor.name|lower or 'pooja' in doctor.name|lower or 'tanvi' in doctor.name|lower or 'lakshmi' in doctor.name|lower or 'sneha' in doctor.name|lower or 'nisha' in doctor.name|lower or 'rekha' in doctor.name|lower or 'swati' in doctor.name|lower or 'poornima' in doctor.name|lower or 'smita' in doctor.name|lower or 'manisha' in doctor.name|lower or 'padma' in doctor.name|lower or 'divya' in doctor.name|lower or 'anita' in doctor.name|lower or 'sunita' in doctor.name|lower or 'neha' in doctor.name|lower or 'sudha' in doctor.name|lower or 'ritu' in doctor.name|lower or 'nidhi' in doctor.name|lower or 'preeti' in doctor.name|lower or 'savitha' in doctor.name|lower or 'manjula' in doctor.name|lower or 'vandana' in doctor.name|lower or 'sharada' in doctor.name|lower or 'veena' in doctor.name|lower or 'shilpa' in doctor.name|lower or 'jyothi' in doctor.name|lower or 'suma' in doctor.name|lower or 'anupama' in doctor.name|lower or 'madhuri' in doctor.name|lower or 'asha' in doctor.name|lower or 'renuka' in doctor.name|lower or 'sowmya' in doctor.name|lower or 'prathima' in doctor.name|lower or 'archana' in doctor.name|lower or 'revathi' in doctor.name|lower or 'vaishali' in doctor.name|lower or 'madhavi' in doctor.name|lower or 'anitha' in doctor.name|lower or 'geetha' in doctor.name|lower or 'meenakshi' in doctor.name|lower or 'shweta' in doctor.name|lower or 'pragathi' in doctor.name|lower %}female{% else %}male{% endif %}"
+                 data-experience="{{ doctor.experience|replace(' years', '')|replace(' year', '')|int }}">
                 <div class="doctor-card-modern">
                     <div class="doctor-card-header">
                         <div class="doctor-image-wrapper">
-                            <img src="{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}" 
-                                 class="doctor-image" alt="{{ doctor.name }}" 
+                            <img src="{% if doctor.image and doctor.image.startswith('http') %}{{ doctor.image }}{% else %}{{ url_for('static', filename='images/doctors/' + (doctor.image if doctor.image else 'default.jpg')) }}{% endif %}"
+                                 class="doctor-image" alt="{{ doctor.name }}"
+                                 loading="lazy"
                                  onerror="this.src='{{ url_for('static', filename='images/doctors/default.jpg') }}'">
                             <div class="verified-badge">
                                 <i class="fas fa-check-circle"></i>
@@ -108,6 +206,16 @@
             </div>
             {% endfor %}
         </div>
+        
+        <!-- No Results Message -->
+        <div id="noResults" class="empty-state text-center py-5" style="display: none;">
+            <div class="empty-icon mb-4">
+                <i class="fas fa-search"></i>
+            </div>
+            <h4 class="mb-3">No Doctors Found</h4>
+            <p class="text-muted mb-4">Try adjusting your filters or search criteria</p>
+        </div>
+        
         {% else %}
         <div class="empty-state text-center py-5">
             <div class="empty-icon mb-4">
@@ -122,4 +230,114 @@
         {% endif %}
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Instant filtering with no delays
+const doctorCards = document.querySelectorAll('.doctor-card-wrapper');
+const instantSearch = document.getElementById('instantSearch');
+const filterButtons = document.querySelectorAll('.filter-btn');
+const experienceFilter = document.getElementById('experienceFilter');
+const resultsCount = document.getElementById('resultsCount');
+const noResults = document.getElementById('noResults');
+const clearFiltersBtn = document.getElementById('clearFilters');
+
+let currentFilters = {
+    search: '',
+    gender: 'all',
+    experience: 'all'
+};
+
+// Instant search
+if (instantSearch) {
+    instantSearch.addEventListener('input', function() {
+        currentFilters.search = this.value.toLowerCase();
+        applyFilters();
+    });
+}
+
+// Gender filter
+filterButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilters.gender = this.dataset.filter;
+        applyFilters();
+    });
+});
+
+// Experience filter
+if (experienceFilter) {
+    experienceFilter.addEventListener('change', function() {
+        currentFilters.experience = this.value;
+        applyFilters();
+    });
+}
+
+// Clear all filters
+if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener('click', function() {
+        instantSearch.value = '';
+        filterButtons.forEach(b => b.classList.remove('active'));
+        document.getElementById('filterAll').classList.add('active');
+        experienceFilter.value = 'all';
+        
+        currentFilters = {
+            search: '',
+            gender: 'all',
+            experience: 'all'
+        };
+        
+        applyFilters();
+    });
+}
+
+// Apply all filters instantly
+function applyFilters() {
+    let visibleCount = 0;
+    
+    doctorCards.forEach(card => {
+        const name = card.dataset.name;
+        const specialization = card.dataset.specialization;
+        const gender = card.dataset.gender;
+        const experience = parseInt(card.dataset.experience);
+        
+        let show = true;
+        
+        // Search filter
+        if (currentFilters.search) {
+            show = name.includes(currentFilters.search) || specialization.includes(currentFilters.search);
+        }
+        
+        // Gender filter
+        if (show && currentFilters.gender !== 'all') {
+            show = gender === currentFilters.gender;
+        }
+        
+        // Experience filter
+        if (show && currentFilters.experience !== 'all') {
+            const [min, max] = currentFilters.experience.split('-').map(v => 
+                v === '20+' ? 20 : parseInt(v)
+            );
+            
+            if (currentFilters.experience === '20+') {
+                show = experience >= 20;
+            } else {
+                show = experience >= min && experience <= max;
+            }
+        }
+        
+        // Show/hide card
+        card.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+    });
+    
+    // Update results count
+    resultsCount.textContent = visibleCount;
+    
+    // Show/hide no results message
+    noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+}
+</script>
 {% endblock %}
